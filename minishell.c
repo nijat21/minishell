@@ -8,15 +8,35 @@
 // Working history
 // Search & Launch right executable based on path
 
+/*
+	INPUT FOR EXECUTION:
+	char *argv[] = {"echo", "-n", "something", NULL}
+	
+	DISTINCTIONS:
+	
+	builtin?
+	yes
+		pipeline?   -> fork
+		no pipeline -> parent
+	no -> fork + execve	
+
+*/
+
+
 void echo_func()
 {
     char *str;
 
-    while ((str = readline("")) != NULL)
-        printf("%s", str);
-    if (str == NULL)
-        printf("\n");
+    if ((str = readline("")) != NULL)
+        ft_printf("%s\n", str);
+    return;
 }
+
+void execute_cmds(int ac, char *av[])
+{
+	
+}
+
 
 int main(void)
 {
@@ -26,9 +46,8 @@ int main(void)
     while (1)
     {
         write(1, "minishell> ", 11);
-        echo_func();
-
         by_read = read(0, buf, sizeof(buf));
+        printf("by_read -> %ld\n", by_read);
         if (by_read == 0)
             break;
         if (by_read < 0)
@@ -36,6 +55,7 @@ int main(void)
         // here: normally parse + execute
         // for now, do nothing
     }
+    echo_func();
 
     return 0;
 }

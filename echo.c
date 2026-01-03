@@ -1,5 +1,24 @@
 #include "minishell.h"
 
+
+/* 
+	USE CASES:
+	echo 			-> $
+	echo -n			-> 
+	echo ""			-> $
+	echo -n ""		-> 
+	echo something		-> something$
+	echo -n something 	-> something	
+
+	INPUT TO FUNCTION:
+	cmd			-> echo
+	flag			-> -n
+	string			-> something
+
+	char *argv[] = {"echo", "-n", "something", NULL}
+	
+*/
+
 // tracer and history generation
 void echo()
 {
