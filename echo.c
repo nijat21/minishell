@@ -17,6 +17,7 @@
 
 	char *argv[] = {"echo", "-n", "something", NULL}
 	
+	Why to use fork/pipe at all?
 */
 
 // tracer and history generation

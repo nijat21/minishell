@@ -1,5 +1,39 @@
 #include "minishell.h"
 
+int *do_pipe(int inp, int out, int pipefd[])
+{
+	int fd_in;
+	int fd_out;
+	/*
+		CASES:
+		STDIN 	-> fd = 0; input.txt; pipefd[0];
+		STDOUT 	-> fd = 1; output.txt; pipefd[1];
+	*/
+	if(inp) 
+		fd_in = inp;
+	else 
+		return NULL;
+	if(out) 
+		fd_out = inp;
+	else 
+		fd_out = pipefd[1];
+	
+	//close(inp);
+	//close(out);
+
+	if(pipe(pipefd) < 0) 
+	{
+		perror("Pipe");
+		return NULL;
+	}
+	if(dup2(inp, STDIN_FILENO) < 0 || dup2(out, STDOUT_FILENO) < 0)
+	{
+		perror("Dup2");
+		return NULL;
+	}
+	return pipefd;
+}
+
 void exec_cmd(t_pipex *px, char **env, bool last)
 {
 	char *path;
