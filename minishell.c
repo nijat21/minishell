@@ -21,41 +21,32 @@
 	no -> fork + execve	
 
 */
-
-
-void echo_func()
-{
-    char *str;
-
-    if ((str = readline("")) != NULL)
-        ft_printf("%s\n", str);
-    return;
-}
-
-void execute_cmds(int ac, char *av[])
-{
-	
-}
-
+#define B_SIZE 1024
 
 int main(void)
 {
-    char buf[1024];
+    char buf[B_SIZE];
     ssize_t by_read;
+
+    int fd = open("no_exist.txt", O_RDONLY);
 
     while (1)
     {
         write(1, "minishell> ", 11);
         by_read = read(0, buf, sizeof(buf));
-        printf("by_read -> %ld\n", by_read);
+        printf("by_read -> %ld buf -> %s\n", by_read, buf);
         if (by_read == 0)
             break;
         if (by_read < 0)
-            continue;
+	{
+		perror("Read");
+		return by_read;
+	}
         // here: normally parse + execute
         // for now, do nothing
+	
+	ft_memcpy(buf,&buf[by_read], BUFFER_SIZE - by_read);
     }
-    echo_func();
 
     return 0;
 }
