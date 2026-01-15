@@ -7,7 +7,7 @@ CFLAGS=-Wall -Wextra -Werror -g
 LIBFT_MAKE=make -C Libft
 LIBFT_LIB=Libft/libft.a
 
-SRCS:=minishell.c 
+SRCS:=minishell.c lexer.c  
 OBJS:=$(SRCS:%.c=%.o)
 
 all: ${NAME}

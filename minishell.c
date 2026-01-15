@@ -25,28 +25,29 @@
 
 int main(void)
 {
-    char buf[B_SIZE];
-    ssize_t by_read;
+	/*    char buf[B_SIZE];
+	ssize_t by_read;
 
-    int fd = open("no_exist.txt", O_RDONLY);
+	int fd = open("no_exist.txt", O_RDONLY);
 
-    while (1)
-    {
-        write(1, "minishell> ", 11);
-        by_read = read(0, buf, sizeof(buf));
-        printf("by_read -> %ld buf -> %s\n", by_read, buf);
-        if (by_read == 0)
-            break;
-        if (by_read < 0)
+	while (1)
 	{
-		perror("Read");
-		return by_read;
-	}
-        // here: normally parse + execute
-        // for now, do nothing
-	
-	ft_memcpy(buf,&buf[by_read], BUFFER_SIZE - by_read);
-    }
+		write(1, "minishell> ", 11);
+		by_read = read(0, buf, sizeof(buf));
+		printf("by_read -> %ld buf -> %s\n", by_read, buf);
+		if (by_read == 0)
+			break;
+		if (by_read < 0)
+		{
+			perror("Read");
+			return by_read;
+		}
+		// here: normally parse + execute
+		// for now, do nothing
 
-    return 0;
+		ft_memcpy(buf,&buf[by_read], BUFFER_SIZE - by_read);
+	}*/
+	tokenise();
+
+   	return 0;
 }

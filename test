@@ -1,3 +1,0 @@
-target="some"
-
-echo -e "${target}\n"

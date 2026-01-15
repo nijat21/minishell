@@ -1,5 +1,0 @@
-#!/bin/bash 
-
-PATH="${PATH}:${PWD}"
-file="${1}"
- echo "${file}.pdf" "${file}.md"
