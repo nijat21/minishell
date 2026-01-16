@@ -42,17 +42,6 @@ static int	is_space(char c)
 		return (0);
 }
 
-/* void add_token(t_token **tk, t_ttype type, char *val_start, size_t len, bool expandable) */
-/* { */ 
-/* 	t_token *new; */
-  
-/* 	new = malloc(sizeof(t_token*)); */
-/* 	new->type = type; */
-/* 	new->value = val; */
-/* 	new->expandable = expandable; */ 
-/* 	if(!(*tk)) *tk = new; */
-/* } */   
-
 void *safe_malloc(size_t bytes)
 {
 	void *mem;
@@ -66,29 +55,6 @@ void *safe_malloc(size_t bytes)
 	return (mem);
 }
    
-char *slice(char *str, size_t len)
-{
-	size_t i;
-	char *substr;
-
-	substr = safe_malloc(sizeof(char) * len);
-	if(!substr) 
-		return NULL;
-	i = -1;
-	while(str[++i] && i < len)
-		substr[i] = str[i];
-	return substr;
-}
-
-void nullify(char *str)
-{
-	while(*str)
-	{
-		*str = 0;
-		str++;
-	}
-}
-
 void quote_context(const char c, t_quote *qc)
 {
 	if(*qc == Q_NONE)
@@ -110,118 +76,166 @@ void quote_context(const char c, t_quote *qc)
 	}
 }
 
-/*
- 	* When to add a token?
-	*
-	* word -> done 
-	* "word" -> 
-	* "word"something
-	* some "word"something
-	* "word" something
-	* "word 'something' word "
-	* 'word "something" word '	
-*/
 
+void append_token(t_token **tk, char *str, size_t len, t_ttype token_type, bool expand)
+{ 
+	t_token *new;
+	t_token *temp;
+
+	new = safe_malloc(sizeof(t_token*));
+	if(!new) {
+		free_list(*tk);
+		return;
+	}
+	new->value = malloc(sizeof(char) * len);
+	if(!new->value)
+	{
+		free_list(*tk);
+		return;
+	}
+	if(!ft_memcpy(new->val, str, len))
+	{
+		free_list(*tk);
+		return;
+	}
+	new->type = type;
+	new->expand = expand; 
+	new->next = NULL;
+	if(!(*tk)) 
+		*tk = new;
+	else 
+	{
+		temp = *tk;
+		while(temp->next)
+			temp = temp->next;
+		temp->next = new;
+	}
+}   
+
+/*
+ * When to add a token?
+ *
+ * word -> done 
+ * "word" -> done 
+ * "word"something -> done 
+ * "word" something -> done 
+ * some "word"something -> done
+ * "word" something
+ * "word 'something' word "
+ * 'word "something" word '	
+ */
 
 void prompt_to_list(const char *prompt)
 { 
- 	/* t_token *tk; */
+ 	t_token *tk;
 	t_quote qc;
  	int i;
-	int j;
-	char token[10000];
+	size_t len;
+	char *start;
    
-	/* tk = NULL; */
+	tk = NULL;
 	qc = Q_NONE;
 	i = -1;
-	j = 0;
+	len = 0;
  	while(prompt[++i])
  	{ 
 		quote_context(prompt[i], &qc);
-		if(qc == Q_NONE) // in quotes
+		if(qc == Q_NONE) 
 		{ 		
 			if(is_space(prompt[i]))
-			{ 	// create the token ;
 				printf("Token space -> %s\n", token);
-				j = 0;
-				nullify(token);
+				if(len > 0)
+				{
+					// flush token
+					/* append_token(tk, start, len, WORD, ) */
+					len = 0;
+				}
 				continue;
 			}
+			if(len == 0) 
+				start = &prompt[i];
 			// consider the operators
 			// Pipe, redirs, heredoc 
-			printf("none -> %c\n", prompt[i]);
-			token[j] = prompt[i];
-			token[j+1] = 0;
-			j++;
+			printf("copied in word -> %c\n", prompt[i]);
+			len++;
 		}
 		else if(qc == Q_SINGLE || qc == Q_DOUBLE)
 		{
 			while(prompt[++i] && qc != Q_NONE)
 			{
-				if((qc == Q_SINGLE && prompt[i] == '\'') || 
-				   (qc == Q_DOUBLE && prompt[i] == '"'))
-					continue;
 				quote_context(prompt[i], &qc);
-				token[j] = prompt[i];	
-				token[j+1] = 0;
-				j++;
+				if(qc == Q_NONE) 
+					break;
+				if(len == 0)
+					start = &prompt[i];
+				// else
+				// append to token
+				printf("copied in quotes -> %c\n", prompt[i]);
+				len++;
 			}
 		}
  	}
-	token[j] = 0;
+	// flush token
 	printf("Token last -> %s\n", token);
-	nullify(token);
 }
 
 /* void prompt_to_list(const char *prompt) */
 /* { */ 
-/* 	t_token *tk; */
-/* 	int i; */
-/* 	int start; */
-/* 	bool exp; */
-/* 	t_ttype token_type; */
-/* 	char *pair_found; */
-/* 	char *temp; */
-
-/* 	tk = NULL; */ 
-
+/*  	/1* t_token *tk; *1/ */
+/* 	t_quote qc; */
+/*  	int i; */
+/* 	int j; */
+/* 	size_t len; */
+/* 	char token[10000]; */
+   
+/* 	/1* tk = NULL; *1/ */
+/* 	qc = Q_NONE; */
 /* 	i = -1; */
-/* 	while(is_space(prompt[++i])) ; */
-/* 	exp = true; */
-/* 	while(prompt[++i]) */
-/* 	{ */ 
-/* 		if(is_quote(prompt[i])) */ 
-/* 		{ */ 
-/* 			if(prompt[i] == '\'') */ 
-/* 				exp=false; */
-/* 			i++; */ 
-/* 			start = i; */  
-/* 			pair_found = ft_strchr(&prompt[i], prompt[i]); */
-/* 			if(!pair_found) */   
-/* 			{ */     
-/* 				/1* add_token(tk, unclosed_quote, "", 0, exp); *1/ */
-/* 				printf("Token -> %s type -> %s exp -> %b\n", "", UNCLOSED_QUOTE, exp); */
-/* 				break; */   
-/* 			} */   
-/* 			/1* else copy until the closing quotation mark *1/ */
-/* 			while(prompt[i] && (&prompt[i] <= pair_found)) */
-/* 				i++; */ 
-/* 			if(!prompt[i] || ( prompt[i] && is_space(prompt[i]) )) */
-/* 			{ */ 	
-/* 				/1* add_token(tk, WORD, &prompt[start], i - start, exp); *1/ */ 
-/* 				printf("Token -> %s type -> %s exp -> %b\n", slice(&prompt[start], i - start), UNCLOSED_QUOTE, exp); */
-/* 				exp=true; */	
+/* 	j = -1; */
+/* 	len = 0; */
+/*  	while(prompt[++i]) */
+/*  	{ */ 
+/* 		quote_context(prompt[i], &qc); */
+/* 		if(qc == Q_NONE) */ 
+/* 		{ */ 		
+/* 			if(is_space(prompt[i])) */
+/* 				if(!token[0]) */ 
+/* 					continue; */ 
+/* 				// flush token */
+/* 				printf("Token space -> %s\n", token); */
+/* 				j = -1; */
+/* 				len = 0; */
+/* 				nullify(token); */
+/* 				continue; */
 /* 			} */
-/* 			/1* and if there's no space after closing quote continue *1/ */
-/* 		} */
-/* 		else if(is_operator(prompt[i])) */ 
+/* 			// consider the operators */
 /* 			// Pipe, redirs, heredoc */ 
-/* 		else */ 
-/* 	} */
-/* 	/1* add_token(tk, token_type, &prompt[i], i - start, exp); *1/ */
-/* 	printf("Token -> %s type -> %s exp -> %b\n", slice(&prompt[start], i - start), UNCLOSED_QUOTE, exp); */
+/* 			printf("copied in word -> %c\n", prompt[i]); */
+/* 			token[++j] = prompt[i]; */
+/* 			token[j+1] = 0; */
+/* 			len++; */
+/* 		} */
+/* 		else if(qc == Q_SINGLE || qc == Q_DOUBLE) */
+/* 		{ */
+/* 			while(prompt[++i] && qc != Q_NONE) */
+/* 			{ */
+/* 				quote_context(prompt[i], &qc); */
+/* 				if(qc == Q_NONE) */ 
+/* 					break; */
+/* 				if((qc == Q_SINGLE && prompt[i] == '\'') || */ 
+/* 				   (qc == Q_DOUBLE && prompt[i] == '"')) */
+/* 					continue; */
+/* 				// append to token */
+/* 				printf("copied in quotes -> %c\n", prompt[i]); */
+/* 				token[++j] = prompt[i]; */	
+/* 				token[j+1] = 0; */
+/* 			} */
+/* 		} */
+/*  	} */
+/* 	// flush token */
+/* 	printf("Token last -> %s\n", token); */
+/* 	nullify(token); */
 /* } */
-
 
 void *tokenise(void)
 {

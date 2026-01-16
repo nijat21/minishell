@@ -24,9 +24,15 @@ typedef enum e_ttype {
 	UNCLOSED_QUOTE
 } t_ttype;
 
+typedef struct s_seg {
+	char *text;
+	bool expand;
+	struct s_seg *next;
+} t_seg;
+
 typedef struct s_token {
 	t_ttype type;
-	char *value;
+	t_seg *segments;;
 	bool expand;
 	struct s_token *next;
 } t_token;
