@@ -102,64 +102,65 @@ void choose_ttype(const char *str, t_ttype *tt)
 		*tt = WORD;
 }
 
-void add_token(t_token *tk, t_ttype type, t_seg *seg_list)
+void* add_token(t_token **tk, t_ttype type, t_seg *seg_list)
 { 
 	t_token *new;
 	t_token *temp;
 
-	new = safe_malloc(sizeof(t_token*));
+	new = safe_malloc(sizeof(t_token));
 	if(!new) {
-		free_token_list(tk);
-		return;
+		free_token_list(*tk);
+		return NULL;
 	}
 	new->seg_list = seg_list;
 	new->type = type;
 	new->next = NULL;
-	if(!tk) 
-		tk = new;
+	if(!(*tk)) 
+		*tk = new;
 	else 
 	{
-		temp = tk;
+		temp = *tk;
 		while(temp->next)
 			temp = temp->next;
 		temp->next = new;
 	}
+	return *tk;
 }   
 
-void *add_segment(t_seg *seg, const char *val, size_t len, bool expand)
+void* add_segment(t_seg **seg, const char *val, size_t len, bool expand)
 {
 	t_seg *new;
 	t_seg *temp;
 
-	new = safe_malloc(sizeof(t_seg*));
+	new = safe_malloc(sizeof(t_seg));
 	if(!new) 
 	{
-		free_seg_list(seg);
+		free_seg_list(*seg);
 		return NULL;
 	}
 	new->val = malloc(sizeof(char) * len);
 	if(!new->val)
 	{
-		free_seg_list(seg);
+		free_seg_list(*seg);
 		return NULL;
 	}
 	if(!ft_memcpy(new->val, val, len))
 	{
-		free_seg_list(seg);
+		free_seg_list(*seg);
 		return NULL;
 	}
 	new->expand = expand; 
 	new->next = NULL;
-	if(!(seg)) 
-		seg = new;
+	if(!(*seg)) 
+		*seg = new;
 	else 
 	{
-		temp = seg;
+		temp = *seg;
 		while(temp->next)
 			temp = temp->next;
 		temp->next = new;
 	}
-	return seg; 
+	return *seg; 
 }
 
 /*
@@ -215,17 +216,13 @@ t_token* prompt_to_list(const char *prompt)
 			{
 				if(seg_list)
 				{ 	
-					add_token(tk, tt, seg_list);
-					printf("seg\n");
-					print_seg_list(seg_list);
+					add_token(&tk, tt, seg_list);
 					seg_list = NULL;
 				}
 				else if(!seg_list && len > 0) 
 				{
-					add_segment(seg_list, start, len, exp);
-					add_token(tk, tt, seg_list);
-					printf("token\n");
-					print_token_list(tk);
+					add_segment(&seg_list, start, len, exp);
+					add_token(&tk, tt, seg_list);
 					seg_list = NULL;
 					len = 0;
 				}
@@ -238,8 +235,8 @@ t_token* prompt_to_list(const char *prompt)
 				}
 				else 
 					len = 1;
-				add_segment(seg_list, start, len, exp);
-				add_token(tk, tt, seg_list);
+				add_segment(&seg_list, start, len, exp);
+				add_token(&tk, tt, seg_list);
 				seg_list = NULL;
 				len = 0;
 				continue;
@@ -248,15 +245,13 @@ t_token* prompt_to_list(const char *prompt)
 			{
 				if(seg_list)
 				{ 	
-					add_token(tk, tt, seg_list);
+					add_token(&tk, tt, seg_list);
 					seg_list = NULL;
 				}
 				else if(!seg_list && len > 0)
 				{
-					add_segment(seg_list, start, len, exp);
-					add_token(tk, tt, seg_list);
-					printf("token\n");
-					print_token_list(tk);
+					add_segment(&seg_list, start, len, exp);
+					add_token(&tk, tt, seg_list);
 					seg_list = NULL;
 					len = 0;
 				}
@@ -278,7 +273,7 @@ t_token* prompt_to_list(const char *prompt)
 				{ 	
 					if(len > 0)
 					{
-						add_segment(seg_list, start, len, exp);
+						add_segment(&seg_list, start, len, exp);
 						len = 0;
 					}
 					break;
@@ -297,13 +292,11 @@ t_token* prompt_to_list(const char *prompt)
 		}
  	}
 	if(seg_list)
-		add_token(tk, tt, seg_list);
+		add_token(&tk, tt, seg_list);
 	else if(!seg_list && len > 0)
 	{ 	
-		add_segment(seg_list, start, len, exp);
-		add_token(tk, tt, seg_list);
-		printf("token\n");
-		print_token_list(tk);
+		add_segment(&seg_list, start, len, exp);
+		add_token(&tk, tt, seg_list);
 	}
 	seg_list = NULL;
 	return tk;
@@ -347,7 +340,7 @@ void print_token_list(t_token *tk)
 	temp = tk;
 	while(temp)
 	{
-		printf("tk type -> %s", ttype_to_str(tk->type));
+		printf("tk type -> %s\n", ttype_to_str(tk->type));
 		print_seg_list(temp->seg_list);
 		temp = temp->next;
 	}
