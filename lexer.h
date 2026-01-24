@@ -41,7 +41,9 @@ void *tokenise(void);
 // Utils
 void free_seg_list(t_seg *seg);
 void free_token_list(t_token *tk);
-
+void *safe_malloc(size_t bytes);
+void print_token_list(t_token *tk);
+int	is_space(char c);
 
 
 #endif
