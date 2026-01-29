@@ -8,6 +8,8 @@
 #include <readline/history.h>
 #include <stdbool.h>
 
+#include "Libft/libft.h"
+
 typedef enum e_quote {
 	Q_NONE,
 	Q_SINGLE,
@@ -39,11 +41,21 @@ typedef struct s_token {
 
 void *tokenise(void);
 // Utils
-void free_seg_list(t_seg *seg);
-void free_token_list(t_token *tk);
+void free_seg_list(t_seg **seg);
+void free_token_list(t_token **tk);
 void *safe_malloc(size_t bytes);
 void print_token_list(t_token *tk);
-int	is_space(char c);
+bool is_space(char c);
+bool is_operator(const char c);
+void quote_context(const char c, t_quote *qc);
+void choose_ttype(const char *str, t_ttype *tt);
+size_t varname_len(const char *str);
+// token operations
+t_seg **add_segment(t_seg **seg, const char *val, size_t len, bool expand);
+t_token **add_token(t_token **tk, t_ttype type, t_seg *seg_list);
+
+
+
 
 
 #endif

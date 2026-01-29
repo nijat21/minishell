@@ -5,8 +5,10 @@ CFLAGS = -Wall -Wextra -Werror -g
 LIBS = -lreadline
 
 SHELL_DIR=../../
+LIBFT_DIR=$(SHELL_DIR)/Libft
 
-LEXER_OBJS = $(SHELL_DIR)/lexer.o $(SHELL_DIR)/lexer_utils.o $(SHELL_DIR)/Libft/ft_memcpy.o
+LEXER_OBJS = $(SHELL_DIR)/lexer.o $(SHELL_DIR)/lexer_utils.o $(SHELL_DIR)/lexer_context.o $(SHELL_DIR)/token_ops.o $(LIBFT_DIR)/libft.a
+
 LEXER_TEST_SRC = lexer.test.c
 LEXER_TEST_BIN = lexer_test
 

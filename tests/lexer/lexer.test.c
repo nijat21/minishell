@@ -1,5 +1,6 @@
 #include "../../lexer.h"
 #include <string.h>
+#include "../../Libft/libft.h"
 
 #define RESET       "\033[0m"
 #define RED         "\033[1;31m" 
@@ -12,7 +13,7 @@
 #define BOLD        "\033[1m"
 #define UNDERLINE   "\033[4m"
 
-void lexer(t_token **tk, const char *prompt);
+t_token* lexer(const char *prompt);
 
 typedef struct s_seg_test {
 	char *val;
@@ -57,7 +58,6 @@ size_t token_list_len(t_token *tk)
 	return len;
 }
 
-// Compare a token linked list to a t_token_test array
 bool compare_tokens(t_token *actual, t_token_test *expected, size_t expected_len) {
 	size_t i = 0;
 	while (actual && i < expected_len) {
@@ -107,16 +107,19 @@ void print_tokens(t_token *tokens) {
 // Test runner
 void run_tests(t_test_case *tests, size_t n) {
 	const char *arr[] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "HEREDOC", "APPEND", "UNCLOSED_QUOTE"};
+	size_t fail = 0;
+	size_t pass = 0;
+
 	for (size_t i = 0; i < n; i++) {
-		t_token *result;
-		lexer(&result, tests[i].input);
+		t_token *result = lexer(tests[i].input);
 		bool ok = compare_tokens(result, tests[i].expected, tests[i].expected_len);
 
 		if (ok) {
 		    printf(GREEN"Test %zu: PASS\n"RESET, i + 1);
+		    pass++;
 		} else {
+			fail++;	
 		    printf(RED"Test %zu: FAIL\n"RESET, i + 1);
-		 }
 		    printf( MAGENTA"  Input:    %s\n", tests[i].input);
 		    printf(BLUE"  Expected: \n");
 		    for (size_t j = 0; j < tests[i].expected_len; j++) {
@@ -129,14 +132,15 @@ void run_tests(t_test_case *tests, size_t n) {
 		    printf( YELLOW"  Got:     \n");
 		    print_tokens(result);
 		    printf("\n"RESET);
+		}
 	}
+	printf(MAGENTA"Summary: %zu passed, %zu failed\n"RESET, pass, fail);
 }
 
 
 int main() {
 	
 	t_test_case tests[] = {
-	    // 1
 	    {
 		.input = "hello",
 		.expected = (t_token_test[]){
@@ -144,7 +148,6 @@ int main() {
 		},
 		.expected_len = 1
 	    },
-	    // 2
 	    {
 		.input = "hello world",
 		.expected = (t_token_test[]){
@@ -153,7 +156,6 @@ int main() {
 		},
 		.expected_len = 2
 	    },
-	    // 3
 	    {
 		.input = "hello |",
 		.expected = (t_token_test[]){
@@ -162,7 +164,93 @@ int main() {
 		},
 		.expected_len = 2
 	    },
-	    // 4
+	    {
+		.input = "hello $",
+		.expected = (t_token_test[]){
+		    { WORD, (t_seg_test[]){{"hello", false}}, 1 },
+		    { WORD, (t_seg_test[]){{"$", false}}, 1 }
+		},
+		.expected_len = 2
+	    },
+	    {
+		.input = "hello $?",
+		.expected = (t_token_test[]){
+		    { WORD, (t_seg_test[]){{"hello", false}}, 1 },
+		    { WORD, (t_seg_test[]){{"$?", true}}, 1 }
+		},
+		.expected_len = 2
+	    },
+	    {
+		.input = "hello $?more",
+		.expected = (t_token_test[]){
+		    { WORD, (t_seg_test[]){{"hello", false}}, 1 },
+		    { WORD, (t_seg_test[]){{"$?", true}, {"more", false}}, 2}
+		},
+		.expected_len = 2
+	    },
+	    {
+		.input = "hello $_",
+		.expected = (t_token_test[]){
+		    { WORD, (t_seg_test[]){{"hello", false}}, 1 },
+		    { WORD, (t_seg_test[]){{"$_", true}}, 1 }
+		},
+		.expected_len = 2
+	    },
+	    {
+		.input = "hello$",
+		.expected = (t_token_test[]){
+		    { WORD, (t_seg_test[]){{"hello$", false}}, 1 },
+		},
+		.expected_len = 1
+	    },
+	    {
+		.input = "$hello",
+		.expected = (t_token_test[]){
+		    { WORD, (t_seg_test[]){{"$hello", true}}, 1 },
+		},
+		.expected_len = 1
+	    },
+	    {
+		    .input = "hello $var",
+		    .expected = (t_token_test[]){
+			    { WORD, (t_seg_test[]){{"hello", false}}, 1 },
+			    { WORD, (t_seg_test[]){{"$var", true}}, 1 }
+		    },
+		    .expected_len = 2
+	    },
+	    {
+		    .input = "hello $var'",
+		    .expected = (t_token_test[]){
+			    { WORD, (t_seg_test[]){{"hello", false}}, 1 },
+			    { UNCLOSED_QUOTE, (t_seg_test[]){
+								    {"$var", true},
+								    {"", false}
+							    }, 2 },
+		    },
+		    .expected_len = 2
+	    },
+	    {
+		    .input = "hello $var'else",
+		    .expected = (t_token_test[]){
+			    { WORD, (t_seg_test[]){{"hello", false}}, 1 },
+			    { UNCLOSED_QUOTE, (t_seg_test[]){
+								    {"$var", true},
+								    {"else", false},
+							    }, 2 }
+		    },
+		    .expected_len = 2
+	    },
+	    {
+		    .input = "hello$var'else",
+		    .expected = (t_token_test[]){
+			    { UNCLOSED_QUOTE, (t_seg_test[]){
+								    {"hello", false}, 
+								    {"$var", true},
+								    {"else", false},
+							    }, 3 }
+		    },
+		    .expected_len = 1
+	    },
 	    {
 		.input = "hello|",
 		.expected = (t_token_test[]){
@@ -171,7 +259,6 @@ int main() {
 		},
 		.expected_len = 2
 	    },
-	    // 5
 	    {
 		    .input = "\"hello\"",
 		    .expected = (t_token_test[]){
@@ -179,7 +266,20 @@ int main() {
 		    },
 		    .expected_len = 1
 	    },
-	    // 6
+	    {
+		    .input = "\"",
+		    .expected = (t_token_test[]){
+			    { UNCLOSED_QUOTE, (t_seg_test[]){{"", false}}, 1 }
+		    },
+		    .expected_len = 1
+	    },
+	    {
+		    .input = "\"a",
+		    .expected = (t_token_test[]){
+			    { UNCLOSED_QUOTE, (t_seg_test[]){{"a", false}}, 1 }
+		    },
+		    .expected_len = 1
+	    },
 	    {
 		    .input = "hello \"",
 		    .expected = (t_token_test[]){
@@ -188,7 +288,6 @@ int main() {
 		    },
 		    .expected_len = 2
 	    },
-	    // 7
 	    {
 		.input = "\"hello\"|",
 		.expected = (t_token_test[]){
@@ -197,7 +296,6 @@ int main() {
 		},
 		.expected_len = 2
 	    },
-	    // 8
 	    {
 		.input = "\"hello\"world",
 		.expected = (t_token_test[]){
@@ -205,7 +303,6 @@ int main() {
 		},
 		.expected_len = 1
 	    },
-	    // 9
 	    {
 		.input = "\"hello\" world",
 		.expected = (t_token_test[]){
@@ -214,7 +311,6 @@ int main() {
 		},
 		.expected_len = 2
 	    },
-	    // 10
 	    {
 		.input = "some \"hello\"world",
 		.expected = (t_token_test[]){
@@ -223,7 +319,6 @@ int main() {
 		},
 		.expected_len = 2
 	    },
-	    // 11
 	    {
 		.input = "\"hello\" world",
 		.expected = (t_token_test[]){
@@ -232,7 +327,6 @@ int main() {
 		},
 		.expected_len = 2
 	    },
-	    // 12
 	    {
 		    .input = "\"hello world",
 		    .expected = (t_token_test[]){
@@ -240,7 +334,6 @@ int main() {
 		    },
 		    .expected_len = 1
 	    },
-	    // 13
 	    {
 		.input = "\"hello 'world' test\"",
 		.expected = (t_token_test[]){
@@ -248,7 +341,6 @@ int main() {
 		},
 		.expected_len = 1
 	    },
-	    // 14
 	    {
 		.input = "'hello \"world\" test'",
 		.expected = (t_token_test[]){
@@ -256,9 +348,8 @@ int main() {
 		},
 		.expected_len = 1
 	    },
-	    // 15
 	    {
-		.input = "hello > test",
+		.input = "hello > world",
 		.expected = (t_token_test[]){
 		    { WORD, (t_seg_test[]){{"hello", false}}, 1 },
 		    { REDIR_OUT, (t_seg_test[]){{">", false}}, 1 },
@@ -266,7 +357,6 @@ int main() {
 		},
 		.expected_len = 3
 	    },
-	    // 16
 	    {
 		.input = "\"hello > test\"",
 		.expected = (t_token_test[]){
@@ -274,7 +364,6 @@ int main() {
 		},
 		.expected_len = 1
 	    },
-	    // 17
 	    {
 		.input = "\"\"hello",
 		.expected = (t_token_test[]){
@@ -282,15 +371,13 @@ int main() {
 		},
 		.expected_len = 1
 	    },
-	    // 18
 	    {
 		.input = "\"some$word\"",
 		.expected = (t_token_test[]){
-		    { WORD, (t_seg_test[]){{"some$word", true}}, 1 },
+		    { WORD, (t_seg_test[]){{"some", false}, {"$word", true}}, 2 },
 		},
 		.expected_len = 1
 	    },
-	    // 19
 	    {
 		.input = "'some$word'",
 		.expected = (t_token_test[]){
@@ -298,7 +385,6 @@ int main() {
 		},
 		.expected_len = 1
 	    },
-	    // 20
 	    {
 		.input = "\"$hello\"",
 		.expected = (t_token_test[]){
@@ -306,7 +392,6 @@ int main() {
 		},
 		.expected_len = 1
 	    },
-	    // 21
 	    {
 		.input = "'$hello'",
 		.expected = (t_token_test[]){
@@ -314,15 +399,13 @@ int main() {
 		},
 		.expected_len = 1
 	    },
-	    // 22
 	    {
 		.input = "\"hello$\"",
 		.expected = (t_token_test[]){
-		    { WORD, (t_seg_test[]){{"hello$", true}}, 1 },
+		    { WORD, (t_seg_test[]){{"hello$", false}}, 1 },
 		},
 		.expected_len = 1
 	    },
-	    // 23
 	    {
 		.input = "'hello$'",
 		.expected = (t_token_test[]){
@@ -330,23 +413,87 @@ int main() {
 		},
 		.expected_len = 1
 	    },
-	    // 24
 	    {
 		.input = "\"hello $\"",
 		.expected = (t_token_test[]){
-		    { WORD, (t_seg_test[]){{"hello$", true}}, 1 },
+		    { WORD, (t_seg_test[]){{"hello $", false}}, 1 },
 		},
 		.expected_len = 1
 	    },
-	    // 25
+	    {
+		.input = "\"hello $?more\"",
+		.expected = (t_token_test[]){
+		    { WORD, (t_seg_test[]){
+						  {"hello ", false},
+						  {"$?", true},
+						  {"more", false}
+					  }, 3 },
+		},
+		.expected_len = 1
+	    },
+	    {
+		.input = "'hello $?more'",
+		.expected = (t_token_test[]){
+		    { WORD, (t_seg_test[]){{"hello $?more", false}}, 1 },
+		},
+		.expected_len = 1
+	    },
 	    {
 		.input = "'hello $'",
 		.expected = (t_token_test[]){
-		    { WORD, (t_seg_test[]){{"hello$", false}}, 1 },
+		    { WORD, (t_seg_test[]){{"hello $", false}}, 1 },
 		},
 		.expected_len = 1
 	    },
-	    // 26
+	    {
+		    .input = "\"some$word \"",
+		    .expected = (t_token_test[]){
+			{ WORD, (t_seg_test[])
+				{
+					{"some", false}, 
+					{"$word", true}, 
+					{" ", false}, 
+				},
+			3 },
+		    },
+		    .expected_len = 1
+	    },
+	    {
+		    .input = "'some$word '",
+		    .expected = (t_token_test[]){
+			    { WORD, (t_seg_test[]){{"some$word ", false}}, 1 },
+		    },
+		    .expected_len = 1
+	    },
+	    {
+		    .input = "\"some $var'and\"",
+		    .expected = (t_token_test[]){
+			    { WORD, (t_seg_test[]){
+							  {"some ", false},
+							  {"$var", true},
+							  {"'and", false}
+						  }, 3 },
+		    },
+		    .expected_len = 1
+	    },
+	    {
+		    .input = "\"some $var'\"",
+		    .expected = (t_token_test[]){
+			    { WORD, (t_seg_test[]){
+							  {"some ", false},
+							  {"$var", true},
+							  {"'", false}
+						  }, 3 },
+		    },
+		    .expected_len = 1
+	    },
+	    {
+		    .input = "'some $var\"'",
+		    .expected = (t_token_test[]){
+			    { WORD, (t_seg_test[]){{"some $var\"", false}}, 1 },
+		    },
+		    .expected_len = 1
+	    },
 	    {
 		    .input = "hello|><",
 		    .expected = (t_token_test[]){
@@ -357,7 +504,6 @@ int main() {
 		    },
 		    .expected_len = 4
 	    },
-	    // 27
 	    {
 		    .input = "hello |><",
 		    .expected = (t_token_test[]){
@@ -368,7 +514,6 @@ int main() {
 		    },
 		    .expected_len = 4
 	    },
-	    // 28
 	    {
 		    .input = "hello |><<",
 		    .expected = (t_token_test[]){
@@ -379,7 +524,6 @@ int main() {
 		    },
 		    .expected_len = 4
 	    },
-	    // 29
 	    {
 		    .input = "hello |>><",
 		    .expected = (t_token_test[]){
@@ -390,7 +534,6 @@ int main() {
 		    },
 		    .expected_len = 4
 	    },
-	    // 30
 	    {
 		    .input = "hello |>>< some",
 		    .expected = (t_token_test[]){
@@ -402,7 +545,6 @@ int main() {
 		    },
 		    .expected_len = 5
 	    },
-	    // 31
 	    {
 		    .input = "|>><some",
 		    .expected = (t_token_test[]){
@@ -413,7 +555,6 @@ int main() {
 		    },
 		    .expected_len = 4
 	    },
-	    // 32
 	    {
 		    .input = "|>>< some",
 		    .expected = (t_token_test[]){
@@ -424,7 +565,6 @@ int main() {
 		    },
 		    .expected_len = 4
 	    },
-	    // 33
 	    {
 		    .input = "\"hello|><\"",
 		    .expected = (t_token_test[]){
@@ -432,7 +572,6 @@ int main() {
 		    },
 		    .expected_len = 1
 	    },
-	    // 34
 	    {
 		    .input = "'hello|><'",
 		    .expected = (t_token_test[]){
@@ -440,22 +579,7 @@ int main() {
 		    },
 		    .expected_len = 1
 	    },
-	    // 35
-	    {
-		    .input = "\"some$word \"",
-		    .expected = (t_token_test[]){
-			    { WORD, (t_seg_test[]){{"some$word ", true}}, 1 },
-		    },
-		    .expected_len = 1
-	    },
-	    // 36
-	    {
-		    .input = "'some$word '",
-		    .expected = (t_token_test[]){
-			    { WORD, (t_seg_test[]){{"some$word ", false}}, 1 },
-		    },
-		    .expected_len = 1
-	    },
+
 	};
 	
 

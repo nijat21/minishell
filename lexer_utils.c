@@ -1,28 +1,28 @@
 #include "minishell.h"
 
-void free_seg_list(t_seg *seg)
+void free_seg_list(t_seg **seg)
 {
 	t_seg *temp;
 
-	while(seg)
+	while(*seg)
 	{
-		temp = seg->next;
-		free(seg->val);
-		free(seg);
-		seg = temp;
+		temp = (*seg)->next;
+		free((*seg)->val);
+		free((*seg));
+		(*seg) = temp;
 	}
 }
 
-void free_token_list(t_token *tk)
+void free_token_list(t_token **tk)
 {
 	t_token *temp;
 
-	while(tk)
+	while(*tk)
 	{
-		temp = tk->next;
-		free_seg_list(tk->seg_list);
-		free(tk);
-		tk = temp;
+		temp = ( *tk )->next;
+		free_seg_list(&(*tk)->seg_list);
+		free(( *tk ));
+		( *tk ) = temp;
 	}
 }
 
@@ -39,15 +39,19 @@ void *safe_malloc(size_t bytes)
 	return (mem);
 }
 
-int	is_space(char c)
+bool	is_space(char c)
 {
 	if (c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == '\v'
 		|| c == '\f')
-		return (1);
+		return (true);
 	else
-		return (0);
+		return (false);
 }
 
+bool	is_operator(const char c)
+{
+	return (c == '|' || c == '<' || c == '>');
+}
 
 void print_token_list(t_token *tk)
 {
@@ -58,7 +62,7 @@ void print_token_list(t_token *tk)
 	temp = tk;
 	while(temp)
 	{
-		printf("%s", arr[temp->type]);
+		printf("%s\n", arr[temp->type]);
 		temp_seg = temp->seg_list;
 		while(temp_seg)
 		{
