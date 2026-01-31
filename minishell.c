@@ -21,33 +21,26 @@
 	no -> fork + execve	
 
 */
-#define B_SIZE 1024
 
 int main(void)
 {
-	/*    char buf[B_SIZE];
-	ssize_t by_read;
-
-	int fd = open("no_exist.txt", O_RDONLY);
+	char *prompt;
+	t_token *tk;
 
 	while (1)
 	{
 		write(1, "minishell> ", 11);
-		by_read = read(0, buf, sizeof(buf));
-		printf("by_read -> %ld buf -> %s\n", by_read, buf);
-		if (by_read == 0)
-			break;
-		if (by_read < 0)
+		prompt = readline("");
+		if(!prompt)
 		{
 			perror("Read");
-			return by_read;
+			return -1;
 		}
-		// here: normally parse + execute
-		// for now, do nothing
-
-		ft_memcpy(buf,&buf[by_read], BUFFER_SIZE - by_read);
-	}*/
-	tokenise();
+		tk = lexer(prompt);
+		if(!tk)
+			printf("Include proper input\n");
+		print_token_list(tk);
+	}
 
    	return 0;
 }

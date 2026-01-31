@@ -38,6 +38,21 @@ typedef struct s_token {
 	struct s_token *next;
 } t_token;
 
+typedef struct s_lex_ctx {
+	t_token *tk;
+	t_seg *seg;
+	const char *start;
+	t_ttype tt;
+	t_quote qc;
+	size_t len;
+} t_lex_ctx;
+
+/* typedef enum e_act { */
+/*     LEX_OK, */
+/*     LEX_CONTINUE, */
+/*     LEX_BREAK, */
+/*     LEX_ERROR */
+/* } t_act; */
 
 void *tokenise(void);
 // Utils
@@ -53,6 +68,10 @@ size_t varname_len(const char *str);
 // token operations
 t_seg **add_segment(t_seg **seg, const char *val, size_t len, bool expand);
 t_token **add_token(t_token **tk, t_ttype type, t_seg *seg_list);
+void if_len_add_seg(t_lex_ctx *ctx, bool exp);
+void if_len_add_token_seg(t_lex_ctx *ctx, t_ttype tt,  bool exp);
+void handle_last_buf(t_lex_ctx *ctx);
+
 
 
 

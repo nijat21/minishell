@@ -12,5 +12,6 @@
 #include <dirent.h>
 #include <stdbool.h>
 
+t_token *lexer(const char *prompt);
 
 #endif

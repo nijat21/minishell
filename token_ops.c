@@ -72,3 +72,4 @@ t_token **add_token(t_token **tk, t_ttype type, t_seg *seg_list)
 	}
 	return tk;
 } 
+
