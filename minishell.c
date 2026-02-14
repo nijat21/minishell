@@ -11,36 +11,37 @@
 /*
 	INPUT FOR EXECUTION:
 	char *argv[] = {"echo", "-n", "something", NULL}
-	
+
 	DISTINCTIONS:
-	
+
 	builtin?
 	yes
 		pipeline?   -> fork
 		no pipeline -> parent
-	no -> fork + execve	
+	no -> fork + execve
 
 */
 
-int main(void)
+int	main(void)
 {
-	char *prompt;
-	t_token *tk;
+	char	*prompt;
+	t_token	*tk;
 
 	while (1)
 	{
-		write(1, "minishell> ", 11);
-		prompt = readline("");
-		if(!prompt)
+		prompt = readline("minishell> ");
+		if (!prompt)
 		{
-			perror("Read");
-			return -1;
+			printf("exit\n");
+			break ;
 		}
+		/* printf("prompt -> %s\n", prompt); */
 		tk = lexer(prompt);
-		if(!tk)
+		if (!tk)
 			printf("Include proper input\n");
-		print_token_list(tk);
+		else
+			print_token_list(tk);
+		free(prompt);
 	}
-
-   	return 0;
+	return (0);
 }

@@ -7,6 +7,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdbool.h>
+#include <errno.h>
 
 #include "Libft/libft.h"
 
@@ -23,7 +24,7 @@ typedef enum e_ttype {
 	REDIR_OUT,
 	HEREDOC,
 	APPEND,
-	UNCLOSED_QUOTE
+	UNCLOSED_QUOTE,
 } t_ttype;
 
 typedef struct s_seg {
@@ -47,19 +48,11 @@ typedef struct s_lex_ctx {
 	size_t len;
 } t_lex_ctx;
 
-/* typedef enum e_act { */
-/*     LEX_OK, */
-/*     LEX_CONTINUE, */
-/*     LEX_BREAK, */
-/*     LEX_ERROR */
-/* } t_act; */
-
 void *tokenise(void);
 // Utils
 void free_seg_list(t_seg **seg);
 void free_token_list(t_token **tk);
 void *safe_malloc(size_t bytes);
-void print_token_list(t_token *tk);
 bool is_space(char c);
 bool is_operator(const char c);
 void quote_context(const char c, t_quote *qc);
@@ -72,6 +65,11 @@ void if_len_add_seg(t_lex_ctx *ctx, bool exp);
 void if_len_add_token_seg(t_lex_ctx *ctx, t_ttype tt,  bool exp);
 void handle_last_buf(t_lex_ctx *ctx);
 
+
+
+// temp functions
+void print_token_list(t_token *tk);
+const char *qc_to_str(t_quote qc);
 
 
 
