@@ -75,23 +75,14 @@ static bool handle_quotes(t_lex_ctx *ctx, const char *str, int *i)
 
 static void handle_operator(t_lex_ctx *ctx, const char *str, int *i)
 {
-	// const char *arr[] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "HEREDOC", "APPEND", "UNCLOSED_QUOTE"};
-	if (ctx->len == 0 && ctx->seg)
-	{
-		add_token(&(ctx->tk), WORD, ctx->seg);
-		ctx->seg = NULL;
-	}
-	if_len_add_token_seg(ctx, WORD, false);
 	ctx->start = &str[*i];
 	ctx->len++;
-	// printf("token type -> %s\n", arr[ctx->tt]);
 	if (ctx->tt == HEREDOC || ctx->tt == APPEND)
 	{
 		ctx->len++;
 		(*i)++;
 	}
-	else
-		if_len_add_token_seg(ctx, ctx->tt, false);
+	if_len_add_token_seg(ctx, ctx->tt, false);
 }
 
 static bool handle_non_quote(t_lex_ctx *ctx, const char *str, int *i)
@@ -99,21 +90,23 @@ static bool handle_non_quote(t_lex_ctx *ctx, const char *str, int *i)
 	if (ctx->len == 0)
 		ctx->start = &str[*i];
 	if (str[*i] == '$')
+	{
 		if (handle_var(ctx, &str[*i], i))
 			return (true);
-	if (is_space(str[*i]))
+		else
+			ctx->len++;
+	}
+	else if (is_space(str[*i]))
 	{
-		if (ctx->len == 0 && ctx->seg)
-		{
-			add_token(&(ctx->tk), WORD, ctx->seg);
-			ctx->seg = NULL;
-		}
-		if_len_add_token_seg(ctx, WORD, false);
+		add_leftovers(ctx);
 		if (ctx->len <= 0)
 			return (true);
 	}
 	else if (is_operator(str[*i]))
+	{
+		add_leftovers(ctx);
 		handle_operator(ctx, str, i);
+	}
 	else
 		ctx->len++;
 	return (false);
