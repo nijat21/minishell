@@ -7,7 +7,7 @@ LIBS = -lreadline
 SHELL_DIR=../../
 LIBFT_DIR=$(SHELL_DIR)/Libft
 
-LEXER_OBJS = $(SHELL_DIR)/lexer.o $(SHELL_DIR)/lexer_utils.o $(SHELL_DIR)/lexer_context.o $(SHELL_DIR)/token_ops.o $(SHELL_DIR)/lexer_ops.o   $(LIBFT_DIR)/libft.a
+LEXER_OBJS = $(SHELL_DIR)/lexer.o $(SHELL_DIR)/lexer_utils.o $(SHELL_DIR)/lexer_context.o $(SHELL_DIR)/token_ops.o $(SHELL_DIR)/lexer_list_ops.o  $(SHELL_DIR)/heredoc.o $(LIBFT_DIR)/libft.a
 
 LEXER_TEST_SRC = lexer.test.c
 LEXER_TEST_BIN = lexer_test
@@ -25,6 +25,8 @@ $(LEXER_TEST_BIN): $(LEXER_TEST_SRC) $(LEXER_OBJS)
 
 fclean: clean
 	rm -f $(LEXER_TEST_BIN)
+	make -C $(SHELL_DIR) fclean
+	
 
 clean:
 	rm -f $(LEXER_OBJS)

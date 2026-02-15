@@ -17,7 +17,7 @@ static bool handle_var(t_lex_ctx *ctx, const char *start, int *i)
 	if (var_len)
 	{
 		if_len_add_seg(ctx, false);
-		add_segment(&(ctx->seg), start, var_len, true);
+		add_segment(ctx, start, var_len, true);
 		*i += var_len - 1;
 		return (true);
 	}
@@ -30,6 +30,7 @@ static bool handle_quotes(t_lex_ctx *ctx, const char *str, int *i)
 
 	s_quote = str[*i];
 	if_len_add_seg(ctx, false);
+	ctx->has_quote = true;
 	while (str[++(*i)] && ctx->qc != Q_NONE)
 	{
 		quote_context(str[(*i)], &(ctx->qc));
@@ -37,7 +38,7 @@ static bool handle_quotes(t_lex_ctx *ctx, const char *str, int *i)
 		{
 			if_len_add_seg(ctx, false);
 			if (str[*i - 1] && str[*i - 1] == s_quote)
-				add_segment(&(ctx->seg), "", ctx->len, false);
+				add_segment(ctx, "", ctx->len, false);
 			break;
 		}
 		if (ctx->qc == Q_DOUBLE && str[*i] == '$')
@@ -54,24 +55,6 @@ static bool handle_quotes(t_lex_ctx *ctx, const char *str, int *i)
 	}
 	return (false);
 }
-
-/*
-	1. Heredoc handler
-		- delimeter cannot start with any other meaningful char (|, <, >)
-		- echo << > --> zsh: parse error near `>'
-		- echo <<   -->zsh: parse error near `\n'
-
-		cat << del>
-		heredoc> some
-		heredoc> del
-		zsh: parse error near `\n'
-
-		cat << del>
-		heredoc> some
-		heredoc> del>
-		heredoc> del
-		zsh: parse error near `\n'
-*/
 
 static void handle_operator(t_lex_ctx *ctx, const char *str, int *i)
 {
@@ -121,6 +104,7 @@ t_token *lexer(const char *str)
 	ctx.qc = Q_NONE;
 	ctx.seg = NULL;
 	ctx.len = 0;
+	ctx.has_quote = false;
 	i = -1;
 	while (str[++i])
 	{
@@ -133,6 +117,7 @@ t_token *lexer(const char *str)
 		}
 		else
 		{
+			ctx.has_quote = false;
 			if (handle_non_quote(&ctx, str, &i))
 				continue;
 		}

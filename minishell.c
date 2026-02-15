@@ -19,13 +19,12 @@
 		pipeline?   -> fork
 		no pipeline -> parent
 	no -> fork + execve
-
 */
 
-int	main(void)
+int main(void)
 {
-	char	*prompt;
-	t_token	*tk;
+	char *prompt;
+	t_token *tk;
 
 	while (1)
 	{
@@ -33,8 +32,9 @@ int	main(void)
 		if (!prompt)
 		{
 			printf("exit\n");
-			break ;
+			break;
 		}
+		add_history(prompt);
 		/* printf("prompt -> %s\n", prompt); */
 		tk = lexer(prompt);
 		if (!tk)

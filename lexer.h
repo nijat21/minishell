@@ -33,6 +33,7 @@ typedef struct s_seg
 {
 	char *val;
 	bool expand;
+	bool has_quote;
 	struct s_seg *next;
 } t_seg;
 
@@ -51,6 +52,7 @@ typedef struct s_lex_ctx
 	t_ttype tt;
 	t_quote qc;
 	size_t len;
+	bool has_quote;
 } t_lex_ctx;
 
 // Utils
@@ -64,7 +66,7 @@ void choose_ttype(const char *str, t_ttype *tt);
 size_t varname_len(const char *str);
 
 // token operations
-t_seg **add_segment(t_seg **seg, const char *val, size_t len, bool expand);
+t_seg **add_segment(t_lex_ctx *ctx, const char *val, size_t len, bool expand);
 t_token **add_token(t_token **tk, t_ttype type, t_seg *seg_list);
 void if_len_add_seg(t_lex_ctx *ctx, bool exp);
 void if_len_add_token_seg(t_lex_ctx *ctx, t_ttype tt, bool exp);
