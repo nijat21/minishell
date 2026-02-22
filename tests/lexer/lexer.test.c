@@ -152,21 +152,21 @@ void run_tests(t_test_case *tests, size_t n)
 		{
 			fail++;
 			printf(RED "Test %zu: FAIL\n" RESET, i + 1);
-			printf(MAGENTA "  Input:    %s\n", tests[i].input);
-			printf(BLUE "  Expected: \n");
-			for (size_t j = 0; j < tests[i].expected_len; j++)
-			{
-				printf("(%s)", arr[tests[i].expected[j].type]);
-				for (size_t k = 0; k < tests[i].expected[j].seg_arr_len; k++)
-					printf(" %s (EXP: %s) (HAS_QUOTE: %s)", tests[i].expected[j].seg_arr[k].val,
-						   tests[i].expected[j].seg_arr[k].expand ? "yes" : "no",
-						   tests[i].expected[j].seg_arr[k].has_quote ? "yes" : "no");
-				printf("\n");
-			}
-			printf(YELLOW "  Got:     \n");
-			print_tokens(result);
-			printf("\n" RESET);
 		}
+		printf(MAGENTA "  Input:    %s\n", tests[i].input);
+		printf(BLUE "  Expected: \n");
+		for (size_t j = 0; j < tests[i].expected_len; j++)
+		{
+			printf("(%s)", arr[tests[i].expected[j].type]);
+			for (size_t k = 0; k < tests[i].expected[j].seg_arr_len; k++)
+				printf(" %s (EXP: %s) (HAS_QUOTE: %s)", tests[i].expected[j].seg_arr[k].val,
+					   tests[i].expected[j].seg_arr[k].expand ? "yes" : "no",
+					   tests[i].expected[j].seg_arr[k].has_quote ? "yes" : "no");
+			printf("\n");
+		}
+		printf(YELLOW "  Got:     \n");
+		print_tokens(result);
+		printf("\n" RESET);
 	}
 	printf(MAGENTA "Summary: %zu passed, %zu failed\n" RESET, pass, fail);
 }

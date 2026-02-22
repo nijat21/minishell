@@ -9,6 +9,20 @@
 // Search & Launch right executable based on path
 
 /*
+	INPUT
+	↓
+	LEXER
+	↓
+	PARSER  ← syntax errors handled here
+	↓
+	HEREDOC PROCESSING  ← heredoc prompting happens here (NOT executor)
+	↓
+	EXPANSION
+	↓
+	EXECUTOR  ← command not found, execve errors
+*/
+
+/*
 	INPUT FOR EXECUTION:
 	char *argv[] = {"echo", "-n", "something", NULL}
 
@@ -38,9 +52,10 @@ int main(void)
 		/* printf("prompt -> %s\n", prompt); */
 		tk = lexer(prompt);
 		if (!tk)
-			printf("Include proper input\n");
-		else
-			print_token_list(tk);
+			continue;
+
+		print_token_list(tk);
+		parse_tokens(tk);
 		free(prompt);
 	}
 	return (0);

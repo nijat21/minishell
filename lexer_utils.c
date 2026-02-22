@@ -74,8 +74,9 @@ void	print_token_list(t_token *tk)
 		temp_seg = temp->seg_list;
 		while (temp_seg)
 		{
-			printf("(%s) exp(%s)\n", temp_seg->val,
-				temp_seg->expand ? "yes" : "no");
+			printf("(%s) exp(%s) has_quote(%s)\n", temp_seg->val,
+				temp_seg->expand ? "yes" : "no", 
+				temp_seg->has_quote ? "yes" : "no");
 			temp_seg = temp_seg->next;
 		}
 		temp = temp->next;

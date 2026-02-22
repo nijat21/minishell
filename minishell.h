@@ -3,6 +3,7 @@
 
 #include "Libft/libft.h"
 #include "lexer.h"
+#include "parser.h"
 
 #include <sys/wait.h>
 #include <sys/types.h>
