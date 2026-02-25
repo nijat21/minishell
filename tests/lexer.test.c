@@ -1,19 +1,4 @@
-#include "../../lexer.h"
-#include <string.h>
-#include "../../Libft/libft.h"
-
-#define RESET "\033[0m"
-#define RED "\033[1;31m"
-#define GREEN "\033[1;32m"
-#define YELLOW "\033[33m"
-#define BLUE "\033[34m"
-#define MAGENTA "\033[35m"
-#define CYAN "\033[36m"
-#define WHITE "\033[37m"
-#define BOLD "\033[1m"
-#define UNDERLINE "\033[4m"
-
-t_token *lexer(const char *prompt);
+#include "tests.h"
 
 typedef struct s_seg_test
 {
@@ -117,7 +102,7 @@ void print_tokens(t_token *tokens)
 }
 
 // Test runner
-void run_tests(t_test_case *tests, size_t n)
+void test_lexer_cases(t_test_case *tests, size_t n)
 {
 	const char *arr[] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "HEREDOC", "APPEND", "UNCLOSED_QUOTE"};
 	size_t fail = 0;
@@ -136,44 +121,46 @@ void run_tests(t_test_case *tests, size_t n)
 			if (r_ok)
 			{
 				r_pc++;
-				printf(GREEN "#" RESET);
+				// printf(GREEN "#" RESET);
 			}
-			else
-				printf(RED "X" RESET);
+			// else
+			// printf(RED "X" RESET);
 		}
-		printf("\n");
+		// printf("\n");
 		ok = (r_pc == 10);
 		if (ok)
 		{
-			printf(GREEN "Test %zu: PASS\n" RESET, i + 1);
+			// printf(GREEN "Test %zu: PASS\n" RESET, i + 1);
+			printf(GREEN "#" RESET);
 			pass++;
+			continue;
 		}
 		else
 		{
 			fail++;
 			printf(RED "Test %zu: FAIL\n" RESET, i + 1);
+			printf(MAGENTA "  Input:    %s\n", tests[i].input);
+			printf(BLUE "  Expected: \n");
+			for (size_t j = 0; j < tests[i].expected_len; j++)
+			{
+				printf("(%s)", arr[tests[i].expected[j].type]);
+				for (size_t k = 0; k < tests[i].expected[j].seg_arr_len; k++)
+					printf(" %s (EXP: %s) (HAS_QUOTE: %s)", tests[i].expected[j].seg_arr[k].val,
+						   tests[i].expected[j].seg_arr[k].expand ? "yes" : "no",
+						   tests[i].expected[j].seg_arr[k].has_quote ? "yes" : "no");
+				printf("\n");
+			}
+			printf(YELLOW "  Got:     \n");
+			print_tokens(result);
+			printf("\n" RESET);
 		}
-		printf(MAGENTA "  Input:    %s\n", tests[i].input);
-		printf(BLUE "  Expected: \n");
-		for (size_t j = 0; j < tests[i].expected_len; j++)
-		{
-			printf("(%s)", arr[tests[i].expected[j].type]);
-			for (size_t k = 0; k < tests[i].expected[j].seg_arr_len; k++)
-				printf(" %s (EXP: %s) (HAS_QUOTE: %s)", tests[i].expected[j].seg_arr[k].val,
-					   tests[i].expected[j].seg_arr[k].expand ? "yes" : "no",
-					   tests[i].expected[j].seg_arr[k].has_quote ? "yes" : "no");
-			printf("\n");
-		}
-		printf(YELLOW "  Got:     \n");
-		print_tokens(result);
-		printf("\n" RESET);
 	}
+	printf("\n" RESET);
 	printf(MAGENTA "Summary: %zu passed, %zu failed\n" RESET, pass, fail);
 }
 
-int main()
+void test_lexer()
 {
-
 	t_test_case tests[] = {
 		{.input = "'", .expected = (t_token_test[]){{UNCLOSED_QUOTE, (t_seg_test[]){{"", false, true}}, 1}}, .expected_len = 1},
 		{.input = "/", .expected = (t_token_test[]){{WORD, (t_seg_test[]){{"/", false, false}}, 1}}, .expected_len = 1},
@@ -532,6 +519,5 @@ int main()
 	};
 
 	int n = sizeof(tests) / sizeof(t_test_case);
-	run_tests(tests, n);
-	return 0;
+	test_lexer_cases(tests, n);
 }

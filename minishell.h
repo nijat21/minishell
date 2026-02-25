@@ -15,4 +15,9 @@
 
 t_token *lexer(const char *prompt);
 
+typedef struct s_mshell
+{
+    int exit_code;
+} t_mshell;
+
 #endif

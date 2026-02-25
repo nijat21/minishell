@@ -39,6 +39,7 @@ int main(void)
 {
 	char *prompt;
 	t_token *tk;
+	int exit_status;
 
 	while (1)
 	{
@@ -49,14 +50,14 @@ int main(void)
 			break;
 		}
 		add_history(prompt);
-		/* printf("prompt -> %s\n", prompt); */
 		tk = lexer(prompt);
+		free(prompt);
 		if (!tk)
 			continue;
-
-		print_token_list(tk);
-		parse_tokens(tk);
-		free(prompt);
+		// print_token_list(tk);
+		parse_tokens(tk, &exit_status);
+		if (exit_status)
+			free_token_list(&tk);
 	}
 	return (0);
 }

@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-void	free_seg_list(t_seg **seg)
+void free_seg_list(t_seg **seg)
 {
-	t_seg	*temp;
+	t_seg *temp;
 
 	while (*seg)
 	{
@@ -11,11 +11,12 @@ void	free_seg_list(t_seg **seg)
 		free((*seg));
 		(*seg) = temp;
 	}
+	*seg = NULL;
 }
 
-void	free_token_list(t_token **tk)
+void free_token_list(t_token **tk)
 {
-	t_token	*temp;
+	t_token *temp;
 
 	while (*tk)
 	{
@@ -24,11 +25,12 @@ void	free_token_list(t_token **tk)
 		free((*tk));
 		(*tk) = temp;
 	}
+	*tk = NULL;
 }
 
-void	*safe_malloc(size_t bytes)
+void *safe_malloc(size_t bytes)
 {
-	void	*mem;
+	void *mem;
 
 	mem = malloc(bytes);
 	if (!mem)
@@ -39,33 +41,32 @@ void	*safe_malloc(size_t bytes)
 	return (mem);
 }
 
-bool	is_space(char c)
+bool is_space(char c)
 {
-	if (c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == '\v'
-		|| c == '\f')
+	if (c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == '\v' || c == '\f')
 		return (true);
 	else
 		return (false);
 }
 
-bool	is_operator(const char c)
+bool is_operator(const char c)
 {
 	return (c == '|' || c == '<' || c == '>');
 }
 
-const char	*qc_to_str(t_quote qc)
+const char *qc_to_str(t_quote qc)
 {
-	const char	*arr[] = {"Q_NONE", "Q_SINGLE", "Q_DOUBLE"};
+	const char *arr[] = {"Q_NONE", "Q_SINGLE", "Q_DOUBLE"};
 
 	return (arr[qc]);
 }
 
-void	print_token_list(t_token *tk)
+void print_token_list(t_token *tk)
 {
-	t_token		*temp;
-	t_seg		*temp_seg;
-	const char	*arr[] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "HEREDOC",
-			"APPEND", "UNCLOSED_QUOTE"};
+	t_token *temp;
+	t_seg *temp_seg;
+	const char *arr[] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "HEREDOC",
+						 "APPEND", "UNCLOSED_QUOTE"};
 
 	temp = tk;
 	while (temp)
@@ -75,8 +76,8 @@ void	print_token_list(t_token *tk)
 		while (temp_seg)
 		{
 			printf("(%s) exp(%s) has_quote(%s)\n", temp_seg->val,
-				temp_seg->expand ? "yes" : "no", 
-				temp_seg->has_quote ? "yes" : "no");
+				   temp_seg->expand ? "yes" : "no",
+				   temp_seg->has_quote ? "yes" : "no");
 			temp_seg = temp_seg->next;
 		}
 		temp = temp->next;
