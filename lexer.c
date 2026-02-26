@@ -9,7 +9,7 @@
 	$?, $var segs exp=true unless '$var'
 */
 
-static bool handle_var(t_lex_ctx *ctx, const char *start, int *i)
+bool handle_var(t_lex_ctx *ctx, const char *start, int *i)
 {
 	size_t var_len;
 
@@ -118,8 +118,7 @@ t_token *lexer(const char *str)
 		else
 		{
 			ctx.has_quote = false;
-			if (handle_non_quote(&ctx, str, &i))
-				continue;
+			handle_non_quote(&ctx, str, &i);
 		}
 	}
 	handle_last_buf(&ctx);

@@ -1,6 +1,6 @@
 #include "lexer.h"
 
-static t_seg *seg_init(t_seg **seg, size_t len)
+t_seg *seg_init(t_seg **seg, size_t len)
 {
 	t_seg *new;
 

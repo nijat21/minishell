@@ -9,15 +9,21 @@
 // Search & Launch right executable based on path
 
 /*
+	MINISHELL LOOP   ← SIG HANDLING
+	↓
 	INPUT
 	↓
 	LEXER
 	↓
-	PARSER  ← syntax errors handled here
-	↓
-	HEREDOC PROCESSING  ← heredoc prompting happens here (NOT executor)
-	↓
-	EXPANSION
+	PARSER
+		↓
+		SYNTAX_CHECK
+		↓
+		HEREDOC PROCESSING  ← PROMPTING & SIG HANDLING
+		↓
+		VARIABLE EXPANSION
+		↓
+		CONSTRUCT COMMAND PIPELINE
 	↓
 	EXECUTOR  ← command not found, execve errors
 */
@@ -44,11 +50,6 @@ int main(void)
 	while (1)
 	{
 		prompt = readline("minishell> ");
-		if (!prompt)
-		{
-			printf("exit\n");
-			break;
-		}
 		add_history(prompt);
 		tk = lexer(prompt);
 		free(prompt);

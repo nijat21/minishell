@@ -71,6 +71,7 @@ static t_tctx ttype_to_tctx(t_ttype t_tt)
 {
     t_tctx res;
 
+    res = T_NONE;
     if (t_tt == REDIR_IN || t_tt == REDIR_OUT || t_tt == HEREDOC || t_tt == APPEND)
         res = T_REDIRS;
     else if (t_tt == WORD)

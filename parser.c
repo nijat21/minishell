@@ -17,13 +17,20 @@ void *parse_tokens(t_token *tk, int *exit_status)
 {
 	int res;
 
+	// SYNTAX CHECK
 	res = syntax_check(tk);
 	if (res)
 	{
 		*exit_status = res;
 		return NULL;
 	}
-	// heredoc
+	// HEREDOC
+	if (!heredoc(tk, exit_status))
+	{
+		// *exit_status = res;
+		return NULL;
+	}
+
 	// expander
 	// convert to command pipelines
 	return NULL;

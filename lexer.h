@@ -66,6 +66,8 @@ void choose_ttype(const char *str, t_ttype *tt);
 size_t varname_len(const char *str);
 
 // token operations
+bool handle_var(t_lex_ctx *ctx, const char *start, int *i);
+t_seg *seg_init(t_seg **seg, size_t len);
 t_seg **add_segment(t_lex_ctx *ctx, const char *val, size_t len, bool expand);
 t_token **add_token(t_token **tk, t_ttype type, t_seg *seg_list);
 void if_len_add_seg(t_lex_ctx *ctx, bool exp);

@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "parser.h"
 
 /*
     Heredoc handler
@@ -7,9 +7,9 @@
         - echo <<   -->zsh: parse error near `\n'
 
         cat << del>
-        heredoc> some
-        heredoc> del>
-        heredoc> del
+        > some
+        > del>
+        > del
         zsh: parse error near `\n'
 
         cat << -del -> -del is delimeter
@@ -19,77 +19,121 @@
         cat << del -> exp = yes, ''/"" in prompts are literals
 
         cat << - del  -> del is the firt argument to heredoc in this case and - is delimiter
-        heredoc> some
-        heredoc> del
-        heredoc> -
+        > some
+        > del
+        > -
 
         cat << $hello
-        heredoc> some
-        heredoc> hello
-        heredoc> $hello
+        > some
+        > hello
+        > $hello
 
         cat << 'hello'darling
-        heredoc> some
-        heredoc> hello
-        heredoc> hellodarling
+        > some
+        > hello
+        > hellodarling
+
+        cat << $user'hello'"  "
+        > some
+        > $userhello
+        > $userhello
+        > $userhello
+        some
+        $userhello
+        $userhello
 
         echo << del some long ass story del
-        heredoc> del
+        > del
         some long ass story del
 
         cat << del | grep hello
-        pipe heredoc> hello world
-        pipe heredoc> world
-        pipe heredoc> hello again
-        pipe heredoc> del
+        > hello world
+        > world
+        > hello again
+        > del
         hello world
         hello again
 
         cat << del | grep $hello
-        pipe heredoc> some
-        pipe heredoc> world
-        pipe heredoc> other
-        pipe heredoc> del
+        > some
+        > world
+        > other
+        > del
         world
 
         cat << "some'del'"
         cat << 'some"del"'
+
+        SOME OTHER EDGE CASES
+
+        cat << del -ls
+        > some
+        > del
+        some
+
+        cat << del -l
+        > some
+        > del
+        some
+
+        cat << del some
+        > other
+        > del
+        cat: some: No such file or directory
+
+        hello=world
+        cat << del $hello
+        > some
+        > del
+        cat: world: No such file or directory
+
+        echo world > input.txt
+        cat << del input.txt
+        > some
+        > del
+        world
+
+        cat input.txt
+        world
 */
 
-/*
-    1. Add heredoc token.
-        - See if there's '-' in '<<-'. If yes, cut_leading_tabs = true;
-    2. Create a delimeter token removing quotes
-        - if del in quotes, everything inside heredoc is exp = false
-        - else exp = true if there's a valid varname
-    3.
-*/
+void push_token(t_token *tk, t_token *new_tk)
+{
+    t_token *tk_next;
+    t_token *iter;
 
-/*
-    cat << del $hello other del | grep "hello"
-    heredoc> some
-    heredoc> more
-    heredoc> del
-*/
+    tk_next = (tk)->next;
+    (tk)->next = new_tk;
+    iter = new_tk;
+    while (iter->next)
+        iter = iter->next;
+    iter->next = tk_next;
+}
 
-// void handle_heredoc(t_lex_ctx *ctx, const char *str, int *i)
-// {
-//     while (ft_strncmp(prompt, del, ft_strlen(del)) != 0)
-//     while (1)
-//     {
-//         prompt = readline("heredoc> ");
-//         if (!prompt)
-//         {
-//             printf("exit\n");
-//             break;
-//         }
-//         printf("prompt -> %s\n", prompt);
-//         (void)ctx;
-//         // ctx->tk = lexer(prompt);
-//         // if (!ctx->tk)
-//         // 	printf("Include proper input\n");
-//         // else
-//         // 	print_token_list(ctx->tk);
-//         free(prompt);
-//     }
-// }
+//  SIGNALS
+t_token *heredoc(t_token *tk, int *exit_status)
+{
+    t_token *iter;
+    t_token *res_tk;
+    (void)exit_status;
+
+    iter = tk;
+    while (iter->next)
+    {
+        if (iter->type == HEREDOC)
+        {
+            res_tk = handle_heredoc(iter->next);
+            if (!res_tk)
+            {
+                ft_putstr_fd("Heredoc error\n", 2);
+                free_token_list(&tk);
+                return NULL;
+            }
+            // ADD RES_TK TO THE MIDDLE OF << AND NEXT TOKEN AFTER DELIMITER
+            push_token(iter->next, res_tk);
+        }
+        iter = iter->next;
+    }
+    print_token_list(tk);
+    return tk;
+}

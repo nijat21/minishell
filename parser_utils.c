@@ -1,5 +1,7 @@
 #include "parser.h"
 
+
+
 void print_unclosed_quote()
 {
     ft_putstr_fd("minishell: syntax error: ", STDERR_FILENO);
