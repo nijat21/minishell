@@ -67,7 +67,7 @@
 
   */
 
-static t_tctx ttype_to_tctx(t_ttype t_tt)
+t_tctx ttype_to_tctx(t_ttype t_tt)
 {
     t_tctx res;
 

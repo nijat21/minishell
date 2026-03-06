@@ -11,7 +11,7 @@
 #include <fcntl.h>
 #include <dirent.h>
 #include <stdbool.h>
-#include <signal.h>
+
 
 t_token *lexer(const char *prompt);
 

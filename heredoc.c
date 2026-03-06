@@ -97,24 +97,12 @@
         world
 */
 
-void push_token(t_token *tk, t_token *new_tk)
-{
-    t_token *tk_next;
-    t_token *iter;
-
-    tk_next = (tk)->next;
-    (tk)->next = new_tk;
-    iter = new_tk;
-    while (iter->next)
-        iter = iter->next;
-    iter->next = tk_next;
-}
-
 //  SIGNALS
 t_token *heredoc(t_token *tk, int *exit_status)
 {
     t_token *iter;
     t_token *res_tk;
+
     (void)exit_status;
 
     iter = tk;
@@ -125,11 +113,9 @@ t_token *heredoc(t_token *tk, int *exit_status)
             res_tk = handle_heredoc(iter->next);
             if (!res_tk)
             {
-                ft_putstr_fd("Heredoc error\n", 2);
                 free_token_list(&tk);
                 return NULL;
             }
-            // ADD RES_TK TO THE MIDDLE OF << AND NEXT TOKEN AFTER DELIMITER
             push_token(iter->next, res_tk);
         }
         iter = iter->next;
