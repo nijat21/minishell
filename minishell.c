@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/11 12:00:16 by nismayil          #+#    #+#             */
+/*   Updated: 2026/03/12 09:38:00 by nismayil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "includes/minishell.h"
 
 /*
 	MINISHELL LOOP   ← SIG HANDLING
@@ -20,47 +32,23 @@
 	EXECUTOR  ← command not found, execve errors
 */
 
-// There's some trash value here for some reason even after assignment
 int g_signal = 0;
-
-void sigint_main(int sig)
-{
-	g_signal = sig;
-	ioctl(STDIN_FILENO, TIOCSTI, "\n"); // kernel 6.2+ dropped TIOCSTI + Async-signal-safe concern
-										// ft_putchar_fd('\n', STDOUT_FILENO);
-										// rl_on_new_line();
-										// rl_redisplay();
-}
-
-void setup_main_signals(void)
-{
-	struct sigaction sa;
-
-	rl_catch_signals = 0;
-	memset(&sa, 0, sizeof(sa));
-	sa.sa_handler = sigint_main;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
-	sa.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &sa, NULL);
-}
 
 int main(void)
 {
 	char *line;
-	t_token *tk;
 	int exit_status;
+	t_token *tk;
+	t_comand *cmd;
 
 	exit_status = 0;
-	setup_main_signals();
+	setup_signals();
 	while (1)
 	{
 		line = readline("minishell> ");
 		if (g_signal == SIGINT)
 		{
-			printf("Ctrl-c\n");
-			exit_status = 130;
+			exit_status = EXIT_SIGINT;
 			g_signal = 0;
 			free(line);
 			continue;
@@ -68,7 +56,7 @@ int main(void)
 		if (!line)
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
-			exit(exit_status);
+			break;
 		}
 		if (!(*line))
 		{
@@ -79,16 +67,20 @@ int main(void)
 		tk = lexer(line);
 		free(line);
 		if (!tk)
+		{
+			exit_status = EXIT_FAILURE;
+			free_token_list(&tk);
 			break;
-		parse_tokens(tk, &exit_status);
-		// if (exit_status)
-		// 	free_token_list(&tk);
+		}
+		// print_token_list(tk);
+		cmd = parse_tokens(tk, &exit_status);
+		free_token_list(&tk);
+		if (!cmd)
+			break;
+		print_comand(cmd);
 	}
-	if (tk)
-		print_token_list(tk);
 
-	free_token_list(&tk);
 	// clear everything
-	// rl_clear_history();
+	rl_clear_history();
 	return (0);
 }

@@ -1,5 +1,7 @@
 #include "tests.h"
 
+int g_signal;
+
 int main()
 {
     // lexer for proper tokenization
@@ -12,8 +14,7 @@ int main()
     printf(BOLD MAGENTA "---------------------------------------------------------------------------------------------\n" RESET);
     test_syntax();
     printf(BOLD MAGENTA "---------------------------------------------------------------------------------------------\n\n");
-    // 
+    //
 
-
-        return 0;
+    return 0;
 }

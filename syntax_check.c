@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "includes/parser.h"
 
 /*
     -----------------------------------------------------------------------------------------
@@ -126,14 +126,14 @@ int syntax_check(t_token *tk)
                 print_unclosed_quote();
             else
                 print_syntax_error(temp->seg_list->val);
-            return 2;
+            return EXIT_MISUSE;
         }
         temp = temp->next;
     }
     if (t_ctx == T_PIPE || t_ctx == T_REDIRS)
     {
         print_syntax_error("newline");
-        return 2;
+        return EXIT_MISUSE;
     }
     return 0;
 }

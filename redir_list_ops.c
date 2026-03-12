@@ -1,6 +1,6 @@
-#include "parser.h"
+#include "includes/parser.h"
 
-t_redirection *redir_lstnew(t_redir_type type, char *arg)
+t_redirection *redir_lstnew(t_redir_type type, char *arg, bool has_quote)
 {
     t_redirection *new;
 
@@ -9,6 +9,9 @@ t_redirection *redir_lstnew(t_redir_type type, char *arg)
         return (NULL);
     new->type = type;
     new->redir_arg = arg;
+    new->has_quote = has_quote;
+    new->read_fd = -1;
+    new->write_fd = -1;
     new->next = NULL;
     return (new);
 }

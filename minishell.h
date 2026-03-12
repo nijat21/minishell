@@ -1,7 +1,7 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include "Libft/libft.h"
+#include "../Libft/libft.h"
 #include "lexer.h"
 #include "parser.h"
 
@@ -11,7 +11,6 @@
 #include <fcntl.h>
 #include <dirent.h>
 #include <stdbool.h>
-
 
 t_token *lexer(const char *prompt);
 

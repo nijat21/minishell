@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "includes/parser.h"
 
 /*
     Heredoc handler
@@ -97,29 +97,128 @@
         world
 */
 
-//  SIGNALS
-t_token *heredoc(t_token *tk, int *exit_status)
+static t_redirection *get_heredoc_fds(t_redirection *redir, int n)
 {
-    t_token *iter;
-    t_token *res_tk;
+    char *num;
+    char *path;
 
-    (void)exit_status;
+    num = ft_itoa(n);
+    path = ft_strjoin("/tmp/minishell_heredoc_", num);
+    if (!path)
+        return NULL;
+    free(num);
+    redir->write_fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+    redir->read_fd = open(path, O_RDONLY);
+    unlink(path);
+    free(path);
+    if (redir->write_fd < 0 || redir->read_fd < 0)
+        return NULL;
+    return redir;
+}
 
-    iter = tk;
-    while (iter->next)
+static t_comand *assign_heredoc_fds(t_comand *cmd)
+{
+    t_comand *cmd_iter;
+    t_redirection *redir_iter;
+    int n;
+
+    n = 0;
+    cmd_iter = cmd;
+    while (cmd_iter)
     {
-        if (iter->type == HEREDOC)
+        redir_iter = cmd_iter->redir;
+        while (redir_iter)
         {
-            res_tk = handle_heredoc(iter->next);
-            if (!res_tk)
+            if (redir_iter->type == REDIR_HEREDOC)
             {
-                free_token_list(&tk);
-                return NULL;
+                if (!get_heredoc_fds(redir_iter, n))
+                    return NULL;
+                n++;
             }
-            push_token(iter->next, res_tk);
+            redir_iter = redir_iter->next;
         }
-        iter = iter->next;
+        cmd_iter = cmd_iter->next;
     }
-    print_token_list(tk);
-    return tk;
+    return cmd;
+}
+
+static t_redirection *read_from_heredoc_file(t_redirection *redir)
+{
+    char *new_str;
+
+    if (!redir->redir_arg)
+        return NULL;
+    free(redir->redir_arg);
+    redir->redir_arg = NULL;
+    new_str = get_next_line(redir->read_fd);
+    // printf("new_str -> %s\n", new_str);
+    while (new_str)
+    {
+        redir->redir_arg = ft_strjoin_free(redir->redir_arg, new_str);
+        new_str = get_next_line(redir->read_fd);
+        if (!new_str)
+            return NULL;
+    }
+    return redir;
+}
+
+static t_comand *update_heredocs_args(t_comand *cmd)
+{
+    t_comand *cmd_iter;
+    t_redirection *redir_iter;
+
+    cmd_iter = cmd;
+    while (cmd_iter)
+    {
+        redir_iter = cmd_iter->redir;
+        while (redir_iter)
+        {
+            if (redir_iter->type == REDIR_HEREDOC)
+            {
+                if (!read_from_heredoc_file(redir_iter))
+                {
+                    close(redir_iter->read_fd);
+                    return NULL;
+                }
+                close(redir_iter->read_fd);
+            }
+            redir_iter = redir_iter->next;
+        }
+        cmd_iter = cmd_iter->next;
+    }
+    return cmd;
+}
+
+// close pipefds
+int heredoc(t_comand *cmd)
+{
+    pid_t pid;
+    int status;
+
+    // setup_signals();
+    if (!assign_heredoc_fds(cmd))
+        return EXIT_FAILURE;
+    pid = fork();
+    if (pid < 0)
+        return EXIT_FAILURE;
+    if (pid == 0)
+    {
+        run_heredocs(cmd);
+        exit(EXIT_SUCCESS);
+    }
+    waitpid(pid, &status, 0);
+    if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+    {
+        g_signal = SIGINT;
+        command_lstclear(&cmd);
+        return EXIT_SIGINT;
+    }
+    else if (WIFEXITED(status) && (WEXITSTATUS(status) != EXIT_SUCCESS))
+    {
+        command_lstclear(&cmd);
+        return (WEXITSTATUS(status));
+    }
+    if (!update_heredocs_args(cmd))
+        return EXIT_FAILURE;
+    return EXIT_SUCCESS;
 }

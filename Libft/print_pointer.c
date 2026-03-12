@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static void ft_hex_base16(uintptr_t num, int fd, int *count, char *base)
+static void	ft_hex_base16(uintptr_t num, int fd, int *count, char *base)
 {
 	if (num >= 16)
 		ft_hex_base16(num / 16, fd, count, base);
@@ -20,10 +20,10 @@ static void ft_hex_base16(uintptr_t num, int fd, int *count, char *base)
 	(*count)++;
 }
 
-static int ft_print_pointer_fd(void *ptr, int fd)
+static int	ft_print_pointer_fd(void *ptr, int fd)
 {
-	uintptr_t address;
-	int count;
+	uintptr_t	address;
+	int			count;
 
 	count = 0;
 	address = (uintptr_t)ptr;
@@ -41,7 +41,7 @@ static int ft_print_pointer_fd(void *ptr, int fd)
 	return (count);
 }
 
-int print_pointer(void *ptr)
+int	print_pointer(void *ptr)
 {
 	return (ft_print_pointer_fd(ptr, 1));
 }

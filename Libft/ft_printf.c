@@ -12,14 +12,15 @@
 
 #include "libft.h"
 
-static int valid_specifier(char c)
+static int	valid_specifier(char c)
 {
-	if (!(c == 'c' || c == 's' || c == 'p' || c == 'i' || c == 'd' || c == 'u' || c == 'x' || c == 'X' || c == '%'))
+	if (!(c == 'c' || c == 's' || c == 'p' || c == 'i' || c == 'd' || c == 'u'
+			|| c == 'x' || c == 'X' || c == '%'))
 		return (0);
 	return (1);
 }
 
-static int call_relative_ft(char c, va_list args)
+static int	call_relative_ft(char c, va_list args)
 {
 	if (c == 'c')
 		return (print_char(va_arg(args, int)));
@@ -40,7 +41,7 @@ static int call_relative_ft(char c, va_list args)
 	return (0);
 }
 
-static int iterate_format(const char *format, int count, int *i, va_list args)
+static int	iterate_format(const char *format, int count, int *i, va_list args)
 {
 	if (format[*i] == '%')
 	{
@@ -58,11 +59,11 @@ static int iterate_format(const char *format, int count, int *i, va_list args)
 	return (count);
 }
 
-int ft_printf(const char *format, ...)
+int	ft_printf(const char *format, ...)
 {
-	va_list args;
-	int i;
-	int count;
+	va_list	args;
+	int		i;
+	int		count;
 
 	va_start(args, format);
 	if (!format)

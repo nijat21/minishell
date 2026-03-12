@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int print_string(char *str)
+int	print_string(char *str)
 {
 	if (!str)
 		str = "(null)";

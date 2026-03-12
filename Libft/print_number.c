@@ -12,14 +12,14 @@
 
 #include "libft.h"
 
-static void ft_putnbr_fd_copy(int n, int *count, int fd)
+static void	ft_putnbr_fd_copy(int n, int *count, int fd)
 {
-	long num;
-	char temp;
+	long	num;
+	char	temp;
 
 	num = n;
 	if (fd < 0)
-		return;
+		return ;
 	if (num < 0)
 	{
 		write(fd, "-", 1);
@@ -33,9 +33,9 @@ static void ft_putnbr_fd_copy(int n, int *count, int fd)
 	(*count)++;
 }
 
-int print_number(int num)
+int	print_number(int num)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	ft_putnbr_fd_copy(num, &count, 1);

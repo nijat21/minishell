@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "includes/lexer.h"
 
 t_seg *seg_init(t_seg **seg, size_t len)
 {
@@ -10,7 +10,7 @@ t_seg *seg_init(t_seg **seg, size_t len)
 		free_seg_list(seg);
 		return (NULL);
 	}
-	new->val = malloc(sizeof(char) * len + 1);
+	new->val = safe_malloc(sizeof(char) * len + 1);
 	if (!new->val)
 	{
 		free(new);
@@ -56,10 +56,7 @@ t_token **add_token(t_token **tk, t_ttype type, t_seg *seg_list)
 
 	new = safe_malloc(sizeof(t_token));
 	if (!new)
-	{
-		free_token_list(tk);
 		return (NULL);
-	}
 	new->seg_list = seg_list;
 	new->type = type;
 	new->next = NULL;

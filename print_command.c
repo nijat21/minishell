@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "includes/parser.h"
 
 const char *redir_type_to_str(t_redir_type type)
 {
@@ -20,10 +20,11 @@ void print_redirections(t_redirection *redir)
     i = 0;
     while (redir)
     {
-        printf("      [%d] type: %s | arg: \"%s\"\n",
+        printf("      [%d] type: %s | arg: \"%s\" | quote: %s\n",
                i++,
                redir_type_to_str(redir->type),
-               redir->redir_arg ? redir->redir_arg : "(null)");
+               redir->redir_arg ? redir->redir_arg : "(null)",
+               redir->has_quote ? "YES" : "NO");
         redir = redir->next;
     }
 }

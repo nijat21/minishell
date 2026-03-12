@@ -12,11 +12,11 @@
 
 #include "libft.h"
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-	static char buf[BUFFER_SIZE + 1];
-	int bytes_read;
-	char *nl;
+	static char	buf[BUFFER_SIZE + 1];
+	int			bytes_read;
+	char		*nl;
 
 	nl = NULL;
 	bytes_read = 0;
@@ -26,7 +26,7 @@ char *get_next_line(int fd)
 		{
 			bytes_read = read(fd, buf, BUFFER_SIZE);
 			if (bytes_read == 0)
-				break;
+				break ;
 			if (bytes_read < 0)
 			{
 				free(nl);
@@ -36,7 +36,7 @@ char *get_next_line(int fd)
 		}
 		create_merge(&nl, buf);
 		if (!nl || nl[ft_strlen(nl) - 1] == '\n')
-			break;
+			break ;
 	}
 	return (nl);
 }

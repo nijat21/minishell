@@ -1,6 +1,6 @@
-#include "lexer.h"
+#include "includes/lexer.h"
 
-void	quote_context(const char c, t_quote *qc)
+void quote_context(const char c, t_quote *qc)
 {
 	if (*qc == Q_NONE)
 	{
@@ -21,7 +21,7 @@ void	quote_context(const char c, t_quote *qc)
 	}
 }
 
-void	choose_ttype(const char *str, t_ttype *tt)
+void choose_ttype(const char *str, t_ttype *tt)
 {
 	if (*str == '|')
 		*tt = PIPE;
@@ -45,10 +45,10 @@ void	choose_ttype(const char *str, t_ttype *tt)
 		*tt = WORD;
 }
 
-size_t	varname_len(const char *str)
+static size_t varname_len(const char *str)
 {
-	size_t	len;
-	int		i;
+	size_t len;
+	int i;
 
 	len = 1;
 	i = 1;
@@ -67,4 +67,19 @@ size_t	varname_len(const char *str)
 	else
 		return (0);
 	return (len);
+}
+
+int add_var(t_lex_ctx *ctx, const char *start, int *i)
+{
+	size_t var_len;
+
+	var_len = varname_len(start);
+	if (!var_len)
+		return 0;
+	if (!if_len_add_seg(ctx, false))
+		return -1;
+	if (!add_segment(ctx, start, var_len, true))
+		return -1;
+	*i += var_len - 1;
+	return 1;
 }

@@ -1,19 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_char.c                                       :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 14:24:14 by nismayil          #+#    #+#             */
-/*   Updated: 2025/01/22 23:01:48 by nismayil         ###   ########.fr       */
+/*   Created: 2026/03/11 12:00:01 by nismayil          #+#    #+#             */
+/*   Updated: 2026/03/11 12:00:03 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef MINISHELL_H
+#define MINISHELL_H
 
-int	print_char(char c)
+#include "../Libft/libft.h"
+#include "lexer.h"
+#include "parser.h"
+
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <dirent.h>
+#include <stdbool.h>
+
+t_token *lexer(const char *prompt);
+
+typedef struct s_mshell
 {
-	ft_putchar_fd(c, 1);
-	return (1);
-}
+    int exit_code;
+} t_mshell;
+
+#endif

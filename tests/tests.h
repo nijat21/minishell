@@ -1,10 +1,9 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include "../lexer.h"
-#include "../parser.h"
+#include "../includes/lexer.h"
+#include "../includes/parser.h"
 #include <string.h>
-#include "../../Libft/libft.h"
 
 #define RESET "\033[0m"
 #define RED "\033[1;31m"
@@ -18,6 +17,7 @@
 #define UNDERLINE "\033[4m"
 
 t_token *lexer(const char *prompt);
+int syntax_check(t_token *tk);
 
 // Lexer
 void test_lexer();

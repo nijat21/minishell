@@ -1,6 +1,4 @@
-#include "parser.h"
-
-
+#include "includes/parser.h"
 
 void print_unclosed_quote()
 {
@@ -14,4 +12,11 @@ void print_syntax_error(const char *str)
     ft_putstr_fd("minishell: syntax error near unexpected token `", STDERR_FILENO);
     ft_putstr_fd((char *)str, STDERR_FILENO);
     ft_putstr_fd("'\n", STDERR_FILENO);
+}
+
+void print_heredoc_eof_warning(const char *str)
+{
+    ft_putstr_fd("minishell: warning: here-document delimited by end-of-file (wanted `", STDERR_FILENO);
+    ft_putstr_fd((char *)str, STDERR_FILENO);
+    ft_putstr_fd("')\n", STDERR_FILENO);
 }

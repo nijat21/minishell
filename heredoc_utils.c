@@ -1,138 +1,89 @@
-#include "parser.h"
+#include "includes/parser.h"
 
-static char *delimiter(t_token *here_tk, bool *exp)
+// cat << del
+// >del -> redir->redir_arg = "";
+static void write_to_heredoc_file(t_redirection *redir, char *line)
 {
-    t_seg *temp_seg;
-    char *del;
+    char *str;
+    size_t len;
 
-    *exp = true;
-    del = NULL;
-    temp_seg = here_tk->seg_list;
-    while (temp_seg)
-    {
-        if (temp_seg->has_quote == true)
-            *exp = false;
-        if (temp_seg->expand == true)
-            temp_seg->expand = false;
-        del = ft_strjoin(del, temp_seg->val);
-        temp_seg = temp_seg->next;
-    }
-    return del;
-}
-
-static bool tokenize(t_lex_ctx *ctx, const char *str, int *i, bool exp)
-{
-    if (ctx->len == 0)
-        ctx->start = &str[*i];
-    if (exp && str[*i] == '$')
-    {
-        if (handle_var(ctx, &str[*i], i))
-            return (true);
-        else
-            ctx->len++;
-    }
-    else if (is_space(str[*i]))
-    {
-        add_leftovers(ctx);
-        if (ctx->len <= 0)
-            return (true);
-    }
+    len = ft_strlen(line);
+    if (len > 0)
+        str = ft_strjoin(line, "\n");
     else
-        ctx->len++;
-    return (false);
+        str = ft_strjoin(line, NULL);
+    free(line);
+    len = ft_strlen(str);
+    if (!str)
+    {
+        close(redir->write_fd);
+        exit(EXIT_FAILURE);
+    }
+    if (!redir->has_quote && ft_strchr(str, '$'))
+        expand_redir_arg(str);
+    write(redir->write_fd, str, len);
+    free(str);
 }
 
-t_token *heredoc_lexer(t_token **tk, const char *str, bool exp)
+static void setup_del(t_redirection *redir, char **del)
 {
-    t_lex_ctx ctx;
-    int i;
-
-    ctx.tk = *tk;
-    ctx.seg = NULL;
-    ctx.tt = WORD;
-    ctx.qc = Q_NONE;
-    ctx.len = 0;
-    ctx.has_quote = false;
-    i = -1;
-    while (str[++i])
-        tokenize(&ctx, str, &i, exp);
-    handle_last_buf(&ctx);
-    return (ctx.tk);
+    if (!redir->redir_arg)
+    {
+        close(redir->write_fd);
+        exit(EXIT_MISUSE);
+    }
+    (*del) = ft_strjoin(NULL, redir->redir_arg);
+    if (!(*del))
+    {
+        close(redir->write_fd);
+        exit(EXIT_FAILURE);
+    }
+    free(redir->redir_arg);
+    redir->redir_arg = NULL;
 }
 
-void here_sigint_handler(int sig)
-{
-    g_signal = sig;
-    // ft_putchar_fd('\n', STDOUT_FILENO);
-    ioctl(STDIN_FILENO, TIOCSTI, "\n");
-    rl_done = 1;
-}
-
-void setup_heredoc_signals(void)
-{
-    struct sigaction sa;
-
-    rl_catch_signals = 0;
-    memset(&sa, 0, sizeof(sa));
-    sa.sa_handler = here_sigint_handler;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
-    sigaction(SIGINT, &sa, NULL);
-    sa.sa_handler = SIG_IGN;
-    sigaction(SIGQUIT, &sa, NULL);
-}
-
-t_token *handle_heredoc(t_token *here_tk)
+static void handle_heredoc(t_redirection *redir)
 {
     char *del;
-    bool exp;
     char *line;
-    t_token *new_tk;
 
-    new_tk = NULL;
-    del = delimiter(here_tk, &exp);
-    // printf("delimiter -> %s ", del);
-    // printf("exp -> %s\n", exp ? "yes" : "no");
-    setup_heredoc_signals();
+    setup_del(redir, &del);
     while (1)
     {
         line = readline("heredoc> ");
-        if (g_signal == SIGINT)
-        {
-            free(line);
-            break;
-        }
         if (!line)
         {
-            // free_seg_list
+            print_heredoc_eof_warning(del);
             break;
         }
-        new_tk = heredoc_lexer(&new_tk, line, exp);
         if (ft_strncmp(line, del, ft_strlen(del) + 1) == 0)
         {
             free(line);
+            line = NULL;
             break;
         }
-        free(line);
+        write_to_heredoc_file(redir, line);
     }
-    return new_tk;
 }
 
-/*
-    CONSIDER USING IOCTL IN MAIN SIGS AS WELL
-    ERROR PROPAGATION
-    PROPER CLEANING FOR VARIOUS CASES
-*/
-
-void push_token(t_token *tk, t_token *new_tk)
+void run_heredocs(t_comand *cmd)
 {
-    t_token *tk_next;
-    t_token *iter;
+    t_comand *cmd_iter;
+    t_redirection *redir_iter;
 
-    tk_next = (tk)->next;
-    (tk)->next = new_tk;
-    iter = new_tk;
-    while (iter->next)
-        iter = iter->next;
-    iter->next = tk_next;
+    cmd_iter = cmd;
+    while (cmd_iter)
+    {
+        redir_iter = cmd_iter->redir;
+        while (redir_iter)
+        {
+            if (redir_iter->type == REDIR_HEREDOC)
+            {
+                handle_heredoc(redir_iter);
+                close(redir_iter->write_fd);
+            }
+            redir_iter = redir_iter->next;
+        }
+        cmd_iter = cmd_iter->next;
+    }
 }

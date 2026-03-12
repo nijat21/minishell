@@ -1,37 +1,9 @@
-#include "parser.h"
+#include "includes/parser.h"
 
 /*
-    echo some$user >> out.txt
-    [WORD]echo [WORD]some, $user [APPEND]>> [WORD]out.txt
-
-    cat << del in > out
-    [WORD]cat [HEREDOC]<< [WORD]del [WORD]in [REDIR_OUT]> [WORD]out
-
-    command 1.
-    comand = "echo"
-    args = ["echo", "some$user(expanded)", NULL]
-    redir ->
-        t_redirection
-        type = APPEND
-        redir_arg = "out.txt"
-        next = NULL
-    next → NULL
-
-
     cat << EOF1 file.txt > out.txt >> log.txt < in.txt
     hello world
     EOF1
-
-    WORD(cat)
-    HEREDOC(<<)
-    WORD(EOF1)
-    WORD(file.txt)
-    REDIR_OUTPUT(>)
-    WORD(out.txt)
-    REDIR_APPEND(>>)
-    WORD(log.txt)
-    REDIR_INPUT(<)
-    WORD(in.txt)
 
     t_comand
     ┌─────────────────────────────┐
@@ -54,94 +26,45 @@
 
 */
 
-char *expand_var()
-{
-    return NULL;
-}
-
-char *seg_to_str(t_seg *seg)
-{
-    char *str;
-
-    str = NULL;
-    while (seg)
-    {
-        if (!(seg->val))
-        {
-            printf("Parser: seg->value NULL\n");
-            free(str);
-            return NULL;
-        }
-        if (seg->expand)
-            printf("expand\n"); // expanding function
-        str = ft_strjoin(str, seg->val);
-        if (!str)
-        {
-            ft_putstr_fd("Parser: ft_strjoin\n", 2);
-            free(str);
-            return NULL;
-        }
-        seg = seg->next;
-    }
-    return str;
-}
-
-char **word_tokens_to_args(t_token **tk)
-{
-    char **args;
-    char *str;
-    size_t i;
-
-    args = safe_malloc(sizeof(char *) * count_word_tokens(*tk) + 1);
-    if (!args)
-        return NULL;
-    i = -1;
-    while ((*tk) && (*tk)->type == WORD)
-    {
-        str = seg_to_str((*tk)->seg_list);
-        if (!str)
-        {
-            free_arr(args);
-            return NULL;
-        }
-        args[++i] = str;
-        if (!(*tk)->next || ((*tk)->next && (*tk)->next->type != WORD))
-            break;
-        (*tk) = (*tk)->next;
-    }
-    args[++i] = NULL;
-    return args;
-}
-
-t_comand *word_tokens_to_cmd(t_comand **cmd, t_token **tk)
+static t_comand *word_tokens_to_cmd(t_comand **cmd, t_token **tk)
 {
     char **new_args;
     t_comand *new;
 
     new_args = word_tokens_to_args(tk);
     if (!new_args)
+    {
+        command_lstclear(cmd);
         return NULL;
+    }
     if (*cmd)
     {
         (*cmd)->args = join_args((*cmd)->args, new_args);
         if (!(*cmd)->args)
-        {
-            command_lstclear(cmd);
-            return NULL;
-        }
+            return free_arr_cmdlst(cmd, new_args);
     }
     else
     {
         new = command_lstnew(new_args[0], new_args);
         if (!new)
-            return NULL;
+            return free_arr_cmdlst(cmd, new_args);
         *cmd = new;
     }
     return *cmd;
 }
 
-// Redir token will for sure have a next token that's it's argument
-t_redirection *token_to_redir(t_comand **cmd, t_token **tk)
+static bool token_has_quote(t_seg *seg)
+{
+    while (seg)
+    {
+        if (seg->has_quote)
+            return true;
+        seg = seg->next;
+    }
+    return false;
+}
+
+static t_redirection *token_to_redir(t_comand **cmd, t_token **tk)
 {
     t_redirection *new_red;
     t_redir_type type;
@@ -161,45 +84,38 @@ t_redirection *token_to_redir(t_comand **cmd, t_token **tk)
     arg = seg_to_str((*tk)->seg_list);
     if (!arg)
         return NULL;
-    new_red = redir_lstnew(type, arg);
+    new_red = redir_lstnew(type, arg, token_has_quote((*tk)->seg_list));
     if (!new_red)
-        return NULL;
+        return free_arg_cmdlst(cmd, arg);
     redir_lstadd_back(&((*cmd)->redir), new_red);
     return (*cmd)->redir;
 }
 
-// Memory management and correct error propagation
-// Restructure
-// Var expansion
-// Heredoc
-t_comand *build_pipeline(t_token *tk)
+t_comand **build_pipeline(t_comand **cmd, t_token *tk)
 {
-    t_comand *cmd;
-    t_comand *new;
+    t_comand *curr;
 
-    cmd = NULL;
-    new = NULL;
+    curr = NULL;
     while (tk)
     {
         if (tk->type == WORD)
         {
-            new = word_tokens_to_cmd(&new, &tk);
-            if (!new)
+            curr = word_tokens_to_cmd(&curr, &tk);
+            if (!curr)
                 return NULL;
         }
         else if (ttype_to_tctx(tk->type) == T_REDIRS)
         {
-            if (!token_to_redir(&new, &tk))
+            if (!token_to_redir(&curr, &tk))
                 return NULL;
         }
         else if (tk->type == PIPE)
         {
-            command_lstadd_back(&cmd, new);
-            new = NULL;
+            command_lstadd_back(cmd, curr);
+            curr = NULL;
         }
         tk = tk->next;
     }
-    if (new)
-        command_lstadd_back(&cmd, new);
+    command_lstadd_back(cmd, curr);
     return cmd;
 }

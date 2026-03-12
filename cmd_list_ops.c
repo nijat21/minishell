@@ -1,4 +1,18 @@
-#include "parser.h"
+#include "includes/parser.h"
+
+t_comand *command_lstnew(char *comand, char **args)
+{
+    t_comand *new;
+
+    new = malloc(sizeof(t_comand));
+    if (!new)
+        return (NULL);
+    new->comand = comand;
+    new->args = args;
+    new->redir = NULL;
+    new->next = NULL;
+    return (new);
+}
 
 void command_lstadd_back(t_comand **lst, t_comand *new)
 {
@@ -7,7 +21,8 @@ void command_lstadd_back(t_comand **lst, t_comand *new)
     temp = *lst;
     if (!new)
     {
-        ft_putstr_fd("Parser: command_lstadd_back: new is NULL\n", 2);
+        if (lst && *lst)
+            command_lstclear(lst);
         return;
     }
     if (*lst == NULL)
@@ -39,20 +54,6 @@ void command_lstclear(t_comand **lst)
         temp = nexttemp;
     }
     *lst = NULL;
-}
-
-t_comand *command_lstnew(char *comand, char **args)
-{
-    t_comand *new;
-
-    new = malloc(sizeof(t_comand));
-    if (!new)
-        return (NULL);
-    new->comand = comand;
-    new->args = args;
-    new->redir = NULL;
-    new->next = NULL;
-    return (new);
 }
 
 size_t command_lstsize(t_comand *lst)
