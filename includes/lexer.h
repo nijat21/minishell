@@ -6,14 +6,15 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:59:44 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/12 10:59:07 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/13 19:04:40 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 #define LEXER_H
 
-#include "../Libft/libft.h"
+#include "../src/parser/Libft/libft.h"
+#include "minishell.h"
 
 #include <unistd.h>
 #include <stdlib.h>

@@ -1,22 +1,142 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 23:13:23 by otlacerd          #+#    #+#             */
+/*   Updated: 2026/03/13 19:03:26 by nismayil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include "../Libft/libft.h"
-#include "lexer.h"
-#include "parser.h"
-
+#include <unistd.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <linux/limits.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <dirent.h>
+#include <sys/select.h>
 #include <stdbool.h>
+#include <signal.h>
+#include <errno.h>
+#include <termios.h>
 
-t_token *lexer(const char *prompt);
+#define BUFFER_SIZE 25
+#define ENV_INCREMENT 10
+#define FAIL -1
+#define STD_TEMP_LOCATION "/tmp/minishell_std_storage"
+#define MAX_LONG_STR "9223372036854775807"
+#define PATH_BACKUP "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-typedef struct s_mshell
+extern int g_signal;
+
+// ------- get_all_lines
+typedef struct s_gal
 {
-    int exit_code;
-} t_mshell;
+    int index1;
+    int index2;
+    int readbytes;
+    int all_read;
+    char *line;
+    char *new_line;
+    int fd;
+} t_gal;
+
+// -------- get_next_line
+typedef struct s_gnl
+{
+    int start;
+    int end;
+    int readbytes;
+    char buffer[BUFFER_SIZE + 1];
+} t_gnl;
+
+typedef enum e_redir_type
+{
+    REDIR_INPUT = 1,
+    REDIR_OUTPUT = 2,
+    REDIR_APPEND = 3,
+    REDIR_HEREDOC = 4
+} t_redir_type;
+
+typedef struct s_redir
+{
+    t_redir_type type;
+    char *redir_arg;
+    struct s_redir *next;
+} t_redir;
+
+typedef struct s_comand
+{
+    char *comand;
+    char **args;
+    t_redir *redir;
+    struct s_comand *next;
+} t_cmd;
+
+typedef struct s_env
+{
+    char **envp;
+    int size;
+    int capacity;
+} t_env;
+
+typedef struct s_fds
+{
+    int previous_0;
+    int pipe[2];
+    int redir[2];
+    int std_backup[2];
+} t_fds;
+
+typedef struct s_proc
+{
+    int signal;
+    int is_heredoc;
+    int exit_status;
+} t_proc;
+
+typedef struct termios t_term;
+
+typedef struct s_all
+{
+    int argc;
+    char **argv;
+    char **envp;
+    char **splitted;
+    char *main_line;
+    int main_line_count;
+    int env_status;
+    t_env *my_env;
+    t_fds *fds;
+    t_proc *process_info;
+    t_term saved_termios;
+    t_cmd *head;
+    char **heredoc_temps;
+    int heredoc_count;
+    int father_pid;
+    int node_number;
+    int lst_size;
+    int *children_pids;
+    char buffer[PATH_MAX + 1];
+
+} t_all;
+
+typedef int(func_ptr)(t_all *all, t_cmd *node, t_env *env, char *buffer);
+
+typedef struct s_origin
+{
+    func_ptr *built_in;
+    char *abs_path;
+} t_origin;
 
 #endif

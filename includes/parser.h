@@ -3,26 +3,18 @@
 
 #include "lexer.h"
 
-#include <signal.h>
-#include <termios.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <sys/ioctl.h>
-#include <sys/wait.h>
-
 #define EXIT_MISUSE 2
 #define EXIT_NOT_EXEC 126
 #define EXIT_NOT_FOUND 127
 #define EXIT_SIGINT 130
 #define EXIT_SIGQUIT 131
 
-extern int g_signal;
-
 typedef enum e_sig_src
 {
 	S_PARENT,
-	S_HEREDOC,
 	S_CHILD,
+	S_HEREDOC,
+	S_NONE,
 } t_sig_src;
 
 typedef enum e_tctx
@@ -65,6 +57,7 @@ typedef struct s_comand
 void set_signal(t_sig_src src);
 
 // Functionalities
+t_token *lexer(const char *prompt);
 int syntax_check(t_token *tk);
 t_comand *parse_tokens(t_token *tk, int *exit_status);
 void run_heredocs(t_comand *cmd);
