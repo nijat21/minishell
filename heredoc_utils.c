@@ -1,7 +1,5 @@
 #include "includes/parser.h"
 
-// cat << del
-// >del -> redir->redir_arg = "";
 static void write_to_heredoc_file(t_redirection *redir, char *line)
 {
     char *str;
@@ -14,11 +12,8 @@ static void write_to_heredoc_file(t_redirection *redir, char *line)
         str = ft_strjoin(line, NULL);
     free(line);
     len = ft_strlen(str);
-    if (!str)
-    {
-        close(redir->write_fd);
+    if (!len)
         exit(EXIT_FAILURE);
-    }
     if (!redir->has_quote && ft_strchr(str, '$'))
         expand_redir_arg(str);
     write(redir->write_fd, str, len);
@@ -28,16 +23,10 @@ static void write_to_heredoc_file(t_redirection *redir, char *line)
 static void setup_del(t_redirection *redir, char **del)
 {
     if (!redir->redir_arg)
-    {
-        close(redir->write_fd);
         exit(EXIT_MISUSE);
-    }
     (*del) = ft_strjoin(NULL, redir->redir_arg);
     if (!(*del))
-    {
-        close(redir->write_fd);
         exit(EXIT_FAILURE);
-    }
     free(redir->redir_arg);
     redir->redir_arg = NULL;
 }
@@ -51,6 +40,12 @@ static void handle_heredoc(t_redirection *redir)
     while (1)
     {
         line = readline("heredoc> ");
+        if (g_signal == SIGINT)
+        {
+            free(line);
+            break;
+            // exit(EXIT_SIGINT);
+        }
         if (!line)
         {
             print_heredoc_eof_warning(del);
@@ -59,7 +54,6 @@ static void handle_heredoc(t_redirection *redir)
         if (ft_strncmp(line, del, ft_strlen(del) + 1) == 0)
         {
             free(line);
-            line = NULL;
             break;
         }
         write_to_heredoc_file(redir, line);
@@ -80,7 +74,6 @@ void run_heredocs(t_comand *cmd)
             if (redir_iter->type == REDIR_HEREDOC)
             {
                 handle_heredoc(redir_iter);
-                close(redir_iter->write_fd);
             }
             redir_iter = redir_iter->next;
         }

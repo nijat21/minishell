@@ -6,20 +6,20 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:59:44 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/11 11:59:46 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/12 10:59:07 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 #define LEXER_H
 
+#include "../Libft/libft.h"
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <errno.h>
-
-#include "../Libft/libft.h"
 
 typedef enum e_quote
 {

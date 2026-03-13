@@ -34,9 +34,12 @@ t_comand *parse_tokens(t_token *tk, int *exit_status)
 		return NULL;
 	}
 	// HEREDOC
+	set_signal(S_HEREDOC);
 	*exit_status = heredoc(cmd);
+	set_signal(S_PARENT);
 	if (*exit_status)
 		return NULL;
+	printf("heredoc status -> %d\n", *exit_status);
 	*exit_status = EXIT_SUCCESS;
 	return cmd;
 }

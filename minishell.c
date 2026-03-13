@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 12:00:16 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/12 09:38:00 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/13 14:53:37 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,17 @@ int main(void)
 	t_token *tk;
 	t_comand *cmd;
 
+	set_signal(S_PARENT);
 	exit_status = 0;
-	setup_signals();
 	while (1)
 	{
 		line = readline("minishell> ");
-		if (g_signal == SIGINT)
+		if (g_signal)
 		{
 			exit_status = EXIT_SIGINT;
 			g_signal = 0;
 			free(line);
-			continue;
+			printf("main_loop\n");
 		}
 		if (!line)
 		{
@@ -75,12 +75,13 @@ int main(void)
 		// print_token_list(tk);
 		cmd = parse_tokens(tk, &exit_status);
 		free_token_list(&tk);
-		if (!cmd)
+		if (!cmd && exit_status != EXIT_SIGINT)
 			break;
 		print_comand(cmd);
 	}
 
 	// clear everything
+	command_lstclear(&cmd);
 	rl_clear_history();
 	return (0);
 }

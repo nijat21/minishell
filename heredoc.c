@@ -151,12 +151,11 @@ static t_redirection *read_from_heredoc_file(t_redirection *redir)
     free(redir->redir_arg);
     redir->redir_arg = NULL;
     new_str = get_next_line(redir->read_fd);
-    // printf("new_str -> %s\n", new_str);
     while (new_str)
     {
         redir->redir_arg = ft_strjoin_free(redir->redir_arg, new_str);
         new_str = get_next_line(redir->read_fd);
-        if (!new_str)
+        if (!redir->redir_arg)
             return NULL;
     }
     return redir;
@@ -195,30 +194,38 @@ int heredoc(t_comand *cmd)
     pid_t pid;
     int status;
 
-    // setup_signals();
     if (!assign_heredoc_fds(cmd))
-        return EXIT_FAILURE;
+        return heredoc_status(true, "assign_heredoc_fds", EXIT_FAILURE);
+
     pid = fork();
     if (pid < 0)
-        return EXIT_FAILURE;
+        return heredoc_status(true, "fork", EXIT_FAILURE);
     if (pid == 0)
     {
         run_heredocs(cmd);
         exit(EXIT_SUCCESS);
     }
     waitpid(pid, &status, 0);
+    close_write_fds(cmd);
+    // signals(false);
     if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
     {
-        g_signal = SIGINT;
+        printf("caught\n");
+        // g_signal = 0;
         command_lstclear(&cmd);
         return EXIT_SIGINT;
     }
     else if (WIFEXITED(status) && (WEXITSTATUS(status) != EXIT_SUCCESS))
     {
         command_lstclear(&cmd);
-        return (WEXITSTATUS(status));
+        if (WEXITSTATUS(status) == EXIT_SIGINT)
+        {
+            g_signal = 0;
+            return heredoc_status(true, "sigint", WEXITSTATUS(status));
+        }
+        return heredoc_status(true, "other", WEXITSTATUS(status));
     }
     if (!update_heredocs_args(cmd))
-        return EXIT_FAILURE;
+        return heredoc_status(true, "update_heredocs_args", EXIT_FAILURE);
     return EXIT_SUCCESS;
 }

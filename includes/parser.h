@@ -1,14 +1,14 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+#include "lexer.h"
+
 #include <signal.h>
 #include <termios.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <sys/ioctl.h>
 #include <sys/wait.h>
-
-#include "lexer.h"
 
 #define EXIT_MISUSE 2
 #define EXIT_NOT_EXEC 126
@@ -17,6 +17,13 @@
 #define EXIT_SIGQUIT 131
 
 extern int g_signal;
+
+typedef enum e_sig_src
+{
+	S_PARENT,
+	S_HEREDOC,
+	S_CHILD,
+} t_sig_src;
 
 typedef enum e_tctx
 {
@@ -55,8 +62,7 @@ typedef struct s_comand
 } t_comand;
 
 // signal
-void sigint_handler(int sig);
-void setup_signals(void);
+void set_signal(t_sig_src src);
 
 // Functionalities
 int syntax_check(t_token *tk);
@@ -69,6 +75,7 @@ t_tctx ttype_to_tctx(t_ttype t_tt);
 void print_syntax_error(const char *str);
 void print_unclosed_quote();
 void print_heredoc_eof_warning(const char *str);
+int heredoc_status(bool debug, char *str, int exit_status);
 
 // command builder
 t_comand **build_pipeline(t_comand **cmd, t_token *tk);
@@ -98,5 +105,8 @@ void command_lstclear(t_comand **lst);
 t_redirection *redir_lstnew(t_redir_type type, char *arg, bool has_quote);
 void redir_lstadd_back(t_redirection **lst, t_redirection *new);
 void redir_lstclear(t_redirection **lst);
+
+// clean
+void close_write_fds(t_comand *cmd);
 
 #endif

@@ -17,7 +17,7 @@ SRCS =	minishell.c \
 		lexer/token_ops.c \
 		lexer/lexer_list_ops.c \
 		lexer/lex_quotes.c \
-		parser.c parser_utils.c syntax_check.c heredoc.c heredoc_utils.c signal.c \
+		parser.c parser_utils.c syntax_check.c heredoc.c heredoc_utils.c signal.c clean.c\
 		pipeline.c pipeline_utils.c pipeline_ops.c expand.c\
 		redir_list_ops.c cmd_list_ops.c\
 		\
