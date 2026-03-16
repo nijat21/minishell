@@ -6,15 +6,15 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 13:30:21 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/08 19:17:48 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/14 23:21:08 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+# ifndef BUF_SIZE
+#  define BUF_SIZE 42
 # endif
 
 # include <fcntl.h>

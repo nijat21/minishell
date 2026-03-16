@@ -22,5 +22,6 @@ int syntax_check(t_token *tk);
 // Lexer
 void test_lexer();
 void test_syntax();
+void test_pipeline(void);
 
 #endif

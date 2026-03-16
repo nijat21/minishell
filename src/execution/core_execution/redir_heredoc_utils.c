@@ -6,11 +6,13 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 10:40:34 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/13 18:42:06 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/16 11:05:19 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <core_execution.h>
+#include <libft.h>
+#include <parser.h>
 
 void unlink_all_heredoc_temps(char **heredoc_temps)
 {
@@ -106,40 +108,41 @@ int add_heredoc_history(char *buffer, char *user_line, int size, char *path)
 	return (add_history(x.line), free((char *)((long)x.line * (x.index2 > 0))), close(x.fd), 1);
 }
 
-int read_write_content(char *end_mark, int stdin_backup, int fd, int *sig)
+int read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
 {
 	char *line;
 
-	if (!end_mark)
+	if (!redir->redir_arg)
 		return (0);
 	while (1)
 	{
 		line = readline("> ");
-		if (((line) && (string_compare(line, end_mark) == 0)) || ((!line) || !(*line) || (*sig == SIGINT)))
+		if ((line && (string_compare(line, redir->redir_arg) == 0)) || (!line || !*line || (all->process_info->signal == SIGINT)))
 		{
-			if (*sig == SIGINT)
+			if (all->process_info->signal == SIGINT)
 				dup2(stdin_backup, STDIN_FILENO);
-			if (line != NULL)
+			if (line)
 				free(line);
 			break;
 		}
 		else if (line && *line)
+		{
 			add_history(line);
-		if ((line != NULL) && (*line != '\0'))
-			(write(fd, line, string_length(line)), write(fd, "\n", 1));
-		if (line != NULL)
-			free(line);
+			if (!expand_redir_var(redir, all, fd, line))
+				all->process_info->exit_status = EXIT_FAILURE;
+		}
+		free(line);
 	}
 	rl_clear_history();
 	return (1);
 }
 
-int exec_heredoc_content(t_all *all, int *signal, char *end_marker, int fd)
+int exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
 {
 	int pid;
 	int stdin_backup;
 
-	if (!end_marker || fd == -1 || !all || !signal)
+	if (!redir->redir_arg || fd == -1 || !all || !signal)
 		return (-1);
 	all->process_info->is_heredoc = true;
 	pid = fork();
@@ -148,7 +151,7 @@ int exec_heredoc_content(t_all *all, int *signal, char *end_marker, int fd)
 	else if (pid == 0)
 	{
 		stdin_backup = dup(all->fds->std_backup[0]);
-		read_write_content(end_marker, stdin_backup, fd, signal);
+		read_write_content(all, redir, stdin_backup, fd);
 		close(stdin_backup);
 		close(fd);
 		free(all->main_line);

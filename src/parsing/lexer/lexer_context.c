@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 19:09:11 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/13 19:09:12 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/16 00:49:54 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,16 @@ void choose_ttype(const char *str, t_ttype *tt)
 		*tt = WORD;
 }
 
-static size_t varname_len(const char *str)
+size_t varname_len(const char *str)
 {
 	size_t len;
 	int i;
 
+	if (str[0] != '$')
+		return 0;
 	len = 1;
 	i = 1;
-	if (str[i] && str[i] == '?')
+	if (str && str[i] == '?')
 		len++;
 	else if (str[i] && (ft_isalpha(str[i]) || str[i] == '_'))
 	{

@@ -14,40 +14,64 @@
 		- save into commands pipeline
 */
 
-t_comand *parse_tokens(char *line, int *exit_status)
+static int lex(t_all *all, t_token **tk)
+{
+	char *line;
+	size_t i;
+
+	line = all->main_line;
+	i = 0;
+	if (line && !line[i])
+		return 2;
+	while (line[i] && is_space(line[i]))
+		i++;
+	if (!line[i])
+		return 2;
+	(*tk) = lexer(line);
+	if (!(*tk))
+	{
+		all->process_info->exit_status = EXIT_FAILURE;
+		free_token_list(tk);
+		return 1;
+	}
+	return 0;
+}
+
+static bool valid_syntax(t_all *all, t_token *tk)
 {
 	int res;
-	t_comand *cmd;
-	t_token *tk;
 
-	// TOKENIZE
-	tk = lexer(line);
-	if (!tk)
-	{
-		*exit_status = EXIT_FAILURE;
-		free_token_list(&tk);
-		return NULL;
-	}
-	// SYNTAX CHECK
 	res = syntax_check(tk);
 	if (res)
 	{
-		*exit_status = res;
-		return NULL;
+		all->process_info->exit_status = res;
+		return false;
 	}
-	// PIPELINE BUILDER
+	return true;
+}
+
+t_parse_stat parse(t_all *all)
+{
+	t_cmd *cmd;
+	t_token *tk;
+	int res;
+
+	res = lex(all, &tk);
+	if (res == 1)
+		return PARSE_FAIL;
+	else if (res == 2)
+		return BAD_INPUT;
+	if (!valid_syntax(all, tk))
+		return BAD_INPUT;
 	cmd = NULL;
-	if (!build_pipeline(&cmd, tk))
+	if (!build_pipeline(&cmd, tk, all))
 	{
-		*exit_status = EXIT_FAILURE;
-		return NULL;
+		command_lstclear(&cmd);
+		all->process_info->exit_status = EXIT_FAILURE;
+		return PARSE_FAIL;
 	}
+	all->process_info->exit_status = EXIT_SUCCESS;
 	free_token_list(&tk);
-	// HEREDOC
-	*exit_status = heredoc(cmd);
-	if (*exit_status)
-		return NULL;
-	printf("heredoc status -> %d\n", *exit_status);
-	*exit_status = EXIT_SUCCESS;
-	return cmd;
+	all->head = cmd;
+	return PARSE_SUCCESS;
 }

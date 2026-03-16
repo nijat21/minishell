@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_execution.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:54:47 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/11 15:36:03 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/15 23:32:48 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <core_execution.h>
 
-int	exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
+int exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
 {
-	static int	fd;
-	int			pid;
-	int			readbytes;
- 
+	static int fd;
+	int pid;
+	int readbytes;
+
 	if (!all || !redir)
 		return (FAIL);
 	fd = open(temps[index], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 		return (0);
-	pid = exec_heredoc_content(all, &(all->process_info->signal), redir->redir_arg, fd);
+	pid = exec_heredoc_content(all, &(all->process_info->signal), redir, fd);
 	(void)pid;
-	close (fd);
+	close(fd);
 	fd = open(temps[index], O_RDONLY);
 	readbytes = read(fd, all->buffer, BUFFER_SIZE);
 	close(fd);
@@ -37,11 +37,11 @@ int	exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
 	return (true);
 }
 
-int	exec_all_heredocs(t_all *all)
+int exec_all_heredocs(t_all *all)
 {
-	t_cmd	*node;
+	t_cmd *node;
 	t_redir *redirection;
-	int		index;
+	int index;
 
 	if (!all)
 		return (0);
@@ -67,7 +67,7 @@ int	exec_all_heredocs(t_all *all)
 	return (0);
 }
 
-int	sync_redir_n_pipe(t_cmd *node, t_redir *redir, int *red_fd, int *pp_fd)
+int sync_redir_n_pipe(t_cmd *node, t_redir *redir, int *red_fd, int *pp_fd)
 {
 	if (!node || !red_fd || !pp_fd || !redir)
 		return (0);
@@ -78,11 +78,11 @@ int	sync_redir_n_pipe(t_cmd *node, t_redir *redir, int *red_fd, int *pp_fd)
 	return (1);
 }
 
-int	exec_redirections(t_all *all, t_cmd *node, int redir_fds[2], int pipe_fds[2])
+int exec_redirections(t_all *all, t_cmd *node, int redir_fds[2], int pipe_fds[2])
 {
-	t_redir	*redir;
-	int	result;
-	
+	t_redir *redir;
+	int result;
+
 	if (!node || !pipe_fds || !redir_fds)
 		return (0);
 	redir = node->redir;

@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 19:08:55 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/13 19:08:56 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/16 10:48:39 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ t_seg *seg_init(t_seg **seg, size_t len)
 {
 	t_seg *new;
 
-	new = safe_malloc(sizeof(t_seg));
+	new = safe_malloc(sizeof(t_seg), "seg_init: new");
 	if (!new)
 	{
 		free_seg_list(seg);
 		return (NULL);
 	}
-	new->val = safe_malloc(sizeof(char) * len + 1);
+	new->val = safe_malloc(sizeof(char) * (len + 1), "seg_init: new->val");
 	if (!new->val)
 	{
 		free(new);
@@ -66,7 +66,7 @@ t_token **add_token(t_token **tk, t_ttype type, t_seg *seg_list)
 	t_token *new;
 	t_token *temp;
 
-	new = safe_malloc(sizeof(t_token));
+	new = safe_malloc(sizeof(t_token), "add_token");
 	if (!new)
 		return (NULL);
 	new->seg_list = seg_list;

@@ -6,29 +6,35 @@
 #    By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/22 23:11:08 by otlacerd          #+#    #+#              #
-#    Updated: 2026/03/13 19:22:01 by nismayil         ###   ########.fr        #
+#    Updated: 2026/03/16 15:22:07 by nismayil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 RM = rm -rf
 OBJ_DIR = build
-INCLUDES = -I. -I./includes
+INCLUDES = -I. -I./includes -I./src/parsing/Libft
 LDFLAGS = -lreadline
 VALGRIND = valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp
+
+LIBFT_MAKE=make -C src/parsing/Libft
+LIBFT_LIB=src/parsing/Libft/libft.a
+
 all: $(NAME)
 
 SRCS =	minishell.c \
 		src/execution/data/data.c \
+		src/execution/data/data_utils.c \
 		src/parsing/lexer/lexer.c \
-		src/parsing/lexer/lex_quotes.c \
+		src/parsing/lexer/lexer_quotes.c \
 		src/parsing/lexer/lexer_utils.c \
 		src/parsing/lexer/lexer_context.c \
 		src/parsing/lexer/token_ops.c \
 		src/parsing/lexer/lexer_list_ops.c \
+		src/parsing/lexer/print_token.c \
 		src/parsing/pipeline/pipeline.c \
 		src/parsing/pipeline/pipeline_utils.c \
 		src/parsing/pipeline/pipeline_ops.c \
@@ -36,8 +42,8 @@ SRCS =	minishell.c \
 		src/parsing/pipeline/redir_list_ops.c \
 		src/parsing/syntax_check/syntax_check.c \
 		src/parsing/syntax_check/syntax_errors.c \
-		src/parsing/signal/signal.c \
 		src/parsing/expand/expand.c \
+		src/parsing/print_command/print_command.c \
 		src/parsing/parser.c \
 		src/execution/core_execution/absolute_path.c \
 		src/execution/core_execution/core_execution_utils.c \
@@ -67,16 +73,15 @@ SRCS =	minishell.c \
  		src/execution/built-ins/cd.c \
  		src/execution/built-ins/pwd.c \
 		src/execution/signals/signals.c \
-
-# 		src/execution/data/lst_comand_tools.c \
-# 		src/execution/data/lst_redir_tools.c \
-# 		src/execution/data/create_redir_lst.c \
-# 		src/execution/data/create_comand_lst.c \
+		
 
 OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
+$(NAME): $(LIBFT_LIB) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT_LIB) -o $(NAME) $(LDFLAGS)
+
+$(LIBFT_LIB):
+	$(LIBFT_MAKE)
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
@@ -84,9 +89,11 @@ $(OBJ_DIR)/%.o: %.c
 
 clean:	
 	$(RM) $(OBJ_DIR)
+	$(LIBFT_MAKE) clean
 
 fclean: clean
 	$(RM) $(NAME)
+	$(LIBFT_MAKE) fclean
 
 re: fclean all
 

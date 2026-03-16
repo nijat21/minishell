@@ -1,37 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/16 15:23:38 by nismayil          #+#    #+#             */
+/*   Updated: 2026/03/16 15:23:39 by nismayil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <parser.h>
 
-/*
-    cat << EOF1 file.txt > out.txt >> log.txt < in.txt
-    hello world
-    EOF1
-
-    t_comand
-    ┌─────────────────────────────┐
-    │ comand = "cat"              │
-    │ args = ["cat", "file.txt"]  │
-    │ redir →                     │
-    │   ├ type = REDIR_HEREDOC    │
-    │   │ redir_arg = "EOF1"      │
-    │   │ next →                  │
-    │   ├ type = REDIR_OUTPUT     │
-    │   │ redir_arg = "out.txt"   │
-    │   │ next →                  │
-    │   ├ type = REDIR_APPEND     │
-    │   │ redir_arg = "log.txt"   │
-    │   │ next →                  │
-    │   └ type = REDIR_INPUT      │
-    │     redir_arg = "in.txt"    │
-    └─────────────────────────────┘
-    next = NULL
-
-*/
-
-static t_comand *word_tokens_to_cmd(t_comand **cmd, t_token **tk)
+static t_cmd *word_tokens_to_cmd(t_cmd **cmd, t_token **tk, t_all *all)
 {
     char **new_args;
-    t_comand *new;
+    t_cmd *new;
 
-    new_args = word_tokens_to_args(tk);
+    new_args = word_tokens_to_args(tk, all);
     if (!new_args)
     {
         command_lstclear(cmd);
@@ -64,9 +50,9 @@ static bool token_has_quote(t_seg *seg)
     return false;
 }
 
-static t_redirection *token_to_redir(t_comand **cmd, t_token **tk)
+static t_redir *token_to_redir(t_cmd **cmd, t_token **tk, t_all *all)
 {
-    t_redirection *new_red;
+    t_redir *new_red;
     t_redir_type type;
     char *arg;
 
@@ -81,7 +67,7 @@ static t_redirection *token_to_redir(t_comand **cmd, t_token **tk)
     (*tk) = (*tk)->next;
     if (!(*tk))
         return NULL;
-    arg = seg_to_str((*tk)->seg_list);
+    arg = seg_to_str((*tk)->seg_list, all);
     if (!arg)
         return NULL;
     new_red = redir_lstnew(type, arg, token_has_quote((*tk)->seg_list));
@@ -91,22 +77,22 @@ static t_redirection *token_to_redir(t_comand **cmd, t_token **tk)
     return (*cmd)->redir;
 }
 
-t_comand **build_pipeline(t_comand **cmd, t_token *tk)
+t_cmd **build_pipeline(t_cmd **cmd, t_token *tk, t_all *all)
 {
-    t_comand *curr;
+    t_cmd *curr;
 
     curr = NULL;
     while (tk)
     {
         if (tk->type == WORD)
         {
-            curr = word_tokens_to_cmd(&curr, &tk);
+            curr = word_tokens_to_cmd(&curr, &tk, all);
             if (!curr)
                 return NULL;
         }
         else if (ttype_to_tctx(tk->type) == T_REDIRS)
         {
-            if (!token_to_redir(&curr, &tk))
+            if (!token_to_redir(&curr, &tk, all))
                 return NULL;
         }
         else if (tk->type == PIPE)

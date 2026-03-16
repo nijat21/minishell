@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_command.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/16 15:26:31 by nismayil          #+#    #+#             */
+/*   Updated: 2026/03/16 15:26:32 by nismayil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <parser.h>
 
 const char *redir_type_to_str(t_redir_type type)
@@ -13,7 +25,7 @@ const char *redir_type_to_str(t_redir_type type)
     return ("UNKNOWN");
 }
 
-void print_redirections(t_redirection *redir)
+void print_redirections(t_redir *redir)
 {
     int i;
 
@@ -29,7 +41,7 @@ void print_redirections(t_redirection *redir)
     }
 }
 
-void print_comand(t_comand *cmd)
+void print_command(t_cmd *cmd)
 {
     int i;
 
