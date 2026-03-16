@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:54:14 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/13 19:00:23 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/15 23:33:55 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int redir_append(t_redir *redir, int fds[2]);
 int redir_heredoc(t_redir *redir, int fds[2], char **temps, int count);
 
 //-redir_heredoc_utils.c
-int exec_heredoc_content(t_all *all, int *signal, char *end_marker, int fd);
-int read_write_content(char *end_mark, int stdin_backup, int fd, int *sig);
+int exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd);
+int read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd);
 int add_heredoc_history(char *buffer, char *user_line, int size, char *path);
 char *create_heredoc_temp_name(int index, int father_pid, char *std_name);
 void unlink_all_heredoc_temps(char **heredoc_temps);

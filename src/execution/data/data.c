@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   data.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:43:11 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/11 15:36:15 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/14 22:56:55 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <data.h>
+#include <parser.h>
 #include <built-ins.h>
 
 t_all *init_structures(void)
@@ -97,7 +98,7 @@ void	end_structures(t_all *all, int is_the_end, int is_children)
 		free_array_string(all->heredoc_temps, 0);
 	destroy_fds(all->fds, 0);
 	if (all->head != NULL)
-		comand_lstclear(&all->head, del);
+		command_lstclear(&all->head);
 	if (all->children_pids)
 		free(all->children_pids);
 	if (is_the_end == true)
@@ -115,41 +116,6 @@ void	end_structures(t_all *all, int is_the_end, int is_children)
 		exit (1);
 	}
 }
-
-// void	end_structures(t_all *all, int is_the_end, int is_children)
-// {
-// 	if (!all)
-// 		return ;
-// 	if (all->heredoc_temps)
-// 	{
-		
-// 	}
-// 		free_array_string(all->heredoc_temps, 0);
-// 	unlink_all_heredoc_temps(all->heredoc_count);
-// 	// if (is_children == false)
-// 	// 	unlink("/tmp/minishell_std_storage");
-// 	destroy_fds(all->fds, 0);
-// 	if (all->head != NULL)
-// 		comand_lstclear(&all->head, del);
-// 	if (all->children_pids)
-// 		free(all->children_pids);
-// 	if (is_the_end == true)
-// 	{
-// 		rl_clear_history();
-// 		destroy_fds(all->fds, 1);
-// 		if (all->fds)
-// 			free(all->fds);
-// 		if ((all->my_env) && (all->my_env->envp))
-// 		{
-// 			free_array_string(all->my_env->envp, 0);
-// 			free(all->my_env);
-// 		}
-// 		if (all->process_info)
-// 			free(all->process_info);
-// 		free(all);
-// 		exit (1);
-// 	}
-// }
 
 int	get_line(char **line)
 {

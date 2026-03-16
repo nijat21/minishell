@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 23:13:23 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/13 19:03:26 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/14 23:20:14 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,16 @@ typedef struct s_redir
 {
     t_redir_type type;
     char *redir_arg;
+    bool has_quote;
     struct s_redir *next;
 } t_redir;
 
-typedef struct s_comand
+typedef struct s_cmd
 {
     char *comand;
     char **args;
     t_redir *redir;
-    struct s_comand *next;
+    struct s_cmd *next;
 } t_cmd;
 
 typedef struct s_env

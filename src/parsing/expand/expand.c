@@ -1,22 +1,80 @@
 #include <parser.h>
+#include <built-ins.h>
 
 // segments of token 1. user, exp=false, 2. $VAR, exp=true -> only expand seg 2
-char *expand_var(char *str)
+char *expand_var(const char *str, t_all *all)
 {
-    // IF EXIT_STATUS IS VARIABLE IN STRUCT AND NOT IN ENV
-    // TREAT $? BASED ON THAT
-    return str;
+    char *var;
+    char *res;
+
+    if (ft_strncmp(str, "$?", 3) == 0)
+        return ft_itoa(all->process_info->exit_status);
+    var = ft_split(str, '$')[1];
+    if (!all->my_env || !all->my_env->envp) // -> for testing
+    {
+        ft_putstr_fd("parser: expand_var\n", STDERR_FILENO);
+        return ("");
+    }
+    res = env_get_value(var, all->my_env->envp);
+    printf("res -> %s\n", res);
+    if (!res || (res && !*res))
+        return "";
+    return res;
+}
+
+static char *write_line(char *line, int fd)
+{
+    ft_putstr_fd(line, fd);
+    write(fd, "\n", 1);
+    return line;
+}
+
+static int expand_each(t_all *all, int fd, char **line)
+{
+    char *head;
+    size_t len;
+    char *var;
+
+    head = ft_strchr(*line, '$');
+    head++;
+    len = 0;
+    if (head)
+        len = varname_len(head);
+    if (!len)
+    {
+        write_line(*line, fd);
+        return 0;
+    }
+    var = safe_malloc(sizeof(char) * len, "expand_each");
+    if (!var)
+        return 1;
+    write(fd, *line, --head - *line);
+    ft_strlcpy(var, head, len + 1);
+    ft_putstr_fd(expand_var(var, all), fd);
+    free(var);
+    *line = head + len + 1;
+    return 0;
 }
 
 // expands redir arg user$VAR'more' -> userJOE'more'
-char *expand_redir_arg(const char *str)
+// MULTIPLE VARS users$VAR1$VAR2'more' -> userJoeHobs'more'
+char *expand_redir_var(t_redir *redir, t_all *all, int fd, char *line)
 {
-    // IF EXIT_STATUS IS VARIABLE IN STRUCT AND NOT IN ENV
-    // TREAT $? BASED ON THAT
-    /*
-    char *var;
+    char *new_line;
+    int res;
 
-    var = ft_strchr(str, '$'); // user$VAR -> str + 4
-    */
-    return (char *)str;
+    if (redir->has_quote)
+        return write_line(line, fd);
+    new_line = line;
+    while (new_line)
+    {
+        res = expand_each(all, fd, &new_line);
+        if (res)
+            return NULL;
+        else if (!new_line)
+            break;
+        if (!ft_strchr(new_line, '$'))
+            return write_line(new_line, fd);
+    }
+    return line;
 }

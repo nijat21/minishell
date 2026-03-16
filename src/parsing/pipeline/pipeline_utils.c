@@ -63,7 +63,7 @@ char **join_args(char **args, char **new_args)
     size_t i;
 
     len = arr_len(args) + arr_len(new_args) + 1;
-    start = safe_malloc(sizeof(char *) * len);
+    start = safe_malloc(sizeof(char *) * len, "join_args");
     if (!start)
         return NULL;
     temp = start;
