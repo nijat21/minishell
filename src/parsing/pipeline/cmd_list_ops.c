@@ -1,10 +1,11 @@
 #include <parser.h>
+#include <lexer.h>
 
-t_comand *command_lstnew(char *comand, char **args)
+t_cmd *command_lstnew(char *comand, char **args)
 {
-    t_comand *new;
+    t_cmd *new;
 
-    new = malloc(sizeof(t_comand));
+    new = malloc(sizeof(t_cmd));
     if (!new)
         return (NULL);
     new->comand = comand;
@@ -14,9 +15,9 @@ t_comand *command_lstnew(char *comand, char **args)
     return (new);
 }
 
-void command_lstadd_back(t_comand **lst, t_comand *new)
+void command_lstadd_back(t_cmd **lst, t_cmd *new)
 {
-    t_comand *temp;
+    t_cmd *temp;
 
     temp = *lst;
     if (!new)
@@ -39,10 +40,10 @@ void command_lstadd_back(t_comand **lst, t_comand *new)
     }
 }
 
-void command_lstclear(t_comand **lst)
+void command_lstclear(t_cmd **lst)
 {
-    t_comand *temp;
-    t_comand *nexttemp;
+    t_cmd *temp;
+    t_cmd *nexttemp;
 
     temp = *lst;
     while (temp != NULL)
@@ -56,7 +57,7 @@ void command_lstclear(t_comand **lst)
     *lst = NULL;
 }
 
-size_t command_lstsize(t_comand *lst)
+size_t command_lstsize(t_cmd *lst)
 {
     size_t count;
 

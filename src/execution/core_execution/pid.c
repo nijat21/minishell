@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pid.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:15:59 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/10 22:10:14 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/17 00:24:42 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	create_children_pids_buffer(int **children_pids, int size)
 {
 	int	index;
 
-	if (!children_pids || !size)
+	if (size <= 0)
 		return (0);
 	index = 0;
 	*children_pids = malloc(size * sizeof(int));

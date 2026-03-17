@@ -3,68 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:59:44 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/13 19:04:40 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/16 22:42:59 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
-#define LEXER_H
+# define LEXER_H
 
-#include "../src/parser/Libft/libft.h"
-#include "minishell.h"
+# include "parse_structs.h"
+// #include "libft.h"
+// #include "parser.h"
+// #include "minishell.h"
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <errno.h>
+// typedef enum e_quote
+// {
+// 	Q_NONE,
+// 	Q_SINGLE,
+// 	Q_DOUBLE
+// } t_quote;
 
-typedef enum e_quote
-{
-	Q_NONE,
-	Q_SINGLE,
-	Q_DOUBLE
-} t_quote;
+// typedef enum e_ttype
+// {
+// 	WORD,
+// 	PIPE,
+// 	REDIR_IN,
+// 	REDIR_OUT,
+// 	HEREDOC,
+// 	APPEND,
+// 	UNCLOSED_QUOTE,
+// } t_ttype;
 
-typedef enum e_ttype
-{
-	WORD,
-	PIPE,
-	REDIR_IN,
-	REDIR_OUT,
-	HEREDOC,
-	APPEND,
-	UNCLOSED_QUOTE,
-} t_ttype;
+// typedef struct s_seg
+// {
+// 	char *val;
+// 	bool expand;
+// 	bool has_quote;
+// 	struct s_seg *next;
+// } t_seg;
 
-typedef struct s_seg
-{
-	char *val;
-	bool expand;
-	bool has_quote;
-	struct s_seg *next;
-} t_seg;
+// typedef struct s_token
+// {
+// 	t_ttype type;
+// 	t_seg *seg_list;
+// 	struct s_token *next;
+// } t_token;
 
-typedef struct s_token
-{
-	t_ttype type;
-	t_seg *seg_list;
-	struct s_token *next;
-} t_token;
-
-typedef struct s_lex_ctx
-{
-	t_token *tk;
-	t_seg *seg;
-	const char *start;
-	t_ttype tt;
-	t_quote qc;
-	size_t len;
-	bool has_quote;
-} t_lex_ctx;
+// typedef struct s_lex_ctx
+// {
+// 	t_token *tk;
+// 	t_seg *seg;
+// 	const char *start;
+// 	t_ttype tt;
+// 	t_quote qc;
+// 	size_t len;
+// 	bool has_quote;
+// } t_lex_ctx;
 
 int handle_quotes(t_lex_ctx *ctx, const char *str, int *i);
 

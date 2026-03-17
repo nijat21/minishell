@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 19:09:02 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/13 19:09:03 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/16 22:43:46 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <parser.h>
 #include <lexer.h>
 
 void free_seg_list(t_seg **seg)

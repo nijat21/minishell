@@ -13,7 +13,7 @@ const char *redir_type_to_str(t_redir_type type)
     return ("UNKNOWN");
 }
 
-void print_redirections(t_redirection *redir)
+void print_redirections(t_redir *redir)
 {
     int i;
 
@@ -29,7 +29,7 @@ void print_redirections(t_redirection *redir)
     }
 }
 
-void print_comand(t_comand *cmd)
+void print_comand(t_cmd *cmd)
 {
     int i;
 

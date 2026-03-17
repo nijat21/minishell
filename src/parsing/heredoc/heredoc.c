@@ -1,4 +1,5 @@
 #include <parser.h>
+#include <lexer.h>
 
 /*
     Heredoc handler
@@ -97,7 +98,7 @@
         world
 */
 
-static t_redirection *get_heredoc_fds(t_redirection *redir, int n)
+static t_redir *get_heredoc_fds(t_redir *redir, int n)
 {
     char *num;
     char *path;
@@ -116,10 +117,10 @@ static t_redirection *get_heredoc_fds(t_redirection *redir, int n)
     return redir;
 }
 
-static t_comand *assign_heredoc_fds(t_comand *cmd)
+static t_cmd *assign_heredoc_fds(t_cmd *cmd)
 {
-    t_comand *cmd_iter;
-    t_redirection *redir_iter;
+    t_cmd *cmd_iter;
+    t_redir *redir_iter;
     int n;
 
     n = 0;
@@ -142,7 +143,7 @@ static t_comand *assign_heredoc_fds(t_comand *cmd)
     return cmd;
 }
 
-static t_redirection *read_from_heredoc_file(t_redirection *redir)
+static t_redir *read_from_heredoc_file(t_redir *redir)
 {
     char *new_str;
 
@@ -161,10 +162,10 @@ static t_redirection *read_from_heredoc_file(t_redirection *redir)
     return redir;
 }
 
-static t_comand *update_heredocs_args(t_comand *cmd)
+static t_cmd *update_heredocs_args(t_cmd *cmd)
 {
-    t_comand *cmd_iter;
-    t_redirection *redir_iter;
+    t_cmd *cmd_iter;
+    t_redir *redir_iter;
 
     cmd_iter = cmd;
     while (cmd_iter)
@@ -188,35 +189,35 @@ static t_comand *update_heredocs_args(t_comand *cmd)
     return cmd;
 }
 
-char *status_to_str(int status)
-{
-    if (status == 0)
-        return "EXIT_SUCCESS";
-    else if (status == 1)
-        return "EXIT_FAILURE";
-    else if (status == 2)
-        return "EXIT_MISUSE";
-    else if (status == 130)
-        return "EXIT_SIGINT";
-    return "OTHER";
-}
+// char *status_to_str(int status)
+// {
+//     if (status == 0)
+//         return "EXIT_SUCCESS";
+//     else if (status == 1)
+//         return "EXIT_FAILURE";
+//     else if (status == 2)
+//         return "EXIT_MISUSE";
+//     else if (status == 130)
+//         return "EXIT_SIGINT";
+//     return "OTHER";
+// }
 
-int heredoc_status(bool debug, char *str, int exit_status)
-{
-    if (debug)
-    {
-        ft_putstr_fd("minishell: heredoc: `", STDERR_FILENO);
-        ft_putstr_fd(str, STDERR_FILENO);
-        ft_putstr_fd("' ", STDERR_FILENO);
-        ft_putstr_fd("status: `", STDERR_FILENO);
-        ft_putstr_fd(status_to_str(exit_status), STDERR_FILENO);
-        ft_putstr_fd("'\n", STDERR_FILENO);
-    }
-    return exit_status;
-}
+// int heredoc_status(bool debug, char *str, int exit_status)
+// {
+//     if (debug)
+//     {
+//         ft_putstr_fd("minishell: heredoc: `", STDERR_FILENO);
+//         ft_putstr_fd(str, STDERR_FILENO);
+//         ft_putstr_fd("' ", STDERR_FILENO);
+//         ft_putstr_fd("status: `", STDERR_FILENO);
+//         ft_putstr_fd(status_to_str(exit_status), STDERR_FILENO);
+//         ft_putstr_fd("'\n", STDERR_FILENO);
+//     }
+//     return exit_status;
+// }
 
 // close pipefds
-int heredoc(t_comand *cmd)
+int heredoc(t_cmd *cmd)
 {
     pid_t pid;
     int status;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:22:13 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/11 15:35:17 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/17 00:47:37 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,19 @@ int	redir_heredoc(t_redir *redir, int fds[2], char **temps, int count)
 	close(fd);
 	index++;
 	return (true);
+}
+
+int	is_redirection(char *string)
+{
+	if (!string)
+		return (-1);
+	if (string_compare(string, ">") == 0)
+		return (REDIR_OUTPUT);
+	else if (string_compare(string, "<") == 0)
+		return (REDIR_INPUT);
+	else if (string_compare(string, ">>") == 0)
+		return (REDIR_APPEND);
+	else if (string_compare(string, "<<") == 0)
+		return (REDIR_HEREDOC);
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_ot.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 02:20:46 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/13 18:51:04 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/16 23:41:12 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int argc, char *argv[], char **envp)
 		all->splitted = split_line(all->main_line);
 		create_linked_list(all->splitted, &(all->head), all);
 		exec_all_heredocs(all);
-		exec_comands(all, all->head, all->my_env->envp);
+		exec_all_comands(all, all->head, all->my_env->envp);
 		end_structures(all, 0, 0);
 		free(all->main_line);
 	}

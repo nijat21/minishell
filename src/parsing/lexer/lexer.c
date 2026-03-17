@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:59:33 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/13 19:08:00 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/16 22:43:48 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <parser.h>
 #include <lexer.h>
 
 static int handle_space_operator(t_lex_ctx *ctx, const char *str, int *i)

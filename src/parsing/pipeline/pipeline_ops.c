@@ -1,13 +1,14 @@
 #include <parser.h>
+#include <lexer.h>
 
-void *free_arr_cmdlst(t_comand **cmd, char **args)
+void *free_arr_cmdlst(t_cmd **cmd, char **args)
 {
     free_arr(args);
     command_lstclear(cmd);
     return NULL;
 }
 
-void *free_arg_cmdlst(t_comand **cmd, char *arg)
+void *free_arg_cmdlst(t_cmd **cmd, char *arg)
 {
     free(arg);
     command_lstclear(cmd);

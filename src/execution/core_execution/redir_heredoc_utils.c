@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_heredoc_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 10:40:34 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/13 18:42:06 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/17 00:46:03 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ char *create_heredoc_temp_name(int index, int father_pid, char *std_name)
 	return (name);
 }
 
-char **create_heredoc_temps_buffer(int size, int father_pid)
+char	**create_heredoc_temps_buffer(int size, int father_pid)
 {
 	char **result;
-	int line;
+	int		line;
+	int		heredoc_identifier;
 
 	if (size <= 0)
 		return (NULL);
@@ -66,15 +67,21 @@ char **create_heredoc_temps_buffer(int size, int father_pid)
 	if (!result)
 		return (NULL);
 	line = 0;
+	heredoc_identifier = 0;
 	while (line < size)
 	{
-		result[line] = create_heredoc_temp_name(line, father_pid, STD_TEMP_LOCATION);
+		result[line] = create_heredoc_temp_name(heredoc_identifier, father_pid, STD_TEMP_LOCATION);
 		if (!result[line])
 			return (free_array_string(result, line), NULL);
+		heredoc_identifier++;
+		if (access(result[line], F_OK) == 0)
+		{
+			free(result[line]);
+			continue;
+		}
 		line++;
 	}
-	result[line] = NULL;
-	return (result);
+	return (result[line] = NULL, result);
 }
 
 int add_heredoc_history(char *buffer, char *user_line, int size, char *path)
@@ -86,7 +93,7 @@ int add_heredoc_history(char *buffer, char *user_line, int size, char *path)
 		return (0);
 	while (x.readbytes > 0)
 	{
-		x.readbytes = read(x.fd, buffer, BUFFER_SIZE);
+		x.readbytes = read(x.fd, buffer, BUFFER_SZ);
 		if (x.readbytes == 0)
 			break;
 		x.all_read += x.readbytes;
@@ -134,25 +141,25 @@ int read_write_content(char *end_mark, int stdin_backup, int fd, int *sig)
 	return (1);
 }
 
-int exec_heredoc_content(t_all *all, int *signal, char *end_marker, int fd)
+int	exec_heredoc_content(t_all *all, int *signal, char *end_marker, int fd)
 {
-	int pid;
-	int stdin_backup;
+	int		pid;
+	int		stdin_backup;
 
 	if (!end_marker || fd == -1 || !all || !signal)
 		return (-1);
-	all->process_info->is_heredoc = true;
 	pid = fork();
 	if (pid == -1)
 		return (-1);
 	else if (pid == 0)
 	{
+		all->process_info->is_heredoc = true;
 		stdin_backup = dup(all->fds->std_backup[0]);
 		read_write_content(end_marker, stdin_backup, fd, signal);
 		close(stdin_backup);
 		close(fd);
 		free(all->main_line);
-		end_structures(all, true, true);
+		end_structures(all, true, true, 0);
 	}
 	else if (pid > 0)
 	{

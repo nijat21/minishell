@@ -1,4 +1,5 @@
 #include <parser.h>
+#include <lexer.h>
 
 t_tctx ttype_to_tctx(t_ttype t_tt)
 {

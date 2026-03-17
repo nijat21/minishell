@@ -1,10 +1,11 @@
 #include <parser.h>
+#include <lexer.h>
 
-t_redirection *redir_lstnew(t_redir_type type, char *arg, bool has_quote)
+t_redir *redir_lstnew(t_redir_type type, char *arg, bool has_quote)
 {
-    t_redirection *new;
+    t_redir *new;
 
-    new = safe_malloc(sizeof(t_redirection));
+    new = safe_malloc(sizeof(t_redir));
     if (!new)
         return (NULL);
     new->type = type;
@@ -16,9 +17,9 @@ t_redirection *redir_lstnew(t_redir_type type, char *arg, bool has_quote)
     return (new);
 }
 
-void redir_lstadd_back(t_redirection **lst, t_redirection *new)
+void redir_lstadd_back(t_redir **lst, t_redir *new)
 {
-    t_redirection *temp;
+    t_redir *temp;
 
     temp = *lst;
     if (!new)
@@ -40,10 +41,10 @@ void redir_lstadd_back(t_redirection **lst, t_redirection *new)
     }
 }
 
-void redir_lstclear(t_redirection **lst)
+void redir_lstclear(t_redir **lst)
 {
-    t_redirection *temp;
-    t_redirection *nexttemp;
+    t_redir *temp;
+    t_redir *nexttemp;
 
     temp = *lst;
     while (temp != NULL)
@@ -56,7 +57,7 @@ void redir_lstclear(t_redirection **lst)
     *lst = NULL;
 }
 
-size_t redir_lstsize(t_redirection *lst)
+size_t redir_lstsize(t_redir *lst)
 {
     size_t count;
 

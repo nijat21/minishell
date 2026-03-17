@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core_execution.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:54:14 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/13 19:00:23 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/17 01:08:58 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ int append_comand(char *path, char *comand, int path_idx, int path_size);
 int get_next_path(char *path, char *env_var, int env_idx, int path_size);
 
 //-core_execution.c ------------------------------------------------------------
-int exec_external_cmd(char *abs_path, char **args, t_all *all, int *fds);
-int exec_comands(t_all *all, t_cmd *node, char **envp);
-int exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env);
+int	exec_all_comands(t_all *all, t_cmd *node, char **envp);
+int	exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env);
+int	exec_command(int node_nbr, t_cmd *node, t_origin *origin, t_all *all);
 int get_cmd_origin(char **arg, t_env *envp, t_origin *origin, char *buffer);
+int	exec_external_cmd(char *abs_path, char **args, t_all *all);
 
 //-pipe.c ---------------------------------------------------------------------
 int exec_pipe(int *fds);
@@ -46,19 +47,21 @@ int copy_fds(int fds1[2], int fds2[2]);
 int destroy_fds(t_fds *fds, int flag);
 int restore_original_fds(t_fds *fds);
 int safe_close_fd(int *fd);
+int	close_pipe_fds(int *pipe_fds);
 
 //-redir_execution.c -----------------------------------------------------------
 int exec_all_heredocs(t_all *all);
 char **create_heredoc_temps_buffer(int size, int father_pid);
 int exec_heredoc(t_all *all, t_redir *redir, char **temps, int index);
 int sync_redir_n_pipe(t_cmd *node, t_redir *redir, int *red_fd, int *pp_fd);
-int exec_redirections(t_all *all, t_cmd *node, int red_fds[2], int pp_fds[2]);
+int	exec_redirections(t_all *all, t_cmd *node, t_fds *fds, int *redir_status);
 
 //-redirections.c --------------------------------------------------------------
 int redir_in(t_redir *redir, int fds[2]);
 int redir_out(t_redir *redir, int fds[2]);
 int redir_append(t_redir *redir, int fds[2]);
 int redir_heredoc(t_redir *redir, int fds[2], char **temps, int count);
+int	is_redirection(char *string);
 
 //-redir_heredoc_utils.c
 int exec_heredoc_content(t_all *all, int *signal, char *end_marker, int fd);
@@ -70,5 +73,11 @@ void unlink_all_heredoc_temps(char **heredoc_temps);
 //-core_execution_utils.c ------------------------------------------------------
 int is_accessible(char *path, char *comand);
 int compare_prefix(char *prefix, char *string);
+int	update_underline_on_env(char *absolute_path, t_env *env, char **args);
+int	is_external_comand(t_origin *origin);
+int	has_next_comand(t_cmd *node);
+int is_builtin(t_origin *origin);
+
+
 
 #endif

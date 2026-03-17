@@ -1,9 +1,10 @@
 #include <parser.h>
+#include <lexer.h>
 
-void close_write_fds(t_comand *cmd)
+void close_write_fds(t_cmd *cmd)
 {
-    t_comand *cmd_iter;
-    t_redirection *redir_iter;
+    t_cmd *cmd_iter;
+    t_redir *redir_iter;
 
     cmd_iter = cmd;
     while (cmd_iter)

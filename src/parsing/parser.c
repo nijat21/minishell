@@ -1,4 +1,5 @@
 #include <parser.h>
+#include <lexer.h>
 
 /* Parser layers ->
 	1. Lexer tokenize all commands
@@ -14,10 +15,10 @@
 		- save into commands pipeline
 */
 
-t_comand *parse_tokens(char *line, int *exit_status)
+t_cmd *parse_tokens(char *line, int *exit_status)
 {
 	int res;
-	t_comand *cmd;
+	t_cmd *cmd;
 	t_token *tk;
 
 	// TOKENIZE
@@ -44,10 +45,10 @@ t_comand *parse_tokens(char *line, int *exit_status)
 	}
 	free_token_list(&tk);
 	// HEREDOC
-	*exit_status = heredoc(cmd);
+	// *exit_status = heredoc(cmd);
 	if (*exit_status)
 		return NULL;
-	printf("heredoc status -> %d\n", *exit_status);
+	// printf("heredoc status -> %d\n", *exit_status);
 	*exit_status = EXIT_SUCCESS;
 	return cmd;
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/22 23:11:08 by otlacerd          #+#    #+#              #
-#    Updated: 2026/03/13 19:22:01 by nismayil         ###   ########.fr        #
+#    Updated: 2026/03/17 00:22:09 by otlacerd         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,12 @@ NAME = minishell
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+LIBFT_DIR = src/parsing/Libft
 RM = rm -rf
 OBJ_DIR = build
-INCLUDES = -I. -I./includes
-LDFLAGS = -lreadline
+INCLUDES = -I. -I./includes -I./src/parsing/Libft
+LDFLAGS = -lreadline -L$(LIBFT_DIR) -lft
 VALGRIND = valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp
-all: $(NAME)
-
 SRCS =	minishell.c \
 		src/execution/data/data.c \
 		src/parsing/lexer/lexer.c \
@@ -36,6 +35,10 @@ SRCS =	minishell.c \
 		src/parsing/pipeline/redir_list_ops.c \
 		src/parsing/syntax_check/syntax_check.c \
 		src/parsing/syntax_check/syntax_errors.c \
+		src/parsing/heredoc/close_write_fds.c \
+		src/parsing/heredoc/heredoc_ops.c \
+		src/parsing/heredoc/heredoc_utils.c \
+		src/parsing/heredoc/heredoc.c \
 		src/parsing/signal/signal.c \
 		src/parsing/expand/expand.c \
 		src/parsing/parser.c \
@@ -67,30 +70,37 @@ SRCS =	minishell.c \
  		src/execution/built-ins/cd.c \
  		src/execution/built-ins/pwd.c \
 		src/execution/signals/signals.c \
+		src/execution/data/lst_comand_tools.c
 
-# 		src/execution/data/lst_comand_tools.c \
 # 		src/execution/data/lst_redir_tools.c \
 # 		src/execution/data/create_redir_lst.c \
 # 		src/execution/data/create_comand_lst.c \
 
+all: libft $(NAME)
+
 OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) libft
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-clean:	
+libft:
+	@$(MAKE) -C $(LIBFT_DIR) libft.a
+
+clean:
 	$(RM) $(OBJ_DIR)
+	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
 	$(RM) $(NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
 valgrind: $(NAME)
 	$(VALGRIND) ./$(NAME)
 
-.PHONY: all clean fclean re valgrind
+.PHONY: all clean fclean re valgrind libft

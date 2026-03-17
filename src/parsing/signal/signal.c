@@ -1,4 +1,7 @@
 #include <parser.h>
+#include <lexer.h>
+
+extern int g_signal;
 
 void main_handler(int sig)
 {

@@ -3,39 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 23:13:23 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/13 19:03:26 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/16 23:42:37 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include <unistd.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <linux/limits.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/select.h>
-#include <stdbool.h>
-#include <signal.h>
-#include <errno.h>
-#include <termios.h>
+# include "parser.h"
 
-#define BUFFER_SIZE 25
-#define ENV_INCREMENT 10
-#define FAIL -1
-#define STD_TEMP_LOCATION "/tmp/minishell_std_storage"
-#define MAX_LONG_STR "9223372036854775807"
-#define PATH_BACKUP "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# include <unistd.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include <stdlib.h>
+# include <limits.h>
+# include <linux/limits.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <sys/select.h>
+# include <stdbool.h>
+# include <signal.h>
+# include <errno.h>
+# include <termios.h>
+
+# define BUFFER_SZ 25
+# define CHILD 0 
+# define ENV_INCREMENT 10
+# define FAIL -1
+# define STD_TEMP_LOCATION	"/tmp/minishell_std_storage"
+# define MAX_LONG_STR "9223372036854775807"
+# define PATH_BACKUP "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 extern int g_signal;
 
@@ -57,31 +60,31 @@ typedef struct s_gnl
     int start;
     int end;
     int readbytes;
-    char buffer[BUFFER_SIZE + 1];
+    char buffer[BUFFER_SZ + 1];
 } t_gnl;
 
-typedef enum e_redir_type
-{
-    REDIR_INPUT = 1,
-    REDIR_OUTPUT = 2,
-    REDIR_APPEND = 3,
-    REDIR_HEREDOC = 4
-} t_redir_type;
+// typedef enum e_redir_type
+// {
+//     REDIR_INPUT = 1,
+//     REDIR_OUTPUT = 2,
+//     REDIR_APPEND = 3,
+//     REDIR_HEREDOC = 4
+// } t_redir_type;
 
-typedef struct s_redir
-{
-    t_redir_type type;
-    char *redir_arg;
-    struct s_redir *next;
-} t_redir;
+// typedef struct s_redir
+// {
+//     t_redir_type type;
+//     char *redir_arg;
+//     struct s_redir *next;
+// } t_redir;
 
-typedef struct s_comand
-{
-    char *comand;
-    char **args;
-    t_redir *redir;
-    struct s_comand *next;
-} t_cmd;
+// typedef struct s_comand
+// {
+//     char *comand;
+//     char **args;
+//     struct t_redir_type *redir;
+//     struct s_comand *next;
+// } t_cmd;
 
 typedef struct s_env
 {
@@ -135,7 +138,7 @@ typedef int(func_ptr)(t_all *all, t_cmd *node, t_env *env, char *buffer);
 
 typedef struct s_origin
 {
-    func_ptr *built_in;
+    func_ptr *builtin;
     char *abs_path;
 } t_origin;
 

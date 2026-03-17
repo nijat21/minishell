@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   token_ops.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 19:08:55 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/13 19:08:56 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/16 22:43:51 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <parser.h>
 #include <lexer.h>
 
 t_seg *seg_init(t_seg **seg, size_t len)

@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lex_quotes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:59:24 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/13 19:07:08 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/16 22:43:39 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <parser.h>
 #include <lexer.h>
 
 static int handle_quote_var(t_lex_ctx *ctx, const char *str, int *i, char s_quote)

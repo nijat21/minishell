@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_context.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 19:09:11 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/13 19:09:12 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/16 22:43:41 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <parser.h>
 #include <lexer.h>
 
 void quote_context(const char c, t_quote *qc)

@@ -1,4 +1,5 @@
 #include <parser.h>
+#include <lexer.h>
 
 t_redir_type ttype_to_redir_type(t_ttype type)
 {

@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_list_ops.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 19:09:07 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/13 19:09:08 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/16 22:43:43 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <parser.h>
 #include <lexer.h>
 
 t_lex_ctx *if_len_add_seg(t_lex_ctx *ctx, bool exp)

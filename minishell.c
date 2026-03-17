@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 02:20:46 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/13 19:04:11 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/17 00:52:32 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int g_signal = 0;
 int main(int argc, char *argv[], char **envp)
 {
 	t_all *all;
-	t_comand *cmd;
+	t_cmd *cmd;
 
 	all = init_structures();
 	if (!all)
@@ -34,20 +34,19 @@ int main(int argc, char *argv[], char **envp)
 	{
 		fill_structs_on_loop(all);
 		if (get_line(&(all->main_line)) == false)
-			break;
-		// all->splitted = split_line(all->main_line);
-		// create_linked_list(all->splitted, &(all->head), all);
-		cmd = parse_tokens(all);
+		break;
+		cmd = parse_tokens(all->main_line, &(all->process_info->exit_status));
 		if (!cmd)
 		{
 			command_lstclear(&cmd);
 			break;
 		}
+		all->head = cmd;
 		exec_all_heredocs(all);
-		exec_comands(all, all->head, all->my_env->envp);
-		end_structures(all, 0, 0);
+		exec_all_comands(all, all->head, all->my_env->envp);
+		end_structures(all, 0, 0, 0);
 		free(all->main_line);
 	}
-	end_structures(all, 1, 0);
+	end_structures(all, 1, 0, 0);
 	return (0);
 }

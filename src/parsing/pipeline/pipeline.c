@@ -1,4 +1,5 @@
 #include <parser.h>
+#include <lexer.h>
 
 /*
     cat << EOF1 file.txt > out.txt >> log.txt < in.txt
@@ -26,10 +27,10 @@
 
 */
 
-static t_comand *word_tokens_to_cmd(t_comand **cmd, t_token **tk)
+static t_cmd *word_tokens_to_cmd(t_cmd **cmd, t_token **tk)
 {
     char **new_args;
-    t_comand *new;
+    t_cmd *new;
 
     new_args = word_tokens_to_args(tk);
     if (!new_args)
@@ -64,9 +65,9 @@ static bool token_has_quote(t_seg *seg)
     return false;
 }
 
-static t_redirection *token_to_redir(t_comand **cmd, t_token **tk)
+static t_redir *token_to_redir(t_cmd **cmd, t_token **tk)
 {
-    t_redirection *new_red;
+    t_redir *new_red;
     t_redir_type type;
     char *arg;
 
@@ -91,9 +92,9 @@ static t_redirection *token_to_redir(t_comand **cmd, t_token **tk)
     return (*cmd)->redir;
 }
 
-t_comand **build_pipeline(t_comand **cmd, t_token *tk)
+t_cmd **build_pipeline(t_cmd **cmd, t_token *tk)
 {
-    t_comand *curr;
+    t_cmd *curr;
 
     curr = NULL;
     while (tk)

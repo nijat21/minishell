@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:04:23 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/11 15:35:51 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/17 00:06:03 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,14 @@ int	safe_close_fd(int *fd)
 		close (*fd);
 	}
 	*fd = -1;
+	return (1);
+}
+
+int	close_pipe_fds(int *pipe_fds)
+{
+	if ((pipe_fds[0] >= 0) && (isatty(pipe_fds[0]) == false))
+		safe_close_fd(&(pipe_fds[0]));
+	if ((pipe_fds[1] >= 0) && (isatty(pipe_fds[1]) == false))
+		safe_close_fd(&(pipe_fds[1]));
 	return (1);
 }

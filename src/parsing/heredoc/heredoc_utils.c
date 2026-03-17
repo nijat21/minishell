@@ -1,4 +1,5 @@
 #include <parser.h>
+#include <lexer.h>
 
 char *status_to_str(int status)
 {

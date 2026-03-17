@@ -1,6 +1,7 @@
 #include <parser.h>
+#include <lexer.h>
 
-static void write_to_heredoc_file(t_redirection *redir, char *line)
+static void write_to_heredoc_file(t_redir *redir, char *line)
 {
     char *str;
     size_t len;
@@ -20,7 +21,7 @@ static void write_to_heredoc_file(t_redirection *redir, char *line)
     free(str);
 }
 
-static void setup_del(t_redirection *redir, char **del)
+static void setup_del(t_redir *redir, char **del)
 {
     if (!redir->redir_arg)
         exit(EXIT_MISUSE);
@@ -31,7 +32,7 @@ static void setup_del(t_redirection *redir, char **del)
     redir->redir_arg = NULL;
 }
 
-static void handle_heredoc(t_redirection *redir)
+static void handle_heredoc(t_redir *redir)
 {
     char *del;
     char *line;
@@ -54,10 +55,10 @@ static void handle_heredoc(t_redirection *redir)
     }
 }
 
-void run_heredocs(t_comand *cmd)
+void run_heredocs(t_cmd *cmd)
 {
-    t_comand *cmd_iter;
-    t_redirection *redir_iter;
+    t_cmd *cmd_iter;
+    t_redir *redir_iter;
 
     cmd_iter = cmd;
     while (cmd_iter)
