@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 06:58:17 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/10 22:08:04 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/18 04:48:47 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,15 @@ void	handler(int sig)
 		process_info->signal = sig;
 		process_info->exit_status = 130;
 		if (process_info->is_heredoc == true)
-			close(STDIN_FILENO);
-		pid = waitpid(-1, NULL, 0);
-		if ((pid == -1) && (process_info->is_heredoc == true))
-			write(STDOUT_FILENO, "\n", 1);			
-		if (((pid == -1) && (process_info->is_heredoc == false)))
+		{
+			pid = waitpid(-1, NULL, 0);
+			if ((pid == -1))
+			{
+				write(STDOUT_FILENO, "\n", 1);
+				close(STDIN_FILENO);
+			}
+		}			
+		if ((process_info->is_heredoc == false))
 		{
 			write(STDOUT_FILENO, "\n", 1);
 			rl_replace_line("", 1);

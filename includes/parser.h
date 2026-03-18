@@ -1,37 +1,9 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "lexer.h"
+# include "parse_structures.h"
+# include "lexer.h"
 
-#define EXIT_MISUSE 2
-#define EXIT_NOT_EXEC 126
-#define EXIT_NOT_FOUND 127
-#define EXIT_SIGINT 130
-#define EXIT_SIGQUIT 131
-
-typedef enum e_parse_stat
-{
-	PARSE_SUCCESS,
-	BAD_INPUT,
-	PARSE_FAIL
-} t_parse_stat;
-
-typedef enum e_sig_src
-{
-	S_PARENT,
-	S_CHILD,
-	S_HEREDOC,
-	S_NONE,
-} t_sig_src;
-
-typedef enum e_tctx
-{
-	T_NONE,
-	T_WORD,
-	T_PIPE,
-	T_REDIRS,
-	T_UNCLOSED_QUOTE,
-} t_tctx;
 
 // ===== parser.c =========================================================
 t_parse_stat parse(t_all *all);

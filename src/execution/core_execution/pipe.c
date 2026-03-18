@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 03:35:41 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/12 18:52:19 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/17 19:29:03 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	get_pipe(t_fds *fds, t_cmd *node)
 	{
 		if (pipe(fds->pipe) == -1)
 			return (put_error("Error\nFailed pipe in node_execution\n"), 0);
-		// *temp = fds->pipe[0];
 		temp_fd_0 = fds->pipe[0];
 	}
 	fds->pipe[0] = fds->previous_0;

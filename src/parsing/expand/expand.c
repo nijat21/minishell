@@ -15,10 +15,11 @@ char *expand_var(const char *str, t_all *all)
         ft_putstr_fd("parser: expand_var\n", STDERR_FILENO);
         return ("");
     }
-    res = env_get_value(var, all->my_env->envp);
+    // res = env_get_value(var, all->my_env->envp);
+    res = env_value_dup(var, all->my_env->envp);
     printf("res -> %s\n", res);
     if (!res || (res && !*res))
-        return "";
+        return "";	
     return res;
 }
 

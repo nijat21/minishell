@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redir_heredoc_utils.c                              :+:      :+:    :+:   */
+/*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 10:40:34 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/16 11:05:19 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/17 21:50:59 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,35 @@
 #include <libft.h>
 #include <parser.h>
 
+int	count_heredocs(t_cmd *head)
+{
+	t_cmd *node;
+	t_redir *redir;
+	int	count;
+
+	if (!head)
+		return (0);
+	count = 0;
+	node = head;
+	while (node != NULL)
+	{
+		redir = node->redir;
+		while (redir != NULL)
+		{
+			if (redir->type == REDIR_HEREDOC)
+				count++;
+			redir = redir->next;
+		}
+		node = node->next;
+	}
+	return (count);	
+}
+
 void unlink_all_heredoc_temps(char **heredoc_temps)
 {
 	int line;
 
-	if (!heredoc_temps)
+	if (!heredoc_temps || !(*heredoc_temps))
 		return;
 	line = 0;
 	while (heredoc_temps[line] != NULL)
@@ -88,7 +112,7 @@ int add_heredoc_history(char *buffer, char *user_line, int size, char *path)
 		return (0);
 	while (x.readbytes > 0)
 	{
-		x.readbytes = read(x.fd, buffer, BUFFER_SIZE);
+		x.readbytes = read(x.fd, buffer, BUFFER_SZ);
 		if (x.readbytes == 0)
 			break;
 		x.all_read += x.readbytes;
@@ -108,60 +132,6 @@ int add_heredoc_history(char *buffer, char *user_line, int size, char *path)
 	return (add_history(x.line), free((char *)((long)x.line * (x.index2 > 0))), close(x.fd), 1);
 }
 
-int read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
-{
-	char *line;
 
-	if (!redir->redir_arg)
-		return (0);
-	while (1)
-	{
-		line = readline("> ");
-		if ((line && (string_compare(line, redir->redir_arg) == 0)) || (!line || !*line || (all->process_info->signal == SIGINT)))
-		{
-			if (all->process_info->signal == SIGINT)
-				dup2(stdin_backup, STDIN_FILENO);
-			if (line)
-				free(line);
-			break;
-		}
-		else if (line && *line)
-		{
-			add_history(line);
-			if (!expand_redir_var(redir, all, fd, line))
-				all->process_info->exit_status = EXIT_FAILURE;
-		}
-		free(line);
-	}
-	rl_clear_history();
-	return (1);
-}
 
-int exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
-{
-	int pid;
-	int stdin_backup;
 
-	if (!redir->redir_arg || fd == -1 || !all || !signal)
-		return (-1);
-	all->process_info->is_heredoc = true;
-	pid = fork();
-	if (pid == -1)
-		return (-1);
-	else if (pid == 0)
-	{
-		stdin_backup = dup(all->fds->std_backup[0]);
-		read_write_content(all, redir, stdin_backup, fd);
-		close(stdin_backup);
-		close(fd);
-		free(all->main_line);
-		end_structures(all, true, true);
-	}
-	else if (pid > 0)
-	{
-		all->process_info->is_heredoc = false;
-		waitpid(pid, NULL, 0);
-		return (pid);
-	}
-	return (1);
-}

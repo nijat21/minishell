@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:36:08 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/15 14:40:00 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/18 01:10:08 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,30 @@ char *env_get_value(char *prefix, char **env)
 	return (result);
 }
 
-char *env_value_dup(char *string, int beginning)
+char *env_value_dup(char *prefix, char **env)
+{
+	char *string;
+	char *result;
+	int	size;
+	int	index;
+
+	string = env_get_value(prefix, env);
+	if (!string || (string[-1] != '='))
+		return (NULL);
+	size = 0;
+	while (string[size] != '\0')
+		size++;
+	result = malloc((size + 1) * sizeof(char));
+	if (!result)
+		return (NULL);
+	index = -1;
+	while (string[++index])
+		result[index] = string[index];
+	result[index] = '\0';
+	return (result);
+}
+
+char *env_value_dup_beginning(char *string, int beginning)
 {
 	char 	*result;
 	int		size;
