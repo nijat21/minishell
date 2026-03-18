@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_execution.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 21:47:32 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/18 04:53:55 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/18 17:29:30 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 int exec_all_heredocs(t_all *all)
 {
-	t_cmd 	*node;
+	t_cmd *node;
 	t_redir *redirection;
-	int 	index;
+	int index;
 
 	if (!all)
 		return (0);
@@ -55,7 +55,7 @@ int exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
 		return (0);
 	exec_heredoc_content(all, &(all->process_info->signal), redir, fd);
 	close(fd);
-	
+
 	// Decide if we gonna keep this "history" ----------------------------------------------------------
 	fd = open(temps[index], O_RDONLY);
 	readbytes = read(fd, all->buffer, BUFFER_SZ);
@@ -95,7 +95,17 @@ int exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
 		all->process_info->is_heredoc = false;
 		return (pid);
 	}
-	return (1);	
+	return (1);
+}
+
+static void handle_sigint_eof(t_all *all, t_redir *redir, int stdin_backup, char *line)
+{
+	if (all->process_info->signal == SIGINT)
+		dup2(stdin_backup, STDIN_FILENO);
+	else if (!line)
+		print_heredoc_eof_warning(redir->redir_arg);
+	if (line)
+		free(line);
 }
 
 int read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
@@ -107,26 +117,18 @@ int read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
 	while (1)
 	{
 		line = readline("> ");
-		if ((line && (string_compare(line, redir->redir_arg) == 0)) || (!line || !*line || (all->process_info->signal == SIGINT)))
+		if ((line && (string_compare(line, redir->redir_arg) == 0)) || (!line || (all->process_info->signal == SIGINT)))
 		{
-			if (all->process_info->signal == SIGINT)
-				dup2(stdin_backup, STDIN_FILENO);
-			if (line)
-				free(line);
+			handle_sigint_eof(all, redir, stdin_backup, line);
 			break;
 		}
+		else if (line && !*line)
+			write(fd, "\n", 1);
 		else if (line && *line)
 		{
 			add_history(line);
-			
-			// dprintf(2, "before\n");
 			if (!expand_redir_var(redir, all, fd, line))
 				all->process_info->exit_status = EXIT_FAILURE;
-			// dprintf(2, "after\n");
-			
-			// if ((line != NULL) && (*line != '\0')) // ------------------------ heredoc
-			// 	(write(fd, line, string_length(line)), write(fd, "\n", 1)); // --    working
-
 			if (line != NULL)
 				free(line);
 		}

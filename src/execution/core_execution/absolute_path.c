@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   absolute_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:53:45 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/18 06:22:19 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/18 15:57:33 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <core_execution.h>
 
-int	get_next_path(char *path, char *environment_variable, int env_idx, int path_buffer_size)
+int get_next_path(char *path, char *environment_variable, int env_idx, int path_buffer_size)
 {
-	int	index;
+	int index;
 
 	index = 0;
 	if (!path || !environment_variable || !env_idx)
@@ -29,9 +29,9 @@ int	get_next_path(char *path, char *environment_variable, int env_idx, int path_
 	return (index);
 }
 
-int	append_comand(char *path, char *comand, int path_idx, int path_buffer_size)
+int append_comand(char *path, char *comand, int path_idx, int path_buffer_size)
 {
-	int	index;
+	int index;
 
 	if (!path || !comand || !path_buffer_size || !path_idx)
 		return (0);
@@ -53,10 +53,10 @@ int	append_comand(char *path, char *comand, int path_idx, int path_buffer_size)
 
 char *find_abs_path(char *environment_variable, char *comand, int prefix_size, char *path)
 {
-	int			env_size;
-	int			env_idx;
-	int			path_size;
-	
+	int env_size;
+	int env_idx;
+	int path_size;
+
 	if (!string_zero(path, PATH_MAX) || !environment_variable || !comand || !prefix_size)
 		return (NULL);
 	env_size = string_length(environment_variable);
@@ -71,7 +71,7 @@ char *find_abs_path(char *environment_variable, char *comand, int prefix_size, c
 			return (NULL);
 		if (is_accessible(path) == true)
 		{
-			dprintf(2, "%s\n", path);
+			// dprintf(2, "%s\n", path);
 			return (path);
 		}
 		env_idx += path_size;
@@ -85,7 +85,7 @@ char *get_absolute_path(char *prefix, char *comand, char **envp, char *buffer)
 {
 	char *environment_variable;
 	char *absolute_path;
-	int	prefix_size;
+	int prefix_size;
 
 	if (!prefix || !comand || !envp)
 		return (NULL);
