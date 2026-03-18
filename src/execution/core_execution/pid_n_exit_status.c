@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pid.c                                              :+:      :+:    :+:   */
+/*   pid_n_exit_status.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:15:59 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/10 22:10:14 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/18 05:16:16 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	create_children_pids_buffer(int **children_pids, int size)
 	return (1);
 }
 
-int	update_exit_status(int *exit_status, int status)
+int	update_exit_status(int *exit_status, int status, int in_backup)
 {
 	if (!exit_status)
 		return (0);
@@ -45,10 +45,12 @@ int	update_exit_status(int *exit_status, int status)
 		(*exit_status) = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		(*exit_status) = 128 + WTERMSIG(status);
+	if (*(exit_status) == 130)
+		write(in_backup, "\n", 1);
 	return (1);
 }
 
-int	wait_all_children(int *children_pids, int size, int *exit_status)
+int	wait_all_children(int *children_pids, int size, int *exit_status, int in_backup)
 {
 	int	check_wait;
 	int	index;
@@ -71,8 +73,7 @@ int	wait_all_children(int *children_pids, int size, int *exit_status)
 			status = -(children_pids[index]);
 		index++;
 	}
-	update_exit_status(exit_status, status);
+	// dprintf(2, "wait all children");
+	update_exit_status(exit_status, status, in_backup);
 	return (1);
 }
-
-

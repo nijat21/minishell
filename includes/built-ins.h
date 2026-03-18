@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built-ins.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 22:17:42 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/10 22:39:56 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/18 00:59:52 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char		**create_env(char **envp, int *capacity);
 int			assign_env_struct(t_env *env, char **envp, char *buffer);
 int			assign_minimal_env(t_env *env, char *buffer);
 
-// int		env_free(char **buffer, int size);
+//-env_utils.c
 int			env_add(t_env *env_st, int line, char *key, char *string);
 int			env_remove(t_env *env_st, char *key);
 int			env_update(t_env *env_st, char *key, char *value1, char *value2);
@@ -52,9 +52,10 @@ char		**duplicate_envp(t_env *env_st);
 int			sort_env(char **env);
 
 //-export_utils.c --------------------------------------------------------------
-char		*env_key_dup(char *string, int	delimiter);
-char		*env_value_dup(char *string, int beginning);
-char		*env_get_value(char *prefix, char **env);
+char		*env_key_dup(char *string, int	delimiter); //Careful, have Malloc
+char		*env_get_value(char *prefix, char **env); // Original, not malloc
+char		*env_value_dup(char *prefix, char **env); // Careful, have MALLOC
+char		*env_value_dup_beginning(char *string, int beginning); //have MALLOC
 int			parse_export_string(char *string);
 
 //-unset.c ---------------------------------------------------------------------

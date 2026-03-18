@@ -12,17 +12,17 @@
 
 #include <data.h>
 
-int	is_redirection(char *string)
+int	comand_lstsize(t_cmd *lst)
 {
-	if (!string)
-		return (-1);
-	if (string_compare(string, ">") == 0)
-		return (REDIR_OUTPUT);
-	else if (string_compare(string, "<") == 0)
-		return (REDIR_INPUT);
-	else if (string_compare(string, ">>") == 0)
-		return (REDIR_APPEND);
-	else if (string_compare(string, "<<") == 0)
-		return (REDIR_HEREDOC);
-	return (0);
+	if (!lst)
+		return (0);
+	int	count;
+
+	count = 1;
+	while (lst->next != NULL)
+	{
+		lst = lst->next;
+		count++;
+	}
+	return (count);
 }

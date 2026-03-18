@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:04:23 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/11 15:35:51 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/17 21:56:44 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,6 @@ int	save_original_fds(int *std_backup)
 		return (0);
 	std_backup[0] = dup(STDIN_FILENO);
 	std_backup[1] = dup(STDOUT_FILENO);
-	return (1);
-}
-
-int	copy_fds(int fds1[2], int fds2[2])
-{
-	if (!fds1 || !fds2)
-		return (0);
-	fds1[0] = fds2[0];
-	fds1[1] = fds2[1];
 	return (1);
 }
 
@@ -70,5 +61,14 @@ int	safe_close_fd(int *fd)
 		close (*fd);
 	}
 	*fd = -1;
+	return (1);
+}
+
+int	close_pipe_fds(int *pipe_fds)
+{
+	if ((pipe_fds[0] >= 0) && (isatty(pipe_fds[0]) == false))
+		safe_close_fd(&(pipe_fds[0]));
+	if ((pipe_fds[1] >= 0) && (isatty(pipe_fds[1]) == false))
+		safe_close_fd(&(pipe_fds[1]));
 	return (1);
 }

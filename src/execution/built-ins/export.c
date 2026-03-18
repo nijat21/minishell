@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:59:03 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/10 22:39:06 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/17 22:46:41 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ int	export_case(t_env *env, char *string)
 	if (key != NULL)
 	{
 		if (string[index] != '=')
-			old_value = env_value_dup(env_find_pointer(key, env->envp), index);
+			old_value = env_value_dup_beginning(env_find_pointer(key, env->envp), index);
 		if ((string[index] == '=') || ((*(short *)&(string[index++]) == *(short *)&("+="[0])) && ++(index)))
-			new_value = env_value_dup(string, index);
+			new_value = env_value_dup_beginning(string, index);
 	}
 	env_update(env, key, old_value, new_value);
 	return (free(key), free(old_value), free(new_value), 1);

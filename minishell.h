@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 23:13:23 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/14 23:20:14 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/17 21:53:27 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,16 @@
 #include <errno.h>
 #include <termios.h>
 
-#define BUFFER_SIZE 25
-#define ENV_INCREMENT 10
-#define FAIL -1
-#define STD_TEMP_LOCATION "/tmp/minishell_std_storage"
-#define MAX_LONG_STR "9223372036854775807"
-#define PATH_BACKUP "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# define BUFFER_SZ 25
+# define CHILD 0 
+# define ENV_INCREMENT 10
+# define FAIL -1
+# define STD_TEMP_LOCATION	"/tmp/minishell_std_storage"
+# define MAX_LONG_STR "9223372036854775807"
+# define PATH_BACKUP "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 extern int g_signal;
 
-// ------- get_all_lines
 typedef struct s_gal
 {
     int index1;
@@ -51,13 +51,12 @@ typedef struct s_gal
     int fd;
 } t_gal;
 
-// -------- get_next_line
 typedef struct s_gnl
 {
     int start;
     int end;
     int readbytes;
-    char buffer[BUFFER_SIZE + 1];
+    char buffer[BUFFER_SZ + 1];
 } t_gnl;
 
 typedef enum e_redir_type
@@ -113,19 +112,16 @@ typedef struct s_all
     int argc;
     char **argv;
     char **envp;
-    char **splitted;
     char *main_line;
-    int main_line_count;
     int env_status;
     t_env *my_env;
     t_fds *fds;
     t_proc *process_info;
     t_term saved_termios;
     t_cmd *head;
+	int		father_pid;
     char **heredoc_temps;
     int heredoc_count;
-    int father_pid;
-    int node_number;
     int lst_size;
     int *children_pids;
     char buffer[PATH_MAX + 1];
@@ -136,7 +132,7 @@ typedef int(func_ptr)(t_all *all, t_cmd *node, t_env *env, char *buffer);
 
 typedef struct s_origin
 {
-    func_ptr *built_in;
+    func_ptr *builtin;
     char *abs_path;
 } t_origin;
 

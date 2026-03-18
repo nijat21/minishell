@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 02:20:46 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/16 17:00:31 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/18 04:43:40 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,16 @@ int main(int argc, char *argv[], char **envp)
 	while (1)
 	{
 		fill_structs_on_loop(all);
-		if (get_line(&(all->main_line)) == false)
+		if (get_line(&(all->main_line), all) == false)
 			break;
 		res = parse(all);
 		if (res == PARSE_FAIL)
 			break;
-		// print_command(all->head); // tests case $?some, some $
 		exec_all_heredocs(all);
-		exec_comands(all, all->head, all->my_env->envp);
-		end_structures(all, 0, 0);
+		exec_all_comands(all, all->head, all->my_env->envp);
+		end_structures(all, 0, 0, 0);
 		free(all->main_line);
 	}
-	end_structures(all, 1, 0);
+	end_structures(all, 1, 0, 0);
 	return (0);
 }

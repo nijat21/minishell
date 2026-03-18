@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:17:23 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/12 18:52:50 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/17 22:09:07 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ int	exec_builtin(t_origin *origin, t_cmd *node, t_all *all)
 {
 	if (!origin || !node || !all || !all->my_env)
 		return (0);
-	origin->built_in(all, node, all->my_env, all->buffer);
+	origin->builtin(all, node, all->my_env, all->buffer);
 	return (1);
 }

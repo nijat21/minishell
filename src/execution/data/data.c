@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   data.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:43:11 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/14 22:56:55 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/18 04:48:41 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <data.h>
 #include <parser.h>
 #include <built-ins.h>
+#include <core_execution.h>
 
 t_all *init_structures(void)
 {
@@ -20,19 +21,19 @@ t_all *init_structures(void)
 
 	all = malloc(sizeof(t_all));
 	if (!all)
-		return (put_error("Error\nFailed to allocate struct 'ALL'\n"), end_structures(all, 1, 0), NULL);
+		return (end_structures(all, 1, 0, 1), NULL);
 	*all = (t_all){0};
 	all->fds = malloc(sizeof(t_fds));
 	if (!all->fds)
-		return (put_error("Error\nFailed to allocate struct 'fds'\n"), end_structures(all, 1, 0), NULL);
+		return (end_structures(all, 1, 0, 1), NULL);
 	*all->fds = (t_fds){0};
 	all->my_env = malloc(sizeof(t_env));
 	if (!all->my_env)
-		return (put_error("Error\nFailed to allocate all->my_env in init_structs\n"), end_structures(all, 1, 0), NULL);
+		return (end_structures(all, 1, 0, 1), NULL);
 	*(all->my_env) = (t_env){0};
 	all->process_info = malloc(sizeof(t_proc));
 	if (!all->process_info)
-		return (put_error("Error\nFailed to allocate all->process_info\n"), end_structures(all, 1, 0), NULL);
+		return (end_structures(all, 1, 0, 1), NULL);
 	*(all->process_info) = (t_proc){0};
 	return (all);
 }
@@ -41,26 +42,18 @@ int	fill_structs_on_loop(t_all *all)
 {
 	if (!all)
 		return (0);
-	errno = 0;
+	if (!restore_original_fds(all->fds))
+		return (end_structures(all, 1, 0, 1), 0);
 	string_zero(all->buffer, PATH_MAX);
-	all->father_pid = getpid();
+	all->fds->previous_0 = -1;
 	all->heredoc_temps = NULL;
 	all->main_line = NULL;
 	all->head = NULL;
-	all->node_number = 0;
-	all->lst_size = 0;
 	all->children_pids = NULL;
-	all->fds->pipe[0] = -1;
-	all->fds->pipe[1] = -1;
-	if (!restore_original_fds(all->fds))
-		return (write(2, "Failed to restore_original_fds\n", 31),
-			end_structures(all, 1, 0), exit (1), 0);
-	all->fds->redir[0] = STDIN_FILENO;
-	all->fds->redir[1] = STDOUT_FILENO;
-	all->fds->previous_0 = -1;
+	all->lst_size = 0;
 	all->process_info->signal = 0;
-	all->splitted = NULL;
 	all->heredoc_count = 0;
+	errno = 0;
 	return (1);
 }
 
@@ -68,27 +61,20 @@ int	fill_structures(t_all *all, int argc, char **argv, char **envp)
 {
 	if (!all || !argc || !argv)
 		return (0);
+	all->father_pid = getpid();
 	tcgetattr(STDIN_FILENO, &(all->saved_termios));
-	get_process_info(all);
-	all->process_info->exit_status = 0;
-	string_zero(all->buffer, PATH_MAX);
-	all->heredoc_count = 0;
+	if (!save_original_fds(all->fds->std_backup))
+		return (end_structures(all, 1, 0, 1), exit(1), 0);
+	if (!assign_env_struct(all->my_env, envp, all->buffer))
+		return (end_structures(all, 1, 0, 1), exit(1), 0);
 	all->argv = argv;
 	all->envp = envp;
 	all->argc = argc;
-	all->head = NULL;
-	all->children_pids = NULL;
-	if (!save_original_fds(all->fds->std_backup))
-		return (end_structures(all, 1, 0), exit (1), 0);
-	all->fds->redir[0] = STDIN_FILENO;
-	all->fds->redir[1] = STDOUT_FILENO;
-	all->fds->previous_0 = -1;
-	if (!assign_env_struct(all->my_env, envp, all->buffer))
-		return (end_structures(all, 1, 0), exit (1), 0);
+	get_process_info(all);
 	return (1);
 }
 
-void	end_structures(t_all *all, int is_the_end, int is_children)
+void	end_structures(t_all *all, int is_the_end, int is_children, int status)
 {
 	if (!all)
 		return ;
@@ -103,7 +89,6 @@ void	end_structures(t_all *all, int is_the_end, int is_children)
 		free(all->children_pids);
 	if (is_the_end == true)
 	{
-		rl_clear_history();
 		destroy_fds(all->fds, 1);
 		if (all->fds)
 			free(all->fds);
@@ -113,11 +98,12 @@ void	end_structures(t_all *all, int is_the_end, int is_children)
 		if (all->process_info)
 			free(all->process_info);
 		free(all);
-		exit (1);
+		rl_clear_history();
+		exit (status);
 	}
 }
 
-int	get_line(char **line)
+int	get_line(char **line, t_all *all)
 {
 	(*line) = readline("minishell> ");
 	if (!(*line))
@@ -126,7 +112,10 @@ int	get_line(char **line)
 		return (0);
 	}
 	else if ((*line) && *(*line))
+	{
 		add_history((*line));
+		all->process_info->signal = 0;
+	}
 	return (1);
 }
 

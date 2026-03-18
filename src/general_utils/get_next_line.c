@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:21:00 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/11 15:36:40 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/17 22:13:00 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ char *get_next_line(int fd)
 	char *line;
 	int	total_end;
 
-	if ((BUFFER_SIZE <= 0) || (fd < 0))
+	if ((BUFFER_SZ <= 0) || (fd < 0))
 		return (NULL);
 	if ((gnl[fd].readbytes <= 0) || (gnl[fd].start >= gnl[fd].readbytes))
-		gnl[fd] = (t_gnl){BUFFER_SIZE, 0, BUFFER_SIZE, {0}};
+		gnl[fd] = (t_gnl){BUFFER_SZ, 0, BUFFER_SZ, {0}};
 	total_end = 0;
 	line = NULL;
 	while (((gnl[fd].buffer[gnl[fd].end] != '\n') || (line == NULL))
@@ -63,7 +63,7 @@ char *get_next_line(int fd)
 	{
 		if (gnl[fd].start >= gnl[fd].readbytes)
 		{
-			gnl[fd].readbytes = read(fd, gnl[fd].buffer, BUFFER_SIZE);
+			gnl[fd].readbytes = read(fd, gnl[fd].buffer, BUFFER_SZ);
 			if (gnl[fd].readbytes == -1)
 				return (free(line), NULL);
 			if (gnl[fd].readbytes == 0)

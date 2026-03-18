@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:56:52 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/07 07:18:41 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/17 21:25:55 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	built_exit(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	write(STDERR_FILENO, "exit\n", 5);
 	// line = 0;
 
-	end_structures(all, 1, 0);
-	exit (1);
+	end_structures(all, true, false, 1);
+	exit (1); // retornar o valor escrito em arg[x]
 	return (1);
 }
+

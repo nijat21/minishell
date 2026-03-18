@@ -2,11 +2,11 @@
     leak readline
     Memcheck:Leak
     ...
-    fun:*
+    fun:readline
 }
 {
     leak add_history
     Memcheck:Leak
     ...
-    obj:*
+    fun:add_history
 }

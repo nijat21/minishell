@@ -3,22 +3,23 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/22 23:11:08 by otlacerd          #+#    #+#              #
-#    Updated: 2026/03/16 15:22:07 by nismayil         ###   ########.fr        #
+#    Updated: 2026/03/18 02:28:47 by otlacerd         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -g3 -O0 #-fsanitize=address
 RM = rm -rf
 OBJ_DIR = build
 INCLUDES = -I. -I./includes -I./src/parsing/Libft
 LDFLAGS = -lreadline
-VALGRIND = valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp
+# VALGRIND = valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp
+VALGRIND = valgrind --trace-children=yes --suppressions=readline.supp
 
 LIBFT_MAKE=make -C src/parsing/Libft
 LIBFT_LIB=src/parsing/Libft/libft.a
@@ -26,8 +27,6 @@ LIBFT_LIB=src/parsing/Libft/libft.a
 all: $(NAME)
 
 SRCS =	minishell.c \
-		src/execution/data/data.c \
-		src/execution/data/data_utils.c \
 		src/parsing/lexer/lexer.c \
 		src/parsing/lexer/lexer_quotes.c \
 		src/parsing/lexer/lexer_utils.c \
@@ -49,19 +48,12 @@ SRCS =	minishell.c \
 		src/execution/core_execution/core_execution_utils.c \
 		src/execution/core_execution/core_execution.c \
 		src/execution/core_execution/fd.c \
-		src/execution/core_execution/pid.c \
+		src/execution/core_execution/pid_n_exit_status.c \
 		src/execution/core_execution/pipe.c \
 		src/execution/core_execution/redirection_execution.c \
 		src/execution/core_execution/redirection.c \
-		src/execution/core_execution/redir_heredoc_utils.c \
-		src/general_utils/allocation.c \
-		src/general_utils/allocation_free.c \
-		src/general_utils/char.c \
-		src/general_utils/conversion.c \
-		src/general_utils/error.c \
-		src/general_utils/get_next_line.c \
-		src/general_utils/string_advanced.c \
-		src/general_utils/string_basic.c \
+		src/execution/core_execution/heredoc_utils.c \
+		src/execution/core_execution/heredoc_execution.c \
 		src/execution/built-ins/built-ins_manager.c \
 		src/execution/built-ins/env.c \
 		src/execution/built-ins/env_utils.c \
@@ -72,7 +64,18 @@ SRCS =	minishell.c \
 		src/execution/built-ins/echo.c \
  		src/execution/built-ins/cd.c \
  		src/execution/built-ins/pwd.c \
+		src/execution/data/data.c \
+		src/execution/data/data_utils.c \
 		src/execution/signals/signals.c \
+		src/general_utils/allocation.c \
+		src/general_utils/allocation_free.c \
+		src/general_utils/char.c \
+		src/general_utils/conversion.c \
+		src/general_utils/error.c \
+		src/general_utils/get_next_line.c \
+		src/general_utils/string_advanced.c \
+		src/general_utils/string_basic.c \
+
 		
 
 OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))

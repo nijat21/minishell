@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:41:35 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/14 23:38:52 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/18 04:43:09 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 #include "utils.h"
 
 //-data.c-----------------------------------------------------------------------
-t_all *init_structures(void);
-int fill_structures(t_all *all, int argc, char **argv, char **envp);
-int fill_structs_on_loop(t_all *all);
-void end_structures(t_all *all, int is_the_end, int is_children);
-int get_line(char **line);
+t_all 	*init_structures(void);
+int 	fill_structures(t_all *all, int argc, char **argv, char **envp);
+int 	fill_structs_on_loop(t_all *all);
+int 	get_line(char **line, t_all *all);
+void	end_structures(t_all *all, int is_the_end, int is_children, int status);
 
-//-data_utils.c ----------------------------------------------------------
-int is_redirection(char *string);
+//-data_utils.c ----------------------------------------------------------------
+int		comand_lstsize(t_cmd *lst);
 
 #endif
