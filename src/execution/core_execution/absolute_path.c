@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   absolute_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:53:45 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/10 20:46:14 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/18 06:22:19 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,11 @@ char *find_abs_path(char *environment_variable, char *comand, int prefix_size, c
 		path_size = get_next_path(path, environment_variable, env_idx, PATH_MAX);
 		if (append_comand(path, comand, path_size, PATH_MAX) == false)
 			return (NULL);
-		if (is_accessible(path, comand) == true)
+		if (is_accessible(path) == true)
+		{
+			dprintf(2, "%s\n", path);
 			return (path);
+		}
 		env_idx += path_size;
 		if (environment_variable[env_idx] == ':')
 			env_idx++;
@@ -86,7 +89,7 @@ char *get_absolute_path(char *prefix, char *comand, char **envp, char *buffer)
 
 	if (!prefix || !comand || !envp)
 		return (NULL);
-	if (is_accessible(comand, comand) == true)
+	if (is_accessible(comand) == true)
 		return (comand);
 	if (is_redirection(comand))
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 04:34:05 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/18 04:53:19 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/18 06:13:33 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	get_cmd_origin(char **args, t_env *env, t_origin *origin, char *buffer)
 	origin->builtin = get_built_in(args[0]);
 	if (origin->builtin == NULL)
 		origin->abs_path = get_absolute_path("PATH", args[0], env->envp, buffer);
-	update_underline_on_env(origin->abs_path, env, args);
+	update_underline_on_env(origin->abs_path, env, args); //decide if goes to final version
 	return (1);
 }
 
@@ -35,6 +35,10 @@ int	exec_external_cmd(char *abs_path, char **args, t_all *all)
 	tcsetattr(all->fds->std_backup[0], TCSANOW, &(all->saved_termios));
 	destroy_fds(all->fds, true);
 	rl_clear_history();
+	dprintf(2, "abs path: %s\n", abs_path);
+	int line = -1;
+	while (args && args[++line])
+		dprintf(2, "arg[%d]= %s\n", line, args[line]);
 	if (!!execve(abs_path, args, all->my_env->envp))
 	{
 		restore_original_fds(all->fds);
@@ -59,14 +63,17 @@ int	exec_command(int node_nbr, t_cmd *node, t_origin *origin, t_all *all)
 			return (perror("fork"), 0);
 	}
 	if (pid > 0)
+	{
 		all->children_pids[node_nbr] = pid;
+		return (0);
+	}
 	if (is_builtin(origin))
 	{
 		all->children_pids[node_nbr] = exec_builtin(origin, node, all);
 		if (pid == CHILD)
 			return (end_structures(all, true, true, !(all->children_pids[node_nbr])), 1);
 	}
-	else if (origin->abs_path == NULL)
+	else if ((origin->abs_path == NULL) || ((origin->abs_path)[0] == '\0'))
 		put_comand_error(node->args[0], "comand not found");
 	if (pid == CHILD)
 		exec_external_cmd(origin->abs_path, node->args, all);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 01:54:57 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/07 06:32:14 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/18 05:45:42 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@ int	built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	(void)all;
 	line = 1;
 	flag = 0;
-	if ((line == 1) && (*(short *)node->args[line] == *(short *)"-n"))
+
+	if (node->args[line] && ((line == 1) && (*(short *)node->args[line] == *(short *)"-n")))
 		flag = parse_echo(node->args, &line);
-	while (node->args[line] != NULL)
+	while ((node->args[line] != NULL))
 	{
 		string_print(node->args[line]);
 		line++;

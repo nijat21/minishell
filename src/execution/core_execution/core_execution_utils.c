@@ -6,23 +6,26 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:53:08 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/17 19:26:35 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/18 06:34:16 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <core_execution.h>
 
-int	is_accessible(char *path, char *comand)
+int	is_accessible(char *path)
 {
 	int	result;
 
-	if (!path || !comand)
+	if (!path)
 		return (0);
 	result = 0;
+	// result = access((const char *)path, F_OK);
+	// if (result != 0)
+	// 	return (0);
 	result = access((const char *)path, X_OK);
-	if (result == 0)
-		return (1);
-	return (0);
+	if (result != 0)
+		return (0);
+	return (1);
 }
 
 int	compare_prefix(char *prefix, char *string)

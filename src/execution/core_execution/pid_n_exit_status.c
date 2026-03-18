@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:15:59 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/18 04:50:56 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/18 05:16:16 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	wait_all_children(int *children_pids, int size, int *exit_status, int in_bac
 			status = -(children_pids[index]);
 		index++;
 	}
+	// dprintf(2, "wait all children");
 	update_exit_status(exit_status, status, in_backup);
 	return (1);
 }

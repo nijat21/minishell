@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:54:14 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/18 04:49:47 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/18 06:23:01 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char *get_absolute_path(char *prefix, char *comand, char **envp, char *buffer);
 char *find_abs_path(char *env_var, char *comand, int prefix_size, char *buffer);
 int append_comand(char *path, char *comand, int path_idx, int path_size);
 int get_next_path(char *path, char *env_var, int env_idx, int path_size);
-int is_accessible(char *path, char *comand);
+int is_accessible(char *path);
 
 //-core_execution.c ------------------------------------------------------------
 int	exec_all_comands(t_all *all, t_cmd *node, char **envp);
