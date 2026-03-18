@@ -1,9 +1,8 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-# include "parse_structures.h"
-# include "lexer.h"
-
+#include "parse_structures.h"
+#include "lexer.h"
 
 // ===== parser.c =========================================================
 t_parse_stat parse(t_all *all);

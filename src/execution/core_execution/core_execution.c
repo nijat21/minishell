@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   core_execution.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 04:34:05 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/18 06:13:33 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/18 14:33:01 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <core_execution.h>
 
-int	get_cmd_origin(char **args, t_env *env, t_origin *origin, char *buffer)
+int get_cmd_origin(char **args, t_env *env, t_origin *origin, char *buffer)
 {
 	if (!origin || !args || !env)
 		return (FAIL);
@@ -21,11 +21,11 @@ int	get_cmd_origin(char **args, t_env *env, t_origin *origin, char *buffer)
 	origin->builtin = get_built_in(args[0]);
 	if (origin->builtin == NULL)
 		origin->abs_path = get_absolute_path("PATH", args[0], env->envp, buffer);
-	update_underline_on_env(origin->abs_path, env, args); //decide if goes to final version
+	update_underline_on_env(origin->abs_path, env, args); // decide if goes to final version
 	return (1);
 }
 
-int	exec_external_cmd(char *abs_path, char **args, t_all *all)
+int exec_external_cmd(char *abs_path, char **args, t_all *all)
 {
 	if (!args || !all || !all->my_env || !all->my_env->envp || !all->fds)
 		return (0);
@@ -35,23 +35,23 @@ int	exec_external_cmd(char *abs_path, char **args, t_all *all)
 	tcsetattr(all->fds->std_backup[0], TCSANOW, &(all->saved_termios));
 	destroy_fds(all->fds, true);
 	rl_clear_history();
-	dprintf(2, "abs path: %s\n", abs_path);
+	// dprintf(2, "abs path: %s\n", abs_path);
 	int line = -1;
 	while (args && args[++line])
-		dprintf(2, "arg[%d]= %s\n", line, args[line]);
-	if (!!execve(abs_path, args, all->my_env->envp))
-	{
-		restore_original_fds(all->fds);
-		perror("execve");
-	}
+		// dprintf(2, "arg[%d]= %s\n", line, args[line]);
+		if (!!execve(abs_path, args, all->my_env->envp))
+		{
+			restore_original_fds(all->fds);
+			perror("execve");
+		}
 	handle_exit_status();
 	end_structures(all, 1, 1, 1);
 	return (1);
 }
 
-int	exec_command(int node_nbr, t_cmd *node, t_origin *origin, t_all *all)
+int exec_command(int node_nbr, t_cmd *node, t_origin *origin, t_all *all)
 {
-	int	pid;
+	int pid;
 
 	if (!node || !origin || !all || !all->fds || !node->args[0])
 		return (FAIL);
@@ -80,11 +80,11 @@ int	exec_command(int node_nbr, t_cmd *node, t_origin *origin, t_all *all)
 	return (all->children_pids[node_nbr] = -127);
 }
 
-int	exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env)
+int exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env)
 {
 	t_origin origin;
-	int		redir_status;
-	int		node_nbr;
+	int redir_status;
+	int node_nbr;
 
 	if (!all || !node || !fds || !env)
 		return (0);
@@ -101,13 +101,13 @@ int	exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env)
 		close_pipe_fds(fds->pipe);
 		node_nbr++;
 		node = node->next;
- 	}
+	}
 	return (1);
 }
 
-int	exec_all_comands(t_all *all, t_cmd *node, char **envp)
+int exec_all_comands(t_all *all, t_cmd *node, char **envp)
 {
-	int	size;
+	int size;
 	if (!all || !node || !envp || (all->process_info->signal == SIGINT))
 		return (FAIL);
 	size = comand_lstsize(all->head);

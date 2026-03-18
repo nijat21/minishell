@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 15:23:38 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/16 15:23:39 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/18 17:21:08 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static t_redir *token_to_redir(t_cmd **cmd, t_token **tk, t_all *all)
             return NULL;
     }
     type = ttype_to_redir_type((*tk)->type);
+    if (type == REDIR_HEREDOC)
+        (*tk)->next->seg_list[0].expand = false;
     (*tk) = (*tk)->next;
     if (!(*tk))
         return NULL;
