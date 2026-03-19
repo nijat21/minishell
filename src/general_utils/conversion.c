@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   conversion.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:32:14 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/11 14:17:30 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/19 03:06:00 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <utils.h>
+#include <built-ins.h>
 
 char	*int_to_ascii(int nbr)
 {
@@ -66,5 +67,31 @@ int	ascii_to_int(char *string)
 		result = -result;
 	if ((result < (1 << 31)) || (result > ((1L << 31) - 1)))
 		return (-1);
+	return (result);
+}
+
+int	ascii_to_long(char *string)
+{
+	long	result;
+	int	minus;
+	int	index;
+
+	if (!string || (is_overflow_long(string) == true))
+		return (-1);
+	index = 0;
+	while ((string[index]) && ((string[index] >= 9 && (string[index] <= 13)) || (string[index] == 32)))
+		index++;
+	minus = 0;
+	if ((string[index] == '+') || (string[index] == '-'))
+	{
+		if (string[index] == '-')
+			minus = 1;
+		index++;
+	}
+	result = 0;
+	while ((string[index]) && ((string[index] >= '0') && (string[index] <= '9')))
+		result = ((result * 10) + (string[index++] - 48));
+	if (minus == true)
+		result = -result;
 	return (result);
 }

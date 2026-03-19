@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   absolute_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:53:45 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/18 15:57:33 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/19 06:47:47 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,7 @@ char *find_abs_path(char *environment_variable, char *comand, int prefix_size, c
 		if (append_comand(path, comand, path_size, PATH_MAX) == false)
 			return (NULL);
 		if (is_accessible(path) == true)
-		{
-			// dprintf(2, "%s\n", path);
 			return (path);
-		}
 		env_idx += path_size;
 		if (environment_variable[env_idx] == ':')
 			env_idx++;

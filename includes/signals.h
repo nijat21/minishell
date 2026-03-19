@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 06:58:43 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/13 19:04:28 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/18 23:06:23 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@
 
 void handler(int sig);
 t_proc *get_process_info(t_all *all);
-void signals(int is_child);
+void signals(int have_child, int pid);
 
 #endif

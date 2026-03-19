@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core_execution.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 04:34:05 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/18 14:33:01 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/19 06:43:15 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,12 @@ int exec_external_cmd(char *abs_path, char **args, t_all *all)
 		return (0);
 	if (abs_path == NULL)
 		end_structures(all, true, true, 0);
-	signals(true);
 	tcsetattr(all->fds->std_backup[0], TCSANOW, &(all->saved_termios));
 	destroy_fds(all->fds, true);
 	rl_clear_history();
-	// dprintf(2, "abs path: %s\n", abs_path);
+	signals(true, CHILD);
 	int line = -1;
 	while (args && args[++line])
-		// dprintf(2, "arg[%d]= %s\n", line, args[line]);
 		if (!!execve(abs_path, args, all->my_env->envp))
 		{
 			restore_original_fds(all->fds);
@@ -55,13 +53,7 @@ int exec_command(int node_nbr, t_cmd *node, t_origin *origin, t_all *all)
 
 	if (!node || !origin || !all || !all->fds || !node->args[0])
 		return (FAIL);
-	pid = -1;
-	if (has_next_comand(node) || (node_nbr > 0) || is_external_comand(origin))
-	{
-		pid = fork();
-		if (pid == -1)
-			return (perror("fork"), 0);
-	}
+	pid = exec_fork(node, node_nbr, origin);
 	if (pid > 0)
 	{
 		all->children_pids[node_nbr] = pid;
@@ -71,13 +63,16 @@ int exec_command(int node_nbr, t_cmd *node, t_origin *origin, t_all *all)
 	{
 		all->children_pids[node_nbr] = exec_builtin(origin, node, all);
 		if (pid == CHILD)
-			return (end_structures(all, true, true, !(all->children_pids[node_nbr])), 1);
+			return (end_structures(all, true, true, -(all->children_pids[node_nbr])), 1);
 	}
 	else if ((origin->abs_path == NULL) || ((origin->abs_path)[0] == '\0'))
+	{
 		put_comand_error(node->args[0], "comand not found");
+		all->children_pids[node_nbr] = -127;
+	}
 	if (pid == CHILD)
 		exec_external_cmd(origin->abs_path, node->args, all);
-	return (all->children_pids[node_nbr] = -127);
+	return (1);
 }
 
 int exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env)
@@ -115,6 +110,6 @@ int exec_all_comands(t_all *all, t_cmd *node, char **envp)
 		return (0);
 	create_children_pids_buffer(&all->children_pids, size);
 	exec_linked_lst(all, node, all->fds, all->my_env);
-	wait_all_children(all->children_pids, size, &(all->process_info->exit_status), all->fds->std_backup[0]);
+	wait_all_children(all->children_pids, size, &(all->process_info->exit_status), all->fds->std_backup[1]);
 	return (1);
 }

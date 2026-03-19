@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:27:33 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/07 15:42:59 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/19 06:48:14 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	realloc_appender(char **string, char *content)
 	new_size += string_length(content);
 	*string = re_allocker(*string, (string_size + 1), (new_size + 1), sizeof(char));
 	if (!(*string))
-		return (printf("oi\n"), 0);
+		return (0);
 	string_cat(*string, (new_size + 1), content);
 	return (1);
 }

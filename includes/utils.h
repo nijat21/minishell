@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:46:06 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/13 19:04:34 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/19 07:18:45 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char **split_line(char *string);
 int realloc_appender(char **string, char *to_append);
 
 //-allocation_free.c -----------------------------------------------------------
-int free_array_string(char **array, int size); // Size is optional. Send '0' (zero) for default.
+int free_array_string(char **array, int size); // Size '0' (zero) for default.
 void del(void *content);
 
 //-char.c ----------------------------------------------------------------------
@@ -30,8 +30,9 @@ int is_alphanumerical_or_underline(char xar);
 int is_numerical(char xar);
 
 //-conversion.c ----------------------------------------------------------------
-int ascii_to_int(char *string);
-char *int_to_ascii(int nbr);
+int		ascii_to_int(char *string);
+char	*int_to_ascii(int nbr); // Careful, MALLOC'ed string. Free it.
+int		ascii_to_long(char *string);
 
 //-error.c ---------------------------------------------------------------------
 void put_error(char *problem);

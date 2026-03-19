@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:59:03 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/17 22:46:41 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/19 05:49:47 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	built_export(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	int	line;
 
 	if (!env || !node || !node->args)
-		return (0);
+		return (-1);
 	(void)buffer;
 	(void)all;
 	line = 1;
@@ -123,9 +123,9 @@ int	built_export(t_all *all, t_cmd *node, t_env *env, char *buffer)
 		sort_env(temp);
 		env_show(temp, 1);
 		free(temp);
-		return (1);
+		return (0);
 	}
 	else
 		export_with_arguments(node, &line, env);
-	return (1);
+	return (0);
 }

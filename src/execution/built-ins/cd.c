@@ -20,10 +20,8 @@ int	change_paths(char *new_path, int *oldpwd_status, t_env *env, char *buffer)
 		return (0);
 	old_path = getcwd(buffer, PATH_MAX);
 	chdir(new_path);
-	// printf("change_paths FUNCTION\noldpwd_status = %d\nOLDPWD = %s\n\n", *oldpwd_status, (env_find_pointer("OLDPWD", env->envp)));
-	if ((env_find_pointer("OLDPWD", env->envp) == NULL) && ((*oldpwd_status) == 0))
+	if (*oldpwd_status == 0)
 	{
-		// printf("\n\ndeu update no oldpwd\n\n");
 		env_update(env, "OLDPWD", "=", old_path);
 		(*oldpwd_status) = 1;
 	}
@@ -58,11 +56,11 @@ int	built_cd(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	char 		*new_path;
 
 	if (!all || !env || !env->envp || !node || !node->args)
-		return (0);
+		return (-1);
 	line = -1;
 	while (node->args[++line] != NULL)
 		if (line > 2)
-			return (write(1, "cd: too many arguments\n", 23), 0);
+			return (write(1, "cd: too many arguments\n", 23), -1);
 	line = 1;
 	if (!node->args[line])
 		new_path = env_get_value("HOME", env->envp);
@@ -73,9 +71,9 @@ int	built_cd(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	if (new_path != NULL)
 	{
 		if (access(new_path, F_OK | X_OK) != 0)
-			return (perror("cd"), 0);
+			return (perror("cd"), -1);
 		change_paths(new_path, &oldpwd_status, env, buffer);
-		return (1);
+		return (0);
 	}
-	return (0);
+	return (-1);
 }

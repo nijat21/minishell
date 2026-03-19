@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 06:58:17 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/18 04:48:47 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/18 23:07:46 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ t_proc	*get_process_info(t_all *all)
 void	handler(int sig)
 {
 	int		pid;
-	t_proc	*process_info;
+	static t_proc	*process_info;
 	
+	if (process_info == NULL)
+		process_info = get_process_info(NULL);
 	if (sig == SIGINT)
 	{
-		process_info = get_process_info(NULL);
 		process_info->signal = sig;
 		process_info->exit_status = 130;
 		if (process_info->is_heredoc == true)
@@ -52,12 +53,20 @@ void	handler(int sig)
 	}
 }
 
-void	signals(int is_child)
+void	signals(int have_child, int pid)
 {
-	if (is_child == true)
+	if (have_child == true)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		if (pid == CHILD)
+		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+		}
+		else if (pid > 0)
+		{
+			signal(SIGINT, SIG_IGN);
+			signal(SIGQUIT, SIG_IGN);
+		}
 	}
 	else
 	{

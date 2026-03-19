@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 02:20:46 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/18 17:57:04 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/18 23:08:15 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int main(int argc, char *argv[], char **envp)
 	if (!all)
 		return (1);
 	fill_structures(all, argc, argv, envp);
-	signals(false);
+	signals(false, 0);
 	while (1)
 	{
 		fill_structs_on_loop(all);
