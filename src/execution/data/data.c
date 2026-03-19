@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:43:11 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/18 04:48:41 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/19 07:16:52 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ int	fill_structures(t_all *all, int argc, char **argv, char **envp)
 	return (1);
 }
 
-void	end_structures(t_all *all, int is_the_end, int is_children, int status)
+void	end_structures(t_all *all, int is_the_end, int is_child, int status)
 {
 	if (!all)
 		return ;
-	if (is_children == false)
+	if (is_child == false)
 		unlink_all_heredoc_temps(all->heredoc_temps);
 	if (all->heredoc_temps)
 		free_array_string(all->heredoc_temps, 0);
@@ -111,10 +111,14 @@ int	get_line(char **line, t_all *all)
 		write(2, "exit\n", 5);	
 		return (0);
 	}
-	else if ((*line) && *(*line))
+	else if (*line)
 	{
-		add_history((*line));
-		all->process_info->signal = 0;
+		all->main_line_count++;
+		if (*(*line))
+		{
+			add_history((*line));
+			all->process_info->signal = 0;			
+		}
 	}
 	return (1);
 }

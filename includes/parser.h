@@ -17,7 +17,7 @@ t_tctx ttype_to_tctx(t_ttype t_tt);
 // ===== syntax_errors.c =========================================================
 void print_syntax_error(const char *str);
 void print_unclosed_quote();
-void print_heredoc_eof_warning(const char *str);
+void print_heredoc_eof_warning(const char *str, int line);
 
 // ===== print_command.c =========================================================
 void print_command(t_cmd *cmd);

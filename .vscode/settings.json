@@ -1,0 +1,5 @@
+{
+    "C_Cpp.dimInactiveRegions": false,
+	"tasks.defaultBuildTask": "Compile and Run current C file (minishell)",
+	"cmake.sourceDirectory": "/home/otlacerd/42cursus/milestone 2/utils/push_swap_visualizer/build/_deps/catch2-src/examples"
+}

@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 23:13:23 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/17 21:53:27 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/19 07:07:58 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@
 # define FAIL -1
 # define STD_TEMP_LOCATION	"/tmp/minishell_std_storage"
 # define MAX_LONG_STR "9223372036854775807"
+# define MIN_LONG_STR "-9223372036854775808"
 # define PATH_BACKUP "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# define NO_FORK -2
 
 extern int g_signal;
 
@@ -113,6 +115,7 @@ typedef struct s_all
     char **argv;
     char **envp;
     char *main_line;
+	int		main_line_count;
     int env_status;
     t_env *my_env;
     t_fds *fds;

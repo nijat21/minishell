@@ -6,7 +6,7 @@
 #    By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/22 23:11:08 by otlacerd          #+#    #+#              #
-#    Updated: 2026/03/18 02:28:47 by otlacerd         ###   ########.fr        #
+#    Updated: 2026/03/19 00:18:18 by otlacerd         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ SRCS =	minishell.c \
 		src/execution/core_execution/core_execution_utils.c \
 		src/execution/core_execution/core_execution.c \
 		src/execution/core_execution/fd.c \
-		src/execution/core_execution/pid_n_exit_status.c \
+		src/execution/core_execution/process.c \
 		src/execution/core_execution/pipe.c \
 		src/execution/core_execution/redirection_execution.c \
 		src/execution/core_execution/redirection.c \

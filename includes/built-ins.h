@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 22:17:42 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/18 00:59:52 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/19 04:37:47 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int			exec_builtin(t_origin *origin, t_cmd *node, t_all *all);
 
 //-env.c -----------------------------------------------------------------------
 int			built_env(t_all *all, t_cmd *node, t_env *env, char *buffer);
-int			env_show(char **envp, int is_export);
+void		env_show(char **envp, int is_export);
 char		**create_env(char **envp, int *capacity);
 int			assign_env_struct(t_env *env, char **envp, char *buffer);
 int			assign_minimal_env(t_env *env, char *buffer);
@@ -63,6 +63,8 @@ int			built_unset(t_all *all, t_cmd *node, t_env *env, char *buffer);
 
 //-exit.c ----------------------------------------------------------------------
 int			built_exit(t_all *all, t_cmd *node, t_env *env, char *buffer);
+int			parse_exit(char **args);
+int			is_overflow_long(char *string);
 
 //-pwc.c -----------------------------------------------------------------------
 int			built_pwd(t_all *all, t_cmd *node, t_env *env, char *buffer);

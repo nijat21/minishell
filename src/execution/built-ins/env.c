@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 22:13:30 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/11 15:35:46 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/19 06:38:42 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,23 +84,24 @@ int	assign_env_struct(t_env *env, char **envp, char *buffer)
 	return (1);
 }
 
-int	env_show(char **envp, int is_export)
+void	env_show(char **envp, int is_export)
 {
 	int	line;
 	int	size;
 
-	if (!envp)
-		return (0);
 	line = -1;
 	while (envp[++line])
 	{
+		if ((is_export == true) && (envp[line][0] == '_'))
+			continue;
 		(void)((is_export == true) && (write(1, "export ", 7)));
 		if ((is_export == false) && string_have_equal(envp[line]) == false)
 			continue ;
 		size = 0;
 		while (envp[line][size] && (envp[line][size] != '='))
 			size++;
-		if ((write(1, envp[line], size)) && (envp[line][size] == '='))
+		write(1, envp[line], size);
+		if (envp[line][size] == '=')
 		{
 			write(STDOUT_FILENO, &envp[line][size++], 1);
 			(void)((is_export == true) && (write(STDOUT_FILENO, "\"", 1)));
@@ -110,7 +111,6 @@ int	env_show(char **envp, int is_export)
 		}
 		write(1, "\n", 1);
 	}
-	return (1);
 }
 
 int	built_env(t_all *all, t_cmd *node, t_env *env, char *buffer)
@@ -118,7 +118,7 @@ int	built_env(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	int	size;
 
 	if (!env || !env->envp || !node || !node->args)
-		return (0);
+		return (-1);
 	(void)buffer;
 	(void)all;
 	size = 0;
@@ -126,13 +126,10 @@ int	built_env(t_all *all, t_cmd *node, t_env *env, char *buffer)
 		size++;
 	if (size > 1)
 	{
-		put_error(node->args[0]);
-		put_error(": ");
-		put_error("‘");
-		put_error(node->args[1]);
-		put_comand_error("’", "No such file or directory");
+		put_comand_error("-- 42Lisboa subject", "\n    ◦ env with no options or arguments");
+		return (-2);
 	}
 	else if (size == 1)
 		env_show(env->envp, 0);
-	return (1);	
+	return (0);	
 }

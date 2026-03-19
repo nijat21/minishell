@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:54:14 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/18 06:23:01 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/19 06:24:51 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,13 @@ int	has_next_comand(t_cmd *node);
 int exec_pipe(int *fds);
 int get_pipe(t_fds *fds, t_cmd *node);
 
-//-pid_n_exit_status.c -----------------------------------------------------------------------
-int wait_all_children(int *children_pids, int size, int *exit_status, int in_backup);
+//-pid_n_exit_status.c ---------------------------------------------------------
+int	exec_fork(t_cmd *node, int node_nbr, t_origin *origin);
+int wait_all_children(int *children_pids, int size, int *exit_status, int out_backup);
 int create_children_pids_buffer(int **children_pids, int size);
-int update_exit_status(int *exit_status, int status, int in_backup);
+int update_exit_status(int *exit_status, int status, int out_backup, int is_child);
 void handle_exit_status(void);
+
 
 //-fd.c ------------------------------------------------------------------------
 int save_original_fds(int *std_backup);

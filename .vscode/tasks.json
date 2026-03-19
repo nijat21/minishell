@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Compile and Run current C file (minishell)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "cc -I\"${workspaceFolder}/milestone 3/minishell\" -I\"${workspaceFolder}/milestone 3/minishell/modules\" -I\"${workspaceFolder}/milestone 3/minishell/modules/execution\" -I\"${workspaceFolder}/milestone 3/minishell/modules/parsing\" -o \"${fileDirname}/output\" \"${file}\" && echo \"\n\n::::::::::::::::::::::::::::::::\n::: TERMINAL Standard Output :::\n::::::::::::::::::::::::::::::::\n\n\n\" && \"${fileDirname}/output\""
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false
+      },
+      "problemMatcher": [],
+      "detail": "Compila e executa o arquivo C atual com cc, incluindo headers do minishell e de todos os módulos."
+    },
+    {
+      "label": "Make and Run",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "make && ./minishell"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": false
+      },
+      "problemMatcher": []
+    }
+  ]
+}

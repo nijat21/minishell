@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:35:01 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/05 00:20:13 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/19 05:09:12 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	put_error(char *problem)
 
 void	put_comand_error(char *comand, char *problem)
 {
-	if (!comand)
-		return ;
 	put_error(comand);
 	put_error(": ");
 	put_error(problem);

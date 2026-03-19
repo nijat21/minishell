@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 01:54:57 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/18 05:45:42 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/19 05:56:31 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	parse_echo(char **args, int *line)
 		if (*(short *)args[(*line)] != *(short *)"-n")
 		{
 			if (*line == 1)
-				return (false);
+				return (FAIL);
 			break ;
 		}
 		else
@@ -32,13 +32,13 @@ int	parse_echo(char **args, int *line)
 			while (args[(*line)][index])
 			{
 				if (!((args[(*line)][index] != '\0') && (args[(*line)][index] == 'n')))
-					return (false);
+					return (FAIL);
 				index++;
 			}
 		}
 		(*line)++;
 	}
-	return (true);
+	return (0);
 }
 
 int	built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer)
@@ -47,7 +47,7 @@ int	built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	int	flag;
 
 	if (!node || !node->args)
-		return (0);
+		return (-1);
 	(void)env;
 	(void)buffer;
 	(void)all;
@@ -65,5 +65,5 @@ int	built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	}
 	if (flag == false)
 		write(STDOUT_FILENO, "\n", 1);
-	return (1);
+	return (0);
 }

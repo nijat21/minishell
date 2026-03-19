@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_execution.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 21:47:32 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/18 17:29:30 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/19 07:14:42 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static void handle_sigint_eof(t_all *all, t_redir *redir, int stdin_backup, char
 	if (all->process_info->signal == SIGINT)
 		dup2(stdin_backup, STDIN_FILENO);
 	else if (!line)
-		print_heredoc_eof_warning(redir->redir_arg);
+		print_heredoc_eof_warning(redir->redir_arg, all->main_line_count);
 	if (line)
 		free(line);
 }
