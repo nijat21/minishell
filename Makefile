@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+         #
+#    By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/22 23:11:08 by otlacerd          #+#    #+#              #
-#    Updated: 2026/03/19 00:18:18 by otlacerd         ###   ########.fr        #
+#    Updated: 2026/03/19 17:38:18 by nismayil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJ_DIR = build
 INCLUDES = -I. -I./includes -I./src/parsing/Libft
 LDFLAGS = -lreadline
 # VALGRIND = valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp
-VALGRIND = valgrind --trace-children=yes --suppressions=readline.supp
+VALGRIND = valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --suppressions=readline_only.supp  #--suppressions=readline.supp
 
 LIBFT_MAKE=make -C src/parsing/Libft
 LIBFT_LIB=src/parsing/Libft/libft.a
