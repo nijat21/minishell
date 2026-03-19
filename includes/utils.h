@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:46:06 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/19 07:18:45 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/19 21:22:34 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char *get_next_line(int fd);
 //-string_advanced.c -----------------------------------------------------------
 int string_compare(char *str1, char *str2);
 int string_cat(char *string1, int size, char *string2);
-int string_jump_words(int quantity, char *string, int *index);
+int	string_trim(char **string, char to_remove);
 int string_swap(char **str1, char **str2);
 int array_string_lenght(char **args);
 

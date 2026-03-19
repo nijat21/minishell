@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:56:52 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/19 05:49:22 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/19 22:04:21 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,47 +39,57 @@ int	parse_exit(char **args)
 	int	index;
 	int line;
 
-	if (!args || !(*args) || !(args[1]))
+	if (!args || !(*args))
 		return (0);
 	line = 1;
-	while (args[line] != NULL)
-		line++;
-	if (line > 2)
-		return (put_comand_error(args[0], "too many arguments"), 0);
-	index = 0;
-	while (args[1][index])
-	{
-		if (is_numerical(args[1][index]) == false)
-			return (-1);
-		index++;
-	}
-	if (is_overflow_long(args[1]) == true)
+	if (!(args[line]))
 		return (-1);
+	while (args[line] != NULL)
+		if (++line > 2)
+			return (put_comand_error(args[0], "too many arguments"), -2);
+	string_trim(&args[1], ' ');
+	index = -1;
+	while (args[1][++index])
+		if (args[1][index] == ' ')
+			while (args[1][index++] == ' ')
+				if ((args[1][index++] != ' ') && (args[1][index] != '\0'))
+					return (-3);
+	index = -1;
+	while ((args[1]) && args[1][++index])
+		if (is_numerical(args[1][index]) == false)
+			return (-3);
+	if ((args[1]) && is_overflow_long(args[1]) == true)
+		return (-3);
 	return (1);
 }
 
 int	built_exit(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
+	int		is_child;
 	int		result;
-	long	number;
+	long	exit_number;
 
 	if (!node || !node->args || !all)
-		return (-1);
+		return (-2);
+	is_child = false;
+	if (getpid() != all->father_pid)
+		is_child = true;
 	(void)env;
 	(void)buffer;
 	write(STDERR_FILENO, "exit\n", 5);
 	result = parse_exit(node->args);
 	if (result == 0)
-		return (-1);
-	else if (result == -1)
+		return (EXIT_FAILURE);
+	else if (result == -3)
 	{
 		put_error(node->args[0]);
 		put_error(": ");
 		put_comand_error(node->args[1], "numeric argument required");
 	}
-	number = ascii_to_long(node->args[0]);
-	end_structures(all, true, false, number % 256);
+	else if ((result == -1) && (node->args[1] == NULL))
+		exit_number = all->process_info->exit_status;
+	else if ((result == true) && (node->args[1] != NULL))
+		exit_number = ascii_to_long(node->args[1]);
+	end_structures(all, true, is_child, exit_number % 256);
 	return (0);
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 04:34:05 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/19 06:43:15 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/19 22:05:38 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ int get_cmd_origin(char **args, t_env *env, t_origin *origin, char *buffer)
 	origin->builtin = get_built_in(args[0]);
 	if (origin->builtin == NULL)
 		origin->abs_path = get_absolute_path("PATH", args[0], env->envp, buffer);
+
+	// int	line1 = -1;
+	// while (args[++line1])	
+	// 	dprintf(2, "args[%d] = %s\n", line1, args[line1]);
+	
 	update_underline_on_env(origin->abs_path, env, args); // decide if goes to final version
 	return (1);
 }
@@ -30,7 +35,7 @@ int exec_external_cmd(char *abs_path, char **args, t_all *all)
 	if (!args || !all || !all->my_env || !all->my_env->envp || !all->fds)
 		return (0);
 	if (abs_path == NULL)
-		end_structures(all, true, true, 0);
+		end_structures(all, true, true, 0);	
 	tcsetattr(all->fds->std_backup[0], TCSANOW, &(all->saved_termios));
 	destroy_fds(all->fds, true);
 	rl_clear_history();
