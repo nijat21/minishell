@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 01:54:57 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/19 17:38:02 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/19 17:43:16 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int parse_echo(char **args, int *line)
 	int index;
 
 	if (!args || !(*args))
-		return (FAIL);
+		return (false);
 	while (args[(*line)] != NULL)
 	{
 		if (!((args[*line][0] == '-') && (args[*line][1] == 'n')))
