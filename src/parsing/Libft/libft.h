@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 13:30:21 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/14 23:21:08 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/22 01:33:03 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,18 @@ char				*ft_strjoin3(char const *s1, char const *s2,
 						char const *s3);
 char				*ft_strjoin3_free(char *s1, char *s2, char *s3);
 char				*ft_strtrim(char const *s1, char const *set);
+size_t				count_words(char const *s, char c);
 char				**ft_split(char const *s, char c);
 char				*ft_itoa(int n);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
+size_t				ft_arrlen(char **arr);
+void				ft_free_arr(char **arr);
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
+
 // Bonus
 t_list				*ft_lstnew(void *content);
 void				ft_lstadd_front(t_list **lst, t_list *new);

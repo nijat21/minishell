@@ -6,11 +6,59 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 15:23:38 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/18 17:21:08 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/22 15:29:26 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parser.h>
+
+static void seg_val_expand(char **str, t_seg *seg, t_all *all)
+{
+    char *var;
+    char *new_str;
+
+    if (seg->expand)
+    {
+        var = expand_var(seg->val, all);
+        new_str = ft_strjoin(*str, var);
+        if (var)
+            free(var);
+        if (!new_str)
+        {
+            free(*str);
+            *str = NULL;
+            return;
+        }
+    }
+    else
+        new_str = ft_strjoin(*str, seg->val);
+    free(*str);
+    *str = new_str;
+}
+
+static char *seg_to_str(t_seg *seg, t_all *all)
+{
+    char *str;
+
+    str = NULL;
+    while (seg)
+    {
+        if (!(seg->val))
+        {
+            ft_putstr_fd("Parser: seg->value NULL\n", 2);
+            free(str);
+            return NULL;
+        }
+        seg_val_expand(&str, seg, all);
+        if (!str)
+        {
+            ft_putstr_fd("Parser: seg_to_str\n", 2);
+            return NULL;
+        }
+        seg = seg->next;
+    }
+    return str;
+}
 
 static t_cmd *word_tokens_to_cmd(t_cmd **cmd, t_token **tk, t_all *all)
 {
@@ -25,7 +73,7 @@ static t_cmd *word_tokens_to_cmd(t_cmd **cmd, t_token **tk, t_all *all)
     }
     if (*cmd)
     {
-        (*cmd)->args = join_args((*cmd)->args, new_args);
+        (*cmd)->args = ft_arrconcat_free((*cmd)->args, new_args);
         if (!(*cmd)->args)
             return free_arr_cmdlst(cmd, new_args);
     }

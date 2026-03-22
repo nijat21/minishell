@@ -48,7 +48,7 @@ void command_lstclear(t_cmd **lst)
     while (temp != NULL)
     {
         nexttemp = temp->next;
-        free_arr(temp->args);
+        ft_free_arr(temp->args);
         redir_lstclear(&temp->redir);
         free(temp);
         temp = nexttemp;

@@ -28,14 +28,17 @@ t_cmd **build_pipeline(t_cmd **cmd, t_token *tk, t_all *all);
 // ===== pipeline_ops.c =========================================================
 void *free_arr_cmdlst(t_cmd **cmd, char **args);
 void *free_arg_cmdlst(t_cmd **cmd, char *arg);
-char *seg_to_str(t_seg *seg, t_all *all);
 char **word_tokens_to_args(t_token **tk, t_all *all);
 
 // ===== pipeline_utils.c =========================================================
 t_redir_type ttype_to_redir_type(t_ttype type);
 size_t count_word_tokens(t_token *tk);
-char **join_args(char **args, char **new_args);
-void free_arr(char **arr);
+
+// ===== args_utils.c =========================================================
+char **segval_to_args(char *str);
+char **add_str_to_last_arg(char **args, char *str);
+char **ft_arrconcat_free(char **args, char **new_args);
+void print_arr(char **arr);
 
 // ===== cmd_list_ops.c =========================================================
 t_cmd *command_lstnew(char *comand, char **args);

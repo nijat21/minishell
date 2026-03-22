@@ -35,46 +35,16 @@ size_t count_word_tokens(t_token *tk)
     return count;
 }
 
-static size_t arr_len(char **arr)
+void *free_arr_cmdlst(t_cmd **cmd, char **args)
 {
-    size_t i;
-
-    i = 0;
-    while (arr && arr[i] && arr[++i])
-        i++;
-    return i;
+    ft_free_arr(args);
+    command_lstclear(cmd);
+    return NULL;
 }
 
-void free_arr(char **arr)
+void *free_arg_cmdlst(t_cmd **cmd, char *arg)
 {
-    size_t i;
-
-    i = -1;
-    while (arr[++i])
-        free(arr[i]);
-    free(arr);
-}
-
-char **join_args(char **args, char **new_args)
-{
-    size_t len;
-    char **start;
-    char **temp;
-    size_t i;
-
-    len = arr_len(args) + arr_len(new_args) + 1;
-    start = safe_malloc(sizeof(char *) * len, "join_args");
-    if (!start)
-        return NULL;
-    temp = start;
-    i = -1;
-    while (args[++i])
-        *temp++ = args[i];
-    i = -1;
-    while (new_args[++i])
-        *temp++ = new_args[i];
-    *temp = NULL;
-    free(args);
-    free(new_args);
-    return start;
+    free(arg);
+    command_lstclear(cmd);
+    return NULL;
 }

@@ -6,7 +6,7 @@
 #    By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/22 23:11:08 by otlacerd          #+#    #+#              #
-#    Updated: 2026/03/19 17:38:18 by nismayil         ###   ########.fr        #
+#    Updated: 2026/03/22 15:39:07 by nismayil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRCS =	minishell.c \
 		src/parsing/lexer/print_token.c \
 		src/parsing/pipeline/pipeline.c \
 		src/parsing/pipeline/pipeline_utils.c \
+		src/parsing/pipeline/args_utils.c \
 		src/parsing/pipeline/pipeline_ops.c \
 		src/parsing/pipeline/cmd_list_ops.c \
 		src/parsing/pipeline/redir_list_ops.c \

@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:59:44 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/17 21:16:53 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/20 15:22:55 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 #define LEXER_H
 
-# include "parser.h"
-# include "parse_structures.h"
+#include "parser.h"
+#include "parse_structures.h"
 
 // ===== lexer.c =========================================================
+void ctx_init(t_lex_ctx *ctx);
 t_token *lexer(const char *prompt);
 
 // ===== lexer_quotes.c ==================================================

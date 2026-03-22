@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:59:33 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/13 19:08:00 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/20 15:22:22 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,17 +88,22 @@ static int input_to_tokens(t_lex_ctx *ctx, const char *str, int *i)
 	return 0;
 }
 
+void ctx_init(t_lex_ctx *ctx)
+{
+	ctx->tk = NULL;
+	ctx->qc = Q_NONE;
+	ctx->seg = NULL;
+	ctx->len = 0;
+	ctx->has_quote = false;
+}
+
 t_token *lexer(const char *str)
 {
 	t_lex_ctx ctx;
 	int i;
 	int res;
 
-	ctx.tk = NULL;
-	ctx.qc = Q_NONE;
-	ctx.seg = NULL;
-	ctx.len = 0;
-	ctx.has_quote = false;
+	ctx_init(&ctx);
 	i = -1;
 	while (str[++i])
 	{
