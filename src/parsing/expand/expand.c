@@ -1,6 +1,7 @@
 #include <parser.h>
 #include <built-ins.h>
 
+// segments of token 1. user, exp=false, 2. $VAR, exp=true -> only expand seg 2
 char *expand_var(const char *str, t_all *all)
 {
     char *var;
@@ -16,8 +17,8 @@ char *expand_var(const char *str, t_all *all)
         return (NULL);
     }
     res = env_value_dup(var, all->my_env->envp);
-    if (!res)
-        return ft_strdup("");
+    if (!res || (res && !*res))
+        return "";
     return res;
 }
 

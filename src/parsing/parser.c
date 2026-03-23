@@ -70,7 +70,7 @@ t_parse_stat parse(t_all *all)
 		all->process_info->exit_status = EXIT_FAILURE;
 		return PARSE_FAIL;
 	}
-	all->process_info->exit_status = EXIT_SUCCESS;
+	// all->process_info->exit_status = EXIT_SUCCESS; // OTO comented #################
 	free_token_list(&tk);
 	all->head = cmd;
 	return PARSE_SUCCESS;

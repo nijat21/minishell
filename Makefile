@@ -3,23 +3,31 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/22 23:11:08 by otlacerd          #+#    #+#              #
-#    Updated: 2026/03/19 17:38:18 by nismayil         ###   ########.fr        #
+#    Updated: 2026/03/21 10:22:59 by otlacerd         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g3 -O0 #-fsanitize=address
+CC = cc
+GCC = gcc
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+GFLAGS = -Wall -Wextra -Werror -g3 -O0
 RM = rm -rf
 OBJ_DIR = build
 INCLUDES = -I. -I./includes -I./src/parsing/Libft
 LDFLAGS = -lreadline
-# VALGRIND = valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp
-VALGRIND = valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --suppressions=readline_only.supp  #--suppressions=readline.supp
+VALGRIND = valgrind \
+			--leak-check=full \
+			--track-fds=yes \
+			--show-leak-kinds=all \
+			--track-origins=yes \
+			--suppressions=readline.supp
+CHILDREN = --child-silent-after-fork=no \
+			--trace-children=yes
 
 LIBFT_MAKE=make -C src/parsing/Libft
 LIBFT_LIB=src/parsing/Libft/libft.a
@@ -54,16 +62,17 @@ SRCS =	minishell.c \
 		src/execution/core_execution/redirection.c \
 		src/execution/core_execution/heredoc_utils.c \
 		src/execution/core_execution/heredoc_execution.c \
-		src/execution/built-ins/built-ins_manager.c \
-		src/execution/built-ins/env.c \
-		src/execution/built-ins/env_utils.c \
-		src/execution/built-ins/exit.c \
-		src/execution/built-ins/export_utils.c \
-		src/execution/built-ins/export.c \
-		src/execution/built-ins/unset.c \
-		src/execution/built-ins/echo.c \
- 		src/execution/built-ins/cd.c \
- 		src/execution/built-ins/pwd.c \
+		src/execution/builtins/builtins_manager.c \
+		src/execution/builtins/env.c \
+		src/execution/builtins/env_utils.c \
+		src/execution/builtins/exit.c \
+		src/execution/builtins/exit_utils.c \
+		src/execution/builtins/export_utils.c \
+		src/execution/builtins/export.c \
+		src/execution/builtins/unset.c \
+		src/execution/builtins/echo.c \
+ 		src/execution/builtins/cd.c \
+ 		src/execution/builtins/pwd.c \
 		src/execution/data/data.c \
 		src/execution/data/data_utils.c \
 		src/execution/signals/signals.c \
@@ -76,7 +85,6 @@ SRCS =	minishell.c \
 		src/general_utils/string_advanced.c \
 		src/general_utils/string_basic.c \
 
-		
 
 OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
@@ -100,7 +108,19 @@ fclean: clean
 
 re: fclean all
 
-valgrind: $(NAME)
+val: $(NAME)
 	$(VALGRIND) ./$(NAME)
 
-.PHONY: all clean fclean re valgrind
+valchild: $(NAME)
+	$(VALGRIND) $(CHILDREN) ./$(NAME)
+
+re3:
+	$(MAKE) fclean
+	$(MAKE) CC=$(GCC) CFLAGS="$(GFLAGS)"
+	$(VALGRIND) ./$(NAME)
+
+val3:
+	$(MAKE) CC=$(GCC) CFLAGS="$(GFLAGS)"
+	$(VALGRIND) ./$(NAME)
+
+.PHONY: all clean fclean re val valchild

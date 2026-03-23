@@ -6,11 +6,10 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:21:00 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/17 22:13:00 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 12:47:52 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include <utils.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>

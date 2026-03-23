@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocation_free.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 12:26:28 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/11 12:55:52 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/23 12:47:44 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ int	free_array_string(char **array, int size)
 		free(array[line]);
 		line++;
 	}
-	// if (size == 0)
-	// 	free(array[line]); //free NULL ??
 	free(array);
 	return (1);
 }

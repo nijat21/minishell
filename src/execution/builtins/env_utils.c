@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:38:20 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/08 15:18:35 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/23 02:42:39 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,12 @@ char	*env_find_pointer(char *prefix, char **envp)
 
 	line = 0;
 	if (!prefix || !envp)
-	{
 		return (NULL);
-	}
 	while (envp[line] != NULL)
 	{
 		result = compare_prefix(prefix, envp[line]);
 		if (result > 0)
-		{
 			return (envp[line]);
-		}
 		line++;
 	}
 	return (NULL);
@@ -83,7 +79,7 @@ int	env_add(t_env *env_st, int line, char *key, char *string)
 {
 	int	size;
 
-	if (!env_st || !env_st->envp || !key || (line < 0))
+	if (!env_st || !env_st->envp || (line < 0))
 		return (0);
 	if (line >= env_st->capacity)
 	{
@@ -98,7 +94,7 @@ int	env_add(t_env *env_st, int line, char *key, char *string)
 	if (!env_st->envp[line])
 		return (0);
 	string_copy(env_st->envp[line], key);
-	string_cat(env_st->envp[line], size, string);
+	string_cat(env_st->envp[line], (size + 1), string);
 	if (line >= env_st->size)
 	{
 		env_st->envp[++line] = NULL;

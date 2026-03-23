@@ -14,26 +14,11 @@ void *free_arg_cmdlst(t_cmd **cmd, char *arg)
     return NULL;
 }
 
-static void seg_val_expand(char **str, t_seg *seg, t_all *all)
+void udpate_seg(char **str, char *seg_val)
 {
-    char *var;
     char *new_str;
 
-    if (seg->expand)
-    {
-        var = expand_var(seg->val, all);
-        new_str = ft_strjoin(*str, var);
-        if (var)
-            free(var);
-        if (!new_str)
-        {
-            free(*str);
-            *str = NULL;
-            return;
-        }
-    }
-    else
-        new_str = ft_strjoin(*str, seg->val);
+    new_str = ft_strjoin(*str, seg_val);
     free(*str);
     *str = new_str;
 }
@@ -51,10 +36,14 @@ char *seg_to_str(t_seg *seg, t_all *all)
             free(str);
             return NULL;
         }
-        seg_val_expand(&str, seg, all);
+        if (seg->expand)
+            udpate_seg(&str, expand_var(seg->val, all));
+        else
+            udpate_seg(&str, seg->val);
         if (!str)
         {
-            ft_putstr_fd("Parser: seg_to_str\n", 2);
+            ft_putstr_fd("Parser: ft_strjoin_free\n", 2);
+            free(str);
             return NULL;
         }
         seg = seg->next;
@@ -67,10 +56,8 @@ char **word_tokens_to_args(t_token **tk, t_all *all)
     char **args;
     char *str;
     size_t i;
-    size_t len;
 
-    len = count_word_tokens(*tk);
-    args = safe_malloc(sizeof(char *) * (len + 1), "word_tokens_to_args");
+    args = safe_malloc(sizeof(char *) * (count_word_tokens(*tk) + 1), "word_tokens_to_args");
     if (!args)
         return NULL;
     i = -1;

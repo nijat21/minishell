@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 22:13:30 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/19 06:38:42 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/20 01:30:02 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	assign_minimal_env(t_env *env, char *buffer)
 		env_update(env, "PATH", "=", PATH_BACKUP);
 	pointer = env_get_value("SHLVL", env->envp);
 	shell_lvl = ascii_to_int(pointer);
-	if (shell_lvl < 0)
+	if (shell_lvl <= 0)
 		shell_lvl = 1;
 	else if (shell_lvl >= 0)
 		shell_lvl++;

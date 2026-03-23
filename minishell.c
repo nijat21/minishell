@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 02:20:46 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/19 17:36:50 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/23 11:53:24 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int main(int argc, char *argv[], char **envp)
 		res = parse(all);
 		if (res == PARSE_FAIL)
 			break;
-		// print_command(all->head);
 		exec_all_heredocs(all);
 		exec_all_comands(all, all->head, all->my_env->envp);
 		end_structures(all, 0, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:59:03 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/19 05:49:47 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 12:46:12 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,11 @@ int	export_case(t_env *env, char *string)
 	key = NULL;
 	new_value = NULL;
 	old_value = NULL;
+	
 	while (string[index] && (string[index] != '=') && (*(short *)&(string[index]) != *(short *)&("+="[0])))
 		index++;
+	if (!string[index])
+		return (0);
 	key = env_key_dup(string, index);
 	if (key != NULL)
 	{
@@ -89,8 +92,11 @@ int	export_case(t_env *env, char *string)
 
 int	export_with_arguments(t_cmd *node, int *line, t_env *env)
 {
+	int	to_return;
+	
 	if (!node || !line || !env)
 		return (0);
+	to_return = 0;
 	while (node->args[(*line)])
 	{
 		if (parse_export_string(node->args[(*line)]) == true)
@@ -100,11 +106,11 @@ int	export_with_arguments(t_cmd *node, int *line, t_env *env)
 			put_error("export: `");
 			put_error(node->args[(*line)]);
 			put_error("': not a valid identifier\n");
-			return (0);
+			to_return = -1;
 		}
 		(*line)++;
 	}
-	return (1);
+	return (to_return);
 }
 
 int	built_export(t_all *all, t_cmd *node, t_env *env, char *buffer)
@@ -120,12 +126,12 @@ int	built_export(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	if (!node->args[line])
 	{
 		temp = duplicate_envp(env);
+		if (!temp)
+			return (-1);
 		sort_env(temp);
 		env_show(temp, 1);
 		free(temp);
 		return (0);
 	}
-	else
-		export_with_arguments(node, &line, env);
-	return (0);
+	return (export_with_arguments(node, &line, env));
 }

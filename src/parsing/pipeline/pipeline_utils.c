@@ -68,7 +68,7 @@ char **join_args(char **args, char **new_args)
         return NULL;
     temp = start;
     i = -1;
-    while (args[++i])
+    while (*temp && args[++i])
         *temp++ = args[i];
     i = -1;
     while (new_args[++i])
