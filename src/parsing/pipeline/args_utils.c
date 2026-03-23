@@ -34,6 +34,30 @@ char **add_str_to_last_arg(char **args, char *seg_val)
     return args;
 }
 
+char **ft_arrconcat(char **args, char **new_args)
+{
+    size_t len;
+    char **start;
+    char **temp;
+    ssize_t i;
+
+    if (!args && !new_args)
+        return NULL;
+    len = ft_arrlen(args) + ft_arrlen(new_args) + 1;
+    start = safe_malloc(sizeof(char *) * len, "ft_arrconcat_free");
+    if (!start)
+        return NULL;
+    temp = start;
+    i = -1;
+    while (args && args[++i])
+        *temp++ = ft_strdup(args[i]);
+    i = -1;
+    while (new_args && new_args[++i])
+        *temp++ = ft_strdup(new_args[i]);
+    *temp = NULL;
+    return start;
+}
+
 char **ft_arrconcat_free(char **args, char **new_args)
 {
     size_t len;
@@ -43,8 +67,6 @@ char **ft_arrconcat_free(char **args, char **new_args)
 
     if (!args && !new_args)
         return NULL;
-    else if (!ft_arrlen(new_args))
-        return args;
     len = ft_arrlen(args) + ft_arrlen(new_args) + 1;
     start = safe_malloc(sizeof(char *) * len, "ft_arrconcat_free");
     if (!start)
@@ -61,34 +83,6 @@ char **ft_arrconcat_free(char **args, char **new_args)
     ft_free_arr(new_args);
     return start;
 }
-
-// char **join_args(char **args, char **new_args)
-// {
-//     size_t len;
-//     char **start;
-//     char **temp;
-//     ssize_t i;
-
-//     if (!args && !new_args)
-//         return NULL;
-//     else if (!ft_arrlen(new_args))
-//         return args;
-//     len = ft_arrlen(args) + ft_arrlen(new_args) + 1;
-//     start = safe_malloc(sizeof(char *) * len, "join_args");
-//     if (!start)
-//         return NULL;
-//     temp = start;
-//     i = -1;
-//     while (args && args[++i])
-//         *temp++ = args[i];
-//     i = -1;
-//     while (new_args && new_args[++i])
-//         *temp++ = new_args[i];
-//     *temp = NULL;
-//     free(args);
-//     free(new_args);
-//     return start;
-// }
 
 void print_arr(char **arr)
 {

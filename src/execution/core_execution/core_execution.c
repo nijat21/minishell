@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core_execution.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 04:34:05 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/19 06:43:15 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 04:28:55 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int exec_command(int node_nbr, t_cmd *node, t_origin *origin, t_all *all)
 {
 	int pid;
 
-	if (!node || !origin || !all || !all->fds || !node->args[0])
+	if (!node || !origin || !all || !all->fds || !node->args || !node->args[0])
 		return (FAIL);
 	pid = exec_fork(node, node_nbr, origin);
 	if (pid > 0)

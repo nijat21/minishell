@@ -6,11 +6,34 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 19:25:21 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/22 15:44:19 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/23 14:39:26 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parser.h>
+
+static char **nonquote_var(char **args, char **var_args)
+{
+    char **res;
+
+    if (!var_args)
+    {
+        ft_putstr_fd("nonqute_var: !var_args\n", STDERR_FILENO);
+        return NULL;
+    }
+    if (!ft_arrlen(var_args))
+        return var_args;
+    args = add_str_to_last_arg(args, var_args[0]);
+    if (!args)
+    {
+        ft_free_arr(var_args);
+        return args;
+    }
+    res = ft_arrconcat(args, var_args + 1);
+    ft_free_arr(args);
+    ft_free_arr(var_args);
+    return res;
+}
 
 static char **seg_expand_split(t_seg *seg, t_all *all, char **args)
 {
@@ -19,34 +42,24 @@ static char **seg_expand_split(t_seg *seg, t_all *all, char **args)
 
     exp = expand_var(seg->val, all);
     if (!exp)
+    {
+        ft_putstr_fd("seg_expand_split: !exp\n", STDERR_FILENO);
         return NULL;
+    }
     if (!seg->has_quote)
     {
         var_args = ft_split(exp, ' ');
         free(exp);
-        if (!ft_arrlen(var_args))
-            return NULL;
-        return ft_arrconcat_free(args, var_args);
+        args = nonquote_var(args, var_args);
+        if (!args)
+            ft_putstr_fd("seg_expand_split: !args\n", STDERR_FILENO);
+        return args;
     }
     var_args = add_str_to_last_arg(args, exp);
     free(exp);
     return var_args;
 }
 
-/*
-    FOR EACH SEG:
-        IF EXPAND:
-            IF HAS_QUOTE:
-                CONCAT EXPANDED VAR TO LAST ARG
-            IF NOT:
-                SPLIT EXPANDED VAR TO ARGS AND JOIN TO MAIN ARGS
-        IF NOT:
-            CONCAT SEG->VAL TO LAST ARG
-
-
-
-    CHECK WITH EMTPY INPUT
-*/
 static char **seg_val_expand(char ***args, t_seg *seg, t_all *all)
 {
     char **new_args;
@@ -70,14 +83,13 @@ static char **seg_to_args(t_seg *seg, t_all *all)
     {
         if (!(seg->val))
         {
-            ft_putstr_fd("seg_to_args: seg->value NULL\n", 2);
+            ft_putstr_fd("seg_to_args: !seg->value\n", 2);
             ft_free_arr(args);
             return NULL;
         }
-        args = seg_val_expand(&args, seg, all);
-        if (!args || !ft_arrlen(args))
+        if (!seg_val_expand(&args, seg, all))
         {
-            ft_putstr_fd("seg_to_args: args NULL\n", 2);
+            ft_putstr_fd("seg_to_args: !args\n", 2);
             return NULL;
         }
         seg = seg->next;
@@ -94,13 +106,13 @@ char **word_tokens_to_args(t_token **tk, t_all *all)
     while ((*tk) && (*tk)->type == WORD)
     {
         new_args = seg_to_args((*tk)->seg_list, all);
-        if (!new_args || !ft_arrlen(new_args))
+        if (!new_args)
         {
             ft_putstr_fd("word_tokens_to_args: !new_str\n", STDERR_FILENO);
             return NULL;
         }
         args = ft_arrconcat_free(args, new_args);
-        if (!args || !ft_arrlen((args)))
+        if (!args)
         {
             ft_putstr_fd("word_tokens_to_args: !args\n", STDERR_FILENO);
             return NULL;
@@ -109,7 +121,5 @@ char **word_tokens_to_args(t_token **tk, t_all *all)
             break;
         (*tk) = (*tk)->next;
     }
-    // printf("args -> \n");
-    // print_arr(args);
     return args;
 }

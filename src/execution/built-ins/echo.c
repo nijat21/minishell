@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 01:54:57 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/19 17:43:16 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/23 16:24:23 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int parse_echo(char **args, int *line)
 		return (false);
 	while (args[(*line)] != NULL)
 	{
-		if (!((args[*line][0] == '-') && (args[*line][1] == 'n')))
+		if (!(*(short *)args[*line] == *(short *)'-n'))
 			break;
 		else
 		{
@@ -50,7 +50,7 @@ int built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	line = 1;
 	flag = 0;
 
-	if (node->args[line] && (node->args[line][0] == '-') && (node->args[line][1] == 'n'))
+	if (node->args[line] && (*(short *)node->args[line] == *(short *)'-n'))
 		flag = parse_echo(node->args, &line);
 	else
 		flag = false;

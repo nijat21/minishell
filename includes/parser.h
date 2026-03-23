@@ -37,6 +37,7 @@ size_t count_word_tokens(t_token *tk);
 // ===== args_utils.c =========================================================
 char **segval_to_args(char *str);
 char **add_str_to_last_arg(char **args, char *str);
+char **ft_arrconcat(char **args, char **new_args);
 char **ft_arrconcat_free(char **args, char **new_args);
 void print_arr(char **arr);
 

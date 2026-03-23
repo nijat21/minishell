@@ -18,6 +18,10 @@ void command_lstadd_back(t_cmd **lst, t_cmd *new)
 {
     t_cmd *temp;
 
+    if (new && new->args)
+        new->comand = new->args[0];
+    else
+        new->comand = NULL;
     temp = *lst;
     if (!new)
     {
