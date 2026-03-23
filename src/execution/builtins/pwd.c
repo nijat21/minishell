@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 13:10:09 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 09:32:25 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 13:08:46 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	built_pwd(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	{
 		pwd_pointer = env_get_value("PWD", env->envp);
 		if (pwd_pointer == NULL)
-			return (0);
+			return (perror("getcwd"), -1);
 	}
 	string_print(pwd_pointer, true);
 	env_update(env, "PWD", "=", pwd_pointer);

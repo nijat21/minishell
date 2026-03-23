@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 02:20:46 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/23 11:53:24 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:12:18 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ int main(int argc, char *argv[], char **envp)
 			break;
 		exec_all_heredocs(all);
 		exec_all_comands(all, all->head, all->my_env->envp);
+		// dprintf(2, "after exec_all_comands\n");
 		end_structures(all, 0, 0, 0);
+		// dprintf(2, "after end_structures\n");
 		free(all->main_line);
 	}
 	end_structures(all, 1, 0, 0);

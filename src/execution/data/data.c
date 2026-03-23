@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:43:11 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/23 12:47:37 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:12:13 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,12 @@ void	end_structures(t_all *all, int is_the_end, int is_child, int status)
 		unlink_all_heredoc_temps(all->heredoc_temps);
 	if (all->heredoc_temps)
 		free_array_string(all->heredoc_temps, 0);
+	// dprintf(2, "here\n");
 	destroy_fds(all->fds, false);
+	// dprintf(2, "here2\n");
 	if (all->head != NULL)
 		command_lstclear(&all->head);
+	// dprintf(2, "here3\n");
 	if (all->children_pids)
 		free(all->children_pids);
 	if (is_the_end == true)

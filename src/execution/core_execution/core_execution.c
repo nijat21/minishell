@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 04:34:05 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 04:52:05 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:12:40 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int exec_command(t_cmd *node, t_origin *origin, t_all *all)
 	int	 pid;
 	int	node_nbr;
 
-	if (!node || !origin || !all || !node->comand || !node->args)
+	if (!node || !origin || !all || !node->args || !node->args[0])
 		return (FAIL);
 	node_nbr = all->node_nbr;
 	pid = exec_fork(node, node_nbr, origin);
@@ -87,9 +87,12 @@ int exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env)
 		get_pipe(fds, node);
 		exec_redirections(all, node, fds, &redir_status);
 		exec_pipe(fds->pipe);
+		// dprintf(2, "after exec_pipe\n");
 		get_cmd_origin(node->args, env, &origin, all->buffer);
+		// dprintf(2, "after get_cmd_origin\n");
 		if (redir_status == true)
 			exec_command(node, &origin, all);
+		// dprintf(2, "exec_command\n");
 		restore_fds(fds, node);
 		all->node_nbr++;
 		node = node->next;
@@ -106,7 +109,10 @@ int exec_all_comands(t_all *all, t_cmd *node, char **envp)
 	if (!size)
 		return (0);
 	create_children_pids_buffer(&all->children_pids, size);
+	// dprintf(2, "after create_children_pids_buffer\n");
 	exec_linked_lst(all, node, all->fds, all->my_env);
+	// dprintf(2, "after exec_linked_lst\n");
 	wait_all_children(all->children_pids, size, &(all->process_info->exit_status), all->fds->std_backup[1]);
+	// dprintf(2, "after wait_all_children\n");
 	return (1);
 }

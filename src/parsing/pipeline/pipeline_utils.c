@@ -49,6 +49,8 @@ void free_arr(char **arr)
 {
     size_t i;
 
+	if (!arr)
+		return
     i = -1;
     while (arr[++i])
         free(arr[i]);
