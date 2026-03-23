@@ -62,10 +62,12 @@ static int expand_each(t_all *all, int fd, char **line)
         *line = var;
         return 0;
     }
-    head++;
-    write(fd, *line, --head - *line);
-    var = expand_var(head, all);
-    ft_putstr_fd(var, fd);
+    var = safe_malloc(sizeof(char) * (len + 1), "expand_each");
+    if (!var)
+        return 1;
+    write(fd, *line, head - *line);
+    ft_strlcpy(var, head, len + 1);
+    ft_putstr_fd(expand_var(var, all), fd);
     free(var);
     *line = head + len;
     return 0;

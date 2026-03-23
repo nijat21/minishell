@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:59:03 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/23 16:06:41 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:07:39 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char **duplicate_envp(t_env *env_st)
 {
 	char **result;
-	int	line;
+	int line;
 
 	if (!env_st)
 		return (NULL);
@@ -32,11 +32,11 @@ char **duplicate_envp(t_env *env_st)
 	return (result);
 }
 
-int	sort_env(char **env)
+int sort_env(char **env)
 {
-	int	line;
-	int	smallest;
-	int	finder;
+	int line;
+	int smallest;
+	int finder;
 
 	if (!env)
 		return (0);
@@ -60,13 +60,12 @@ int	sort_env(char **env)
 	return (1);
 }
 
-
-int	export_case(t_env *env, char *string)
+int export_case(t_env *env, char *string)
 {
 	char *key;
 	char *new_value;
 	char *old_value;
-	int	index;
+	int index;
 
 	if (!string || !env || !env->envp)
 		return (-1);
@@ -91,10 +90,10 @@ int	export_case(t_env *env, char *string)
 	return (free(key), free(old_value), free(new_value), 1);
 }
 
-int	export_with_arguments(t_cmd *node, int *line, t_env *env)
+int export_with_arguments(t_cmd *node, int *line, t_env *env)
 {
-	int	to_return;
-	
+	int to_return;
+
 	if (!node || !line || !env)
 		return (0);
 	to_return = 0;
@@ -102,7 +101,6 @@ int	export_with_arguments(t_cmd *node, int *line, t_env *env)
 	{
 		if (parse_export_string(node->args[(*line)]) == true)
 		{
-			dprintf(2, "export_case\n");
 			export_case(env, node->args[(*line)]);
 		}
 		else
@@ -117,10 +115,10 @@ int	export_with_arguments(t_cmd *node, int *line, t_env *env)
 	return (to_return);
 }
 
-int	built_export(t_all *all, t_cmd *node, t_env *env, char *buffer)
+int built_export(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
 	char **temp;
-	int	line;
+	int line;
 
 	if (!env || !node || !node->args)
 		return (-1);
