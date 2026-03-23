@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:54:47 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/22 22:41:15 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:18:00 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	exec_redirections(t_all *all, t_cmd *node, t_fds *fds, int *redir_status)
 	t_redir	*redir;
 	int	result;
 	
-	if (!node || !fds)
+	*redir_status = true;
+	if (!node || !node->redir || !fds)
 		return (FAIL);
 	redir = node->redir;
 	result = 0;
