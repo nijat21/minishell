@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core_execution.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 04:34:05 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 15:12:40 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 16:58:24 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int get_cmd_origin(char **args, t_env *env, t_origin *origin, char *buffer)
 	origin->builtin = NULL;
 	origin->builtin = get_built_in(args[0]);
 	if (origin->builtin == NULL)
-		origin->abs_path = get_absolute_path("PATH", args[0], env->envp, buffer);	
+		origin->abs_path = get_absolute_path("PATH", args[0], env->envp, buffer);
 	update_underline_on_env(origin->abs_path, env, args); // decide if goes to final version
 	return (1);
 }
@@ -30,7 +30,7 @@ int exec_external_cmd(char *abs_path, char **args, t_all *all)
 	if (!args || !all || !all->my_env || !all->my_env->envp || !all->fds)
 		return (0);
 	if (abs_path == NULL)
-		end_structures(all, true, true, 0);	
+		end_structures(all, true, true, 0);
 	tcsetattr(all->fds->std_backup[0], TCSANOW, &(all->saved_termios));
 	destroy_fds(all->fds, true);
 	rl_clear_history();
@@ -43,10 +43,10 @@ int exec_external_cmd(char *abs_path, char **args, t_all *all)
 
 int exec_command(t_cmd *node, t_origin *origin, t_all *all)
 {
-	int	 pid;
-	int	node_nbr;
+	int pid;
+	int node_nbr;
 
-	if (!node || !origin || !all || !node->args || !node->args[0])
+	if (!node || !origin || !all || !all->fds || !node->args || !node->args[0])
 		return (FAIL);
 	node_nbr = all->node_nbr;
 	pid = exec_fork(node, node_nbr, origin);
@@ -69,7 +69,7 @@ int exec_command(t_cmd *node, t_origin *origin, t_all *all)
 	return (1);
 }
 
-void	print_fd(char *name, int fd)
+void print_fd(char *name, int fd)
 {
 	dprintf(2, "%s == %d\n", name, fd);
 }

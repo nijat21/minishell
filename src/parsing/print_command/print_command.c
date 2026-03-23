@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 15:26:31 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/16 15:26:32 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/23 00:18:27 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void print_command(t_cmd *cmd)
                     printf(", ");
                 j++;
             }
-            printf(", NULL]\n");
+            printf("%sNULL]\n", j > 0 ? ", " : "");
         }
         printf("│  redirs:\n");
         if (!cmd->redir)

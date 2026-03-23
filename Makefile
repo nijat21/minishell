@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+         #
+#    By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/22 23:11:08 by otlacerd          #+#    #+#              #
-#    Updated: 2026/03/21 10:22:59 by otlacerd         ###   ########.fr        #
+#    Updated: 2026/03/23 16:48:08 by nismayil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ SRCS =	minishell.c \
 		src/parsing/lexer/print_token.c \
 		src/parsing/pipeline/pipeline.c \
 		src/parsing/pipeline/pipeline_utils.c \
+		src/parsing/pipeline/args_utils.c \
 		src/parsing/pipeline/pipeline_ops.c \
 		src/parsing/pipeline/cmd_list_ops.c \
 		src/parsing/pipeline/redir_list_ops.c \

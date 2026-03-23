@@ -1,79 +1,125 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipeline_ops.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/20 19:25:21 by nismayil          #+#    #+#             */
+/*   Updated: 2026/03/23 16:51:28 by nismayil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <parser.h>
 
-void *free_arr_cmdlst(t_cmd **cmd, char **args)
+static char **nonquote_var(char **args, char **var_args)
 {
-    free_arr(args);
-    command_lstclear(cmd);
-    return NULL;
+    char **res;
+
+    if (!var_args)
+    {
+        ft_putstr_fd("nonqute_var: !var_args\n", STDERR_FILENO);
+        return NULL;
+    }
+    if (!ft_arrlen(var_args))
+        return var_args;
+    args = add_str_to_last_arg(args, var_args[0]);
+    if (!args)
+    {
+        ft_free_arr(var_args);
+        return args;
+    }
+    res = ft_arrconcat(args, var_args + 1);
+    ft_free_arr(args);
+    ft_free_arr(var_args);
+    return res;
 }
 
-void *free_arg_cmdlst(t_cmd **cmd, char *arg)
+static char **seg_expand_split(t_seg *seg, t_all *all, char **args)
 {
-    free(arg);
-    command_lstclear(cmd);
-    return NULL;
+    char *exp;
+    char **var_args;
+
+    exp = expand_var(seg->val, all);
+    if (!exp)
+    {
+        ft_putstr_fd("seg_expand_split: !exp\n", STDERR_FILENO);
+        return NULL;
+    }
+    if (!seg->has_quote)
+    {
+        var_args = ft_split(exp, ' ');
+        free(exp);
+        args = nonquote_var(args, var_args);
+        if (!args)
+            ft_putstr_fd("seg_expand_split: !args\n", STDERR_FILENO);
+        return args;
+    }
+    var_args = add_str_to_last_arg(args, exp);
+    free(exp);
+    return var_args;
 }
 
-void udpate_seg(char **str, char *seg_val)
+static char **seg_val_expand(char ***args, t_seg *seg, t_all *all)
 {
-    char *new_str;
+    char **new_args;
 
-    new_str = ft_strjoin(*str, seg_val);
-    free(*str);
-    *str = new_str;
+    if (seg->expand)
+        new_args = seg_expand_split(seg, all, *args);
+    else
+        new_args = add_str_to_last_arg(*args, seg->val);
+    if (!new_args)
+        return NULL;
+    *args = new_args;
+    return new_args;
 }
 
-char *seg_to_str(t_seg *seg, t_all *all)
+static char **seg_to_args(t_seg *seg, t_all *all)
 {
-    char *str;
+    char **args;
 
-    str = NULL;
+    args = NULL;
     while (seg)
     {
         if (!(seg->val))
         {
-            ft_putstr_fd("Parser: seg->value NULL\n", 2);
-            free(str);
+            ft_putstr_fd("seg_to_args: !seg->value\n", 2);
+            ft_free_arr(args);
             return NULL;
         }
-        if (seg->expand)
-            udpate_seg(&str, expand_var(seg->val, all));
-        else
-            udpate_seg(&str, seg->val);
-        if (!str)
+        if (!seg_val_expand(&args, seg, all))
         {
-            ft_putstr_fd("Parser: ft_strjoin_free\n", 2);
-            free(str);
+            ft_putstr_fd("seg_to_args: !args\n", 2);
             return NULL;
         }
         seg = seg->next;
     }
-    return str;
+    return args;
 }
 
 char **word_tokens_to_args(t_token **tk, t_all *all)
 {
     char **args;
-    char *str;
-    size_t i;
+    char **new_args;
 
-    args = safe_malloc(sizeof(char *) * (count_word_tokens(*tk) + 1), "word_tokens_to_args");
-    if (!args)
-        return NULL;
-    i = -1;
+    args = NULL;
     while ((*tk) && (*tk)->type == WORD)
     {
-        str = seg_to_str((*tk)->seg_list, all);
-        if (!str)
+        new_args = seg_to_args((*tk)->seg_list, all);
+        if (!new_args)
         {
-            free_arr(args);
+            ft_putstr_fd("word_tokens_to_args: !new_str\n", STDERR_FILENO);
             return NULL;
         }
-        args[++i] = str;
+        args = ft_arrconcat_free(args, new_args);
+        if (!args)
+        {
+            ft_putstr_fd("word_tokens_to_args: !args\n", STDERR_FILENO);
+            return NULL;
+        }
         if (!(*tk)->next || ((*tk)->next && (*tk)->next->type != WORD))
             break;
         (*tk) = (*tk)->next;
     }
-    args[++i] = NULL;
     return args;
 }

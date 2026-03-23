@@ -13,7 +13,7 @@ char *expand_var(const char *str, t_all *all)
     var++;
     if (!all->my_env || !all->my_env->envp)
     {
-        ft_putstr_fd("parser: expand_var\n", STDERR_FILENO);
+        ft_putstr_fd("expand_var: !all->my_env || !all->my_env->envp\n", STDERR_FILENO);
         return (NULL);
     }
     res = env_value_dup(var, all->my_env->envp);
@@ -29,6 +29,23 @@ static char *write_line(char *line, int fd)
     return line;
 }
 
+static char *next_var(char *line)
+{
+    char *n_var;
+
+    if (!line || !line[0])
+        return NULL;
+    line++;
+    n_var = ft_strchr(line, '$');
+    if (n_var)
+        return n_var;
+    return ft_strchr(line, '\0');
+}
+
+/*
+    TEST WITH > SOME $ $VAR
+    INVALID + VALID VARNAME
+*/
 static int expand_each(t_all *all, int fd, char **line)
 {
     char *head;
@@ -37,31 +54,28 @@ static int expand_each(t_all *all, int fd, char **line)
 
     head = ft_strchr(*line, '$');
     len = 0;
-    if (head)
-        len = varname_len(head);
-    head++;
-    if (!len)
+    len = varname_len(head);
+    if (!head || !len)
     {
-        write_line(*line, fd);
+        var = next_var(*line);
+        write(fd, *line, var - *line);
+        *line = var;
         return 0;
     }
-    var = safe_malloc(sizeof(char) * (len + 1), "expand_each");
-    if (!var)
-        return 1;
+    head++;
     write(fd, *line, --head - *line);
-    ft_strlcpy(var, head, len + 1);
-    ft_putstr_fd(expand_var(var, all), fd);
+    var = expand_var(head, all);
+    ft_putstr_fd(var, fd);
     free(var);
     *line = head + len;
     return 0;
 }
 
-// expands redir arg user$VAR'more' -> userJOE'more'
-// MULTIPLE VARS users$VAR1$VAR2'more' -> userJoeHobs'more'
 char *expand_redir_var(t_redir *redir, t_all *all, int fd, char *line)
 {
     char *new_line;
     int res;
+    char *temp;
 
     if (redir->has_quote || !ft_strchr(line, '$'))
         return write_line(line, fd);
@@ -73,8 +87,13 @@ char *expand_redir_var(t_redir *redir, t_all *all, int fd, char *line)
             return NULL;
         if (!new_line)
             break;
-        if (!ft_strchr(new_line, '$'))
-            return write_line(new_line, fd);
+        temp = ft_strchr(new_line, '$');
+        if (!temp)
+        {
+            ft_putstr_fd(new_line, fd);
+            break;
+        }
     }
+    ft_putstr_fd("\n", fd);
     return line;
 }

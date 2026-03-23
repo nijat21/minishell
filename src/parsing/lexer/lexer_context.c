@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_context.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 19:09:11 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/18 02:22:50 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/22 22:58:36 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ size_t varname_len(const char *str)
 	size_t len;
 	int i;
 
-	if (str[0] != '$')
+	if (!str || str[0] != '$')
 		return 0;
 	len = 1;
 	i = 1;
