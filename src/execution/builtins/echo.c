@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 01:54:57 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 16:24:23 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/23 16:56:13 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int parse_echo(char **args, int *line)
 	int index;
 
 	if (!args || !(*args))
-		return (false);
+		return (FAIL);
 	while (args[(*line)] != NULL)
 	{
 		if (!(*(short *)args[*line] == *(short *)'-n'))
@@ -25,16 +25,16 @@ int parse_echo(char **args, int *line)
 		else
 		{
 			index = 2;
-			while (args[*line][index])
+			while (args[(*line)][index])
 			{
-				if (args[*line][index] != 'n')
+				if (!((args[(*line)][index] != '\0') && (args[(*line)][index] == 'n')))
 					return (false);
 				index++;
 			}
 		}
 		(*line)++;
 	}
-	return (0);
+	return (true);
 }
 
 int built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer)
@@ -52,13 +52,11 @@ int built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer)
 
 	if (node->args[line] && (*(short *)node->args[line] == *(short *)'-n'))
 		flag = parse_echo(node->args, &line);
-	else
-		flag = false;
-	while (node->args[line])
+	while ((node->args[line] != NULL))
 	{
-		string_print(node->args[line]);
+		string_print(node->args[line], false);
 		line++;
-		if (node->args[line])
+		if (node->args[line] != NULL)
 			write(STDOUT_FILENO, " ", 1);
 	}
 	if (flag == false)

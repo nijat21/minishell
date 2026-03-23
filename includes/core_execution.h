@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:54:14 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/19 06:24:51 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/22 22:20:37 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,24 @@
 
 //-absolute_path.c -------------------------------------------------------------
 char *get_absolute_path(char *prefix, char *comand, char **envp, char *buffer);
-char *find_abs_path(char *env_var, char *comand, int prefix_size, char *buffer);
+char *find_abs_path(char *env_path, char *comand, int prefix_size, char *buffer);
 int append_comand(char *path, char *comand, int path_idx, int path_size);
 int get_next_path(char *path, char *env_var, int env_idx, int path_size);
-int is_accessible(char *path);
+int	parse_path(char *path);
 
 //-core_execution.c ------------------------------------------------------------
 int	exec_all_comands(t_all *all, t_cmd *node, char **envp);
 int exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env);
 int get_cmd_origin(char **arg, t_env *envp, t_origin *origin, char *buffer);
-int	exec_command(int node_nbr, t_cmd *node, t_origin *origin, t_all *all);
+int	exec_command(t_cmd *node, t_origin *origin, t_all *all);
 int	exec_external_cmd(char *abs_path, char **args, t_all *all);
 
 //-core_execution_utils.c ------------------------------------------------------
 int compare_prefix(char *prefix, char *string);
-int	update_underline_on_env(char *absolute_path, t_env *env, char **args);
 int is_builtin(t_origin *origin);
 int	is_external_comand(t_origin *origin);
-int	has_next_comand(t_cmd *node);
+int	has_next_comand(t_cmd *node, t_origin *origin);
+int is_accessible(char *path);
 
 //-pipe.c ---------------------------------------------------------------------
 int exec_pipe(int *fds);
@@ -54,8 +54,8 @@ void handle_exit_status(void);
 //-fd.c ------------------------------------------------------------------------
 int save_original_fds(int *std_backup);
 int	close_pipe_fds(int *pipe_fds);
-int destroy_fds(t_fds *fds, int flag);
-int restore_original_fds(t_fds *fds);
+int destroy_fds(t_fds *fds, int is_the_end);
+int restore_fds(t_fds *fds, t_cmd *node);
 int safe_close_fd(int *fd);
 
 //-redir_execution.c -----------------------------------------------------------
@@ -76,9 +76,9 @@ int exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd);
 int read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd);
 
 //-heredoc_utils.c
-char 	**create_heredoc_temps_buffer(int size, int father_pid);
+char 	**create_heredoc_temps_buffer(int size);
 int 	add_heredoc_history(char *buffer, char *user_line, int size, char *path);
-char 	*create_heredoc_temp_name(int index, int father_pid, char *std_name);
+char 	*create_heredoc_temp_name(int index, char *std_name);
 int		count_heredocs(t_cmd *head);
 void 	unlink_all_heredoc_temps(char **heredoc_temps);
 

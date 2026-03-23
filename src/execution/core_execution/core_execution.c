@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 04:34:05 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 04:28:55 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/23 16:58:24 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,30 +35,24 @@ int exec_external_cmd(char *abs_path, char **args, t_all *all)
 	destroy_fds(all->fds, true);
 	rl_clear_history();
 	signals(true, CHILD);
-	int line = -1;
-	while (args && args[++line])
-		if (!!execve(abs_path, args, all->my_env->envp))
-		{
-			restore_original_fds(all->fds);
-			perror("execve");
-		}
-	handle_exit_status();
-	end_structures(all, 1, 1, 1);
+	if (!!execve(abs_path, args, all->my_env->envp))
+		perror("execve");
+	end_structures(all, true, true, 127);
 	return (1);
 }
 
-int exec_command(int node_nbr, t_cmd *node, t_origin *origin, t_all *all)
+int exec_command(t_cmd *node, t_origin *origin, t_all *all)
 {
 	int pid;
+	int node_nbr;
 
 	if (!node || !origin || !all || !all->fds || !node->args || !node->args[0])
 		return (FAIL);
+	node_nbr = all->node_nbr;
 	pid = exec_fork(node, node_nbr, origin);
+	all->children_pids[node_nbr] = pid;
 	if (pid > 0)
-	{
-		all->children_pids[node_nbr] = pid;
 		return (0);
-	}
 	if (is_builtin(origin))
 	{
 		all->children_pids[node_nbr] = exec_builtin(origin, node, all);
@@ -75,26 +69,32 @@ int exec_command(int node_nbr, t_cmd *node, t_origin *origin, t_all *all)
 	return (1);
 }
 
+void print_fd(char *name, int fd)
+{
+	dprintf(2, "%s == %d\n", name, fd);
+}
+
 int exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env)
 {
 	t_origin origin;
 	int redir_status;
-	int node_nbr;
 
 	if (!all || !node || !fds || !env)
 		return (0);
-	node_nbr = 0;
+	all->node_nbr = 0;
 	while (node != NULL)
 	{
-		restore_original_fds(fds);
 		get_pipe(fds, node);
 		exec_redirections(all, node, fds, &redir_status);
 		exec_pipe(fds->pipe);
+		// dprintf(2, "after exec_pipe\n");
 		get_cmd_origin(node->args, env, &origin, all->buffer);
+		// dprintf(2, "after get_cmd_origin\n");
 		if (redir_status == true)
-			exec_command(node_nbr, node, &origin, all);
-		close_pipe_fds(fds->pipe);
-		node_nbr++;
+			exec_command(node, &origin, all);
+		// dprintf(2, "exec_command\n");
+		restore_fds(fds, node);
+		all->node_nbr++;
 		node = node->next;
 	}
 	return (1);
@@ -109,7 +109,10 @@ int exec_all_comands(t_all *all, t_cmd *node, char **envp)
 	if (!size)
 		return (0);
 	create_children_pids_buffer(&all->children_pids, size);
+	// dprintf(2, "after create_children_pids_buffer\n");
 	exec_linked_lst(all, node, all->fds, all->my_env);
+	// dprintf(2, "after exec_linked_lst\n");
 	wait_all_children(all->children_pids, size, &(all->process_info->exit_status), all->fds->std_backup[1]);
+	// dprintf(2, "after wait_all_children\n");
 	return (1);
 }

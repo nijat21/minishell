@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 03:35:41 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/17 19:29:03 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 12:47:13 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,23 @@ int	exec_pipe(int *fds)
 	if ((fds[0] >= 0) && (isatty(fds[0]) == false))
 	{
 		dup2(fds[0], STDIN_FILENO);
-		close(fds[0]);
+		safe_close_fd(&fds[0]);
 	}
 	if ((fds[1] >= 0) && (isatty(fds[1]) == false))
 	{
 		dup2(fds[1], STDOUT_FILENO);
-		close(fds[1]);
+		safe_close_fd(&fds[1]);
 	}
 	return (1);
 }
 
 int	get_pipe(t_fds *fds, t_cmd *node)
 {
-	static int	temp_fd_0 = -1;
+	int	temp_fd_0;
 	
 	if (!fds || !node)
 		return (0);
+	temp_fd_0 = -1;
 	if (node->next != NULL)
 	{
 		if (pipe(fds->pipe) == -1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_advanced.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:30:23 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/04 09:01:29 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/21 10:22:10 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,25 +60,6 @@ int	string_compare(char *str1, char *str2)
 	return (str1[i] - str2[i]);
 }
 
-int	string_jump_words(int	quantity, char *string, int *index)
-{
-	int	count;
-
-	if (!quantity || !string)
-		return (-1);
-	count = 0;
-	while (count < quantity)
-	{
-		while ((string[*index]) && (string[*index] != ' ') && (string[*index] != '|'))
-			(*index)++;
-		count++;
-		if (string[*index] == '\0')
-			return (0) ;
-		else if (string[*index] == ' ')
-			(*index)++;
-	}
-	return (1);
-}
 int	array_string_lenght(char **args)
 {
 	int	line;

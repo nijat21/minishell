@@ -6,20 +6,11 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:15:59 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/19 07:02:55 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 12:47:23 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <core_execution.h>
-
-void handle_exit_status(void)
-{
-    if (errno == ENOENT)
-        exit (127);
-	else if (errno == EACCES)
-		exit (126);
-    exit(1);
-}
 
 int	create_children_pids_buffer(int **children_pids, int size)
 {
@@ -87,12 +78,13 @@ int	wait_all_children(int *children_pids, int size, int *exit_status, int out_ba
 
 int	exec_fork(t_cmd *node, int node_nbr, t_origin *origin)
 {
-	int	pid;
+	int	 pid;
 
 	if (!node || (node_nbr < 0) || !origin)
 		return (FAIL);
 	pid = -1;
-	if (has_next_comand(node) || (node_nbr > 0) || is_external_comand(origin))
+	if (!((origin->abs_path == NULL) && (origin->builtin == NULL))
+		 && (has_next_comand(node, origin) || (node_nbr > 0) || is_external_comand(origin)))
 	{
 		pid = fork();
 		if (pid == -1)

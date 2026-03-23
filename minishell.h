@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 23:13:23 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/19 07:07:58 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/22 22:41:15 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,9 @@ typedef struct s_fds
 {
     int previous_0;
     int pipe[2];
-    int redir[2];
+    int io[2];
     int std_backup[2];
+	int	dev_null;
 } t_fds;
 
 typedef struct s_proc
@@ -122,11 +123,11 @@ typedef struct s_all
     t_proc *process_info;
     t_term saved_termios;
     t_cmd *head;
-	int		father_pid;
     char **heredoc_temps;
     int heredoc_count;
     int lst_size;
     int *children_pids;
+	int	node_nbr;
     char buffer[PATH_MAX + 1];
 
 } t_all;

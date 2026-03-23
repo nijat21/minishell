@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 22:13:30 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/19 06:38:42 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 13:17:53 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	assign_minimal_env(t_env *env, char *buffer)
 		env_update(env, "PATH", "=", PATH_BACKUP);
 	pointer = env_get_value("SHLVL", env->envp);
 	shell_lvl = ascii_to_int(pointer);
-	if (shell_lvl < 0)
+	if (shell_lvl <= 0)
 		shell_lvl = 1;
 	else if (shell_lvl >= 0)
 		shell_lvl++;
@@ -116,20 +116,27 @@ void	env_show(char **envp, int is_export)
 int	built_env(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
 	int	size;
+	int	is_child;
+	int	exit_code;
 
-	if (!env || !env->envp || !node || !node->args)
+	if (!env || !env->envp || !node || !node->args || !all)
 		return (-1);
 	(void)buffer;
-	(void)all;
 	size = 0;
+	is_child = false;
+	exit_code = 0;
+	if (all->children_pids[all->node_nbr] == 0)
+		is_child = true;
 	while (node->args[size] != NULL)	
 		size++;
 	if (size > 1)
 	{
 		put_comand_error("-- 42Lisboa subject", "\n    ◦ env with no options or arguments");
-		return (-2);
+		exit_code = -127;
 	}
 	else if (size == 1)
 		env_show(env->envp, 0);
-	return (0);	
+	if (is_child == false)
+		exit_code = -exit_code;
+	return (exit_code);	
 }
