@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   allocation_free.c                                  :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/07 12:26:28 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 12:47:44 by otlacerd         ###   ########.fr       */
+/*   Created: 2026/02/28 13:10:09 by olacerda          #+#    #+#             */
+/*   Updated: 2026/03/23 09:32:25 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "built-ins.h"
+#include <built-ins.h>
 
-int	free_array_string(char **array, int size)
+int	built_pwd(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
-	int	line;
-
-	if (!array)
-		return (0);
-	line = 0;
-	while (array[line] && (((size) && (line < size)) || array[line]))
+	char *pwd_pointer;
+	
+	if (!buffer)
+		return (-1);
+	(void)node;
+	(void)all;
+	pwd_pointer = getcwd(buffer, PATH_MAX);
+	if (!pwd_pointer)
 	{
-		free(array[line]);
-		line++;
+		pwd_pointer = env_get_value("PWD", env->envp);
+		if (pwd_pointer == NULL)
+			return (0);
 	}
-	free(array);
-	return (1);
-}
-
-void	del(void *content)
-{
-	if (!content)
-		return ;
-	free(content);
+	string_print(pwd_pointer, true);
+	env_update(env, "PWD", "=", pwd_pointer);
+	return (0);
 }

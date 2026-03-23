@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:30:23 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/19 21:51:58 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/21 10:22:10 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,32 +58,6 @@ int	string_compare(char *str1, char *str2)
 				&& (str1[i + 1] != '\n'))
 		i++;
 	return (str1[i] - str2[i]);
-}
-
-int	string_trim(char **string, char to_remove)
-{
-	char *result;
-	int	size;
-	int	start;
-	int	end;
-
-	if (!string || !(*string) || !to_remove)
-		return (0);
-	start = 0;
-	while ((*string)[start] && ((*string)[start] == to_remove))
-		start++;
-	end = start;
-	while ((*string)[end])
-		end++;
-	while ((end > 0) && (*string)[--end] == to_remove)
-		;
-	result = malloc(((end - start) + 1) * sizeof(char));
-	if (!result)
-		return (0);
-	size = 0;
-	while ((*string)[start] && (start <= end))
-		result[size++] = (*string)[start++];
-	return (result[size] = '\0', free(*string), *string = result, 1);
 }
 
 int	array_string_lenght(char **args)

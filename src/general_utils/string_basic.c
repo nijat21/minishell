@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_basic.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:25:51 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/10 14:06:10 by olacerda         ###   ########.fr       */
+/*   Updated: 2026/03/23 11:24:55 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	string_length(char *string)
 	return (size);
 }
 
-int	string_print(char *string)
+int	string_print(char *string, int have_break_line)
 {
 	int	size;
 
@@ -34,6 +34,8 @@ int	string_print(char *string)
 	while (string[size])
 		size++;
 	write(1, string, size);
+	if (have_break_line == true)
+		write(1, "\n", 1);
 	return (1);
 }
 

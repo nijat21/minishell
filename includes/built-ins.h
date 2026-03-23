@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 22:17:42 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/19 04:37:47 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 09:35:30 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 //-built-ins_manager.c ---------------------------------------------------------
 func_ptr	*get_built_in(char *comand);
 int			exec_builtin(t_origin *origin, t_cmd *node, t_all *all);
+int			update_underline_on_env(char *absolute_path, t_env *env, char **args);
 
 //-env.c -----------------------------------------------------------------------
 int			built_env(t_all *all, t_cmd *node, t_env *env, char *buffer);
@@ -37,8 +38,9 @@ char		*env_find_pointer(char *prefix, char **envp);
 
 //-cd.c-------------------------------------------------------------------------
 int			built_cd(t_all *all, t_cmd *node, t_env *env, char *buffer);
-int			cd_minus(int oldpwd_status, char **new_path, char **envp);
-int			change_paths(char *new_path, int *old_stat, t_env *env, char *buf);
+char		*get_new_path(t_cmd *node, char **envp, int *cd_status);
+int			change_paths(char *new_path, t_env *env, char *buf, int cd_status);
+// char		*cd_minus(int oldpwd_status, char **envp);
 
 //-echo.c-----------------------------------------------------------------------
 int			built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer);
@@ -64,7 +66,13 @@ int			built_unset(t_all *all, t_cmd *node, t_env *env, char *buffer);
 //-exit.c ----------------------------------------------------------------------
 int			built_exit(t_all *all, t_cmd *node, t_env *env, char *buffer);
 int			parse_exit(char **args);
+
+//-exit_utils.c ----------------------------------------------------------------
 int			is_overflow_long(char *string);
+int			have_space_between(char *string);
+int			string_trim(char **string, char *ref, char *set_remove);
+int			is_normal_number(char *number);
+int 		have_space_between(char *string);
 
 //-pwc.c -----------------------------------------------------------------------
 int			built_pwd(t_all *all, t_cmd *node, t_env *env, char *buffer);

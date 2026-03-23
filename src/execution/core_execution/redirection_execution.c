@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:54:47 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/17 21:49:37 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/22 22:41:15 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,15 @@ int	exec_redirections(t_all *all, t_cmd *node, t_fds *fds, int *redir_status)
 	result = 0;
 	while (redir != NULL)
 	{
-		sync_redir_n_pipe(node, redir, fds->redir, fds->pipe);
+		sync_redir_n_pipe(node, redir, fds->io, fds->pipe);
 		if (redir->type == REDIR_OUTPUT)
-			result = redir_out(redir, fds->redir);	
+			result = redir_out(redir, fds->io);	
 		else if (redir->type == REDIR_INPUT)
-			result = redir_in(redir, fds->redir);
+			result = redir_in(redir, fds->io);
 		else if (redir->type == REDIR_APPEND)
-			result = redir_append(redir, fds->redir);
+			result = redir_append(redir, fds->io);
 		else if (redir->type == REDIR_HEREDOC)
-			result = redir_heredoc(redir, fds->redir, all->heredoc_temps, all->heredoc_count);
+			result = redir_heredoc(redir, fds->io, all->heredoc_temps, all->heredoc_count);
 		if (result != true)
 			return ((*redir_status) = false, 0);
 		redir = redir->next;

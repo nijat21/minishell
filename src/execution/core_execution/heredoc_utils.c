@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 10:40:34 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/17 21:50:59 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 12:47:07 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,36 +52,30 @@ void unlink_all_heredoc_temps(char **heredoc_temps)
 	}
 }
 
-char *create_heredoc_temp_name(int index, int father_pid, char *std_name)
+char *create_heredoc_temp_name(int index, char *std_name)
 {
 	char *name;
-	char *father_pid_str;
 	char *index_str;
 	int size;
 
 	if (!std_name)
 		return (NULL);
-	father_pid_str = int_to_ascii(father_pid);
 	index_str = int_to_ascii(index);
 	size = 0;
 	size += string_length(std_name);
-	size += string_length(father_pid_str);
 	size += string_length(index_str);
-	size += 2; // For two under_lines between strings;
+	size += 1;
 	name = malloc((size + 1) * sizeof(char));
 	if (!name)
 		return (NULL);
 	string_copy(name, std_name);
-	string_cat(name, (size + 1), "_"); // here
-	string_cat(name, (size + 1), father_pid_str);
-	string_cat(name, (size + 1), "_"); // and here
+	string_cat(name, (size + 1), "_");
 	string_cat(name, (size + 1), index_str);
-	free(father_pid_str);
 	free(index_str);
 	return (name);
 }
 
-char **create_heredoc_temps_buffer(int size, int father_pid)
+char **create_heredoc_temps_buffer(int size)
 {
 	char **result;
 	int line;
@@ -94,7 +88,7 @@ char **create_heredoc_temps_buffer(int size, int father_pid)
 	line = 0;
 	while (line < size)
 	{
-		result[line] = create_heredoc_temp_name(line, father_pid, STD_TEMP_LOCATION);
+		result[line] = create_heredoc_temp_name(line, STD_TEMP_LOCATION);
 		if (!result[line])
 			return (free_array_string(result, line), NULL);
 		line++;
