@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:59:03 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/23 17:07:39 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/24 19:52:18 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,7 @@ int export_with_arguments(t_cmd *node, int *line, t_env *env)
 	while (node->args[(*line)])
 	{
 		if (parse_export_string(node->args[(*line)]) == true)
-		{
 			export_case(env, node->args[(*line)]);
-		}
 		else
 		{
 			put_error("export: `");

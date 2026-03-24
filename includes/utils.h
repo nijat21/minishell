@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:46:06 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/23 09:19:32 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 17:13:39 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,17 @@ void	put_multiple_error(char **elements, char *problem);
 char *get_next_line(int fd);
 
 //-string_advanced.c -----------------------------------------------------------
-int string_compare(char *str1, char *str2);
-int string_cat(char *string1, int size, char *string2);
-int string_swap(char **str1, char **str2);
-int array_string_lenght(char **args);
+int 	string_compare(char *str1, char *str2);
+int 	string_cat(char *string1, int size, char *string2);
+int 	string_swap(char **str1, char **str2);
+int 	array_string_lenght(char **args);
+void	print_nbr(int number);
 
 //-string_basic.c --------------------------------------------------------------
-int string_zero(char *string, int size);
-int string_print(char *string, int have_break_line);
-int string_length(char *string);
-int string_copy(char *str1, char *str2);
-int string_have_equal(char *string);
+int 	string_zero(char *string, int size);
+int 	string_print(char *string, int have_break_line);
+int 	string_length(char *string);
+int 	string_copy(char *str1, char *str2);
+int 	string_have_equal(char *string);
 
 #endif

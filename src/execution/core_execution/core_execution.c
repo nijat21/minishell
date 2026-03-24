@@ -3,25 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   core_execution.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 04:34:05 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 16:58:24 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/24 16:40:02 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <core_execution.h>
 
-int get_cmd_origin(char **args, t_env *env, t_origin *origin, char *buffer)
+int	validate_absolute_path(char *comand)
 {
-	if (!origin || !args || !env)
+	struct stat	st;
+
+	if (!comand)
+		return (0);
+	if (access(comand, F_OK) != 0)
+	{
+		put_comand_error(comand, "No such file or directory");
+		return (-127);
+	}
+	if (stat(comand, &st) != 0)
+		return (-127);
+
+	if (S_ISDIR(st.st_mode))
+	{
+		put_comand_error(comand, "Is a directory");
+		return (-126);
+	}
+	if (access(comand, X_OK) != 0)
+	{
+		put_comand_error(comand, "Permission denied");
+		return (-126);
+	}
+	return (0);
+}
+
+int get_cmd_origin(char **args, t_origin *origin, t_all *all, int *redir_status)
+{
+	int	validation;
+
+	if (!origin || !args || !all || !all->my_env || !redir_status)
 		return (FAIL);
 	origin->abs_path = NULL;
 	origin->builtin = NULL;
 	origin->builtin = get_built_in(args[0]);
 	if (origin->builtin == NULL)
-		origin->abs_path = get_absolute_path("PATH", args[0], env->envp, buffer);
-	update_underline_on_env(origin->abs_path, env, args); // decide if goes to final version
+	{
+		if (args[0] && ((*args[0] == '.') || (*args[0] == '/')))
+		{
+			validation = validate_absolute_path(args[0]);
+			if (validation < 0)
+			{
+				all->children_pids[all->node_nbr] = validation;
+				*redir_status = false;
+				return (0);			
+			}
+		}
+		origin->abs_path = get_absolute_path("PATH", args[0], all->my_env->envp, all->buffer);
+	}
+	update_underline_on_env(origin->abs_path, all->my_env, args); // decide if goes to final version
 	return (1);
 }
 
@@ -69,11 +110,6 @@ int exec_command(t_cmd *node, t_origin *origin, t_all *all)
 	return (1);
 }
 
-void print_fd(char *name, int fd)
-{
-	dprintf(2, "%s == %d\n", name, fd);
-}
-
 int exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env)
 {
 	t_origin origin;
@@ -87,12 +123,9 @@ int exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env)
 		get_pipe(fds, node);
 		exec_redirections(all, node, fds, &redir_status);
 		exec_pipe(fds->pipe);
-		// dprintf(2, "after exec_pipe\n");
-		get_cmd_origin(node->args, env, &origin, all->buffer);
-		// dprintf(2, "after get_cmd_origin\n");
+		get_cmd_origin(node->args, &origin, all, &redir_status);
 		if (redir_status == true)
 			exec_command(node, &origin, all);
-		// dprintf(2, "exec_command\n");
 		restore_fds(fds, node);
 		all->node_nbr++;
 		node = node->next;
@@ -109,10 +142,7 @@ int exec_all_comands(t_all *all, t_cmd *node, char **envp)
 	if (!size)
 		return (0);
 	create_children_pids_buffer(&all->children_pids, size);
-	// dprintf(2, "after create_children_pids_buffer\n");
 	exec_linked_lst(all, node, all->fds, all->my_env);
-	// dprintf(2, "after exec_linked_lst\n");
 	wait_all_children(all->children_pids, size, &(all->process_info->exit_status), all->fds->std_backup[1]);
-	// dprintf(2, "after wait_all_children\n");
 	return (1);
 }
