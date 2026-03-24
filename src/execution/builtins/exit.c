@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:56:52 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 18:11:30 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 22:48:27 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <built-ins.h>
 
-int	parse_exit(char **args)
+int parse_exit(char **args)
 {
-	int	index;
+	int index;
 	int line;
 
 	if (!args || !(*args))
@@ -43,7 +43,7 @@ int	parse_exit(char **args)
 
 static int	get_exit_code(int exit_code, int is_child, int error)
 {
-	int	result;
+	int result;
 
 	if ((is_child == false) && (error < 0))
 		exit_code = -exit_code;
@@ -54,12 +54,13 @@ static int	get_exit_code(int exit_code, int is_child, int error)
 	return (result);
 }
 
-int	built_exit(t_all *all, t_cmd *node, t_env *env, char *buffer)
+int built_exit(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
 	int		is_child;
 	int		result;
 	static long	exit_number;
 
+	exit_number = 0;
 	is_child = false;
 	if (all && all->children_pids[all->node_nbr] == 0)
 		is_child = true;
@@ -73,8 +74,8 @@ int	built_exit(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	else if (result == -3)
 	{
 		put_multiple_error((char *[]){node->args[0], node->args[1], NULL},
-			"numeric argument required");
-		exit_number = 2;    
+						   "numeric argument required");
+		exit_number = 2;
 	}
 	else if ((result == -1) && (node->args[1] == NULL))
 		exit_number = all->process_info->exit_status;

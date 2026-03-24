@@ -16,9 +16,12 @@ char **add_str_to_last_arg(char **args, char *seg_val)
 {
     int i;
     char *temp;
-
+    
     if (!args || !ft_arrlen(args))
+    {
+        ft_free_arr(args);
         return segval_to_args(seg_val);
+    }
     i = -1;
     while (args[++i])
     {
@@ -28,11 +31,12 @@ char **add_str_to_last_arg(char **args, char *seg_val)
             args[i] = ft_strjoin(temp, seg_val);
             free(temp);
             if (!args[i])
-                return NULL;
+            return NULL;
         }
     }
     return args;
 }
+
 
 char **ft_arrconcat(char **args, char **new_args)
 {

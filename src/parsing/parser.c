@@ -62,11 +62,15 @@ t_parse_stat parse(t_all *all)
 	else if (res == 2)
 		return BAD_INPUT;
 	if (!valid_syntax(all, tk))
+	{
+		free_token_list(&tk);
 		return BAD_INPUT;
+	}
 	cmd = NULL;
 	if (!build_pipeline(&cmd, tk, all))
 	{
 		command_lstclear(&cmd);
+		free_token_list(&tk);
 		all->process_info->exit_status = EXIT_FAILURE;
 		return PARSE_FAIL;
 	}
