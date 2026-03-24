@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:15:59 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 19:35:48 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 20:37:16 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ int update_exit_status(int *exit_status, int status, int out_backup, int is_chil
 	if (!exit_status)
     	return (0);
 	if (is_child == false)
+	{
 		*exit_status = status;
+		// dprintf(2, "*exit_status: %d update_exit_status\n", *exit_status);
+	}
 	else
 	{
 		if (WIFEXITED(status))
@@ -65,8 +68,9 @@ int update_exit_status(int *exit_status, int status, int out_backup, int is_chil
 		{
 			check_status(status);
 			*exit_status = 128 + WTERMSIG(status);
-			if (*exit_status == 130)
-				write(out_backup, "\n", 1);
+			(void) out_backup;
+			// if (*exit_status == 130)
+			// 	write(out_backup, "\n", 1);
 		}
 	}
     return (1);
@@ -83,6 +87,7 @@ int	wait_all_children(int *children_pids, int size, int *exit_status, int out_ba
 	index = -1;
 	is_child = true;
 	status = 0;
+	// dprintf(2, "exit code4: %d\n", *exit_status);
 	while (++index < size)
 	{
 		if (children_pids[index] > 1)
@@ -97,7 +102,7 @@ int	wait_all_children(int *children_pids, int size, int *exit_status, int out_ba
 				is_child = false;
 		}
 	}
-	dprintf(2, "last comand status: %d\n", status);
+	// dprintf(2, "last comand status: %d\n", status);
 	signals(false, 0);
 	update_exit_status(exit_status, status, out_backup, is_child);
 	return (1);

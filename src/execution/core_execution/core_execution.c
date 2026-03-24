@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 04:34:05 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/24 16:40:02 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 22:16:46 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int get_cmd_origin(char **args, t_origin *origin, t_all *all, int *redir_status)
 
 	if (!origin || !args || !all || !all->my_env || !redir_status)
 		return (FAIL);
+	if (!args[0])
+		return (all->children_pids[all->node_nbr] = 0, *redir_status = false, 0);
 	origin->abs_path = NULL;
 	origin->builtin = NULL;
 	origin->builtin = get_built_in(args[0]);
@@ -87,7 +89,7 @@ int exec_command(t_cmd *node, t_origin *origin, t_all *all)
 	int pid;
 	int node_nbr;
 
-	if (!node || !origin || !all || !all->fds || !node->args || !node->args[0])
+	if (!node || !origin || !all || !all->fds || !node->args)
 		return (FAIL);
 	node_nbr = all->node_nbr;
 	pid = exec_fork(node, node_nbr, origin);

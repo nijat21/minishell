@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 23:13:23 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 17:12:05 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 22:22:24 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,23 +114,23 @@ typedef struct termios t_term;
 
 typedef struct s_all
 {
-    int argc;
-    char **argv;
-    char **envp;
-    char *main_line;
-	int		main_line_count;
-    int env_status;
-    t_env *my_env;
-    t_fds *fds;
-    t_proc *process_info;
-    t_term saved_termios;
-    t_cmd *head;
-    char **heredoc_temps;
-    int heredoc_count;
-    int lst_size;
-    int *children_pids;
-	int	node_nbr;
-    char buffer[PATH_MAX + 1];
+    int		argc;
+    char	**argv;
+    char	**envp;
+    char	*main_line;
+	long	main_line_count;
+    int		env_status;
+    t_env	*my_env;
+    t_fds	*fds;
+    t_proc	*process_info;
+    t_term	saved_termios;
+    t_cmd	*head;
+    char	**heredoc_temps;
+    int		heredoc_count;
+    int 	lst_size;
+    int 	*children_pids;
+	int		node_nbr;
+    char	buffer[PATH_MAX + 1];
 
 } t_all;
 

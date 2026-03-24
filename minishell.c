@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 02:20:46 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/23 18:52:18 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 20:30:31 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,15 @@ int main(int argc, char *argv[], char **envp)
 	while (1)
 	{
 		fill_structs_on_loop(all);
+		// dprintf(2, "exit code1: %d\n", all->process_info->exit_status);
 		if (get_line(&(all->main_line), all) == false)
 			break;
 		res = parse(all);
 		if (res == PARSE_FAIL)
 			break;
+		// dprintf(2, "exit code2: %d\n", all->process_info->exit_status);
 		exec_all_heredocs(all);
+		// dprintf(2, "exit code3: %d\n", all->process_info->exit_status);
 		exec_all_comands(all, all->head, all->my_env->envp);
 		end_structures(all, 0, 0, 0);
 		free(all->main_line);

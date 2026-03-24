@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 01:54:57 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 17:36:52 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 21:48:16 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 static int	flag_is_true(char *string)
 {
-	int index;
 
 	if (!string)
 		return (0);
-	index = 0;
-	if (string[index] && (string[index] == '-') && (string[index] == 'n'))
+	if (string[0] == '-' && (string[1] == 'n'))
 		return (true);
 	return (false);
 }
@@ -63,7 +61,6 @@ int built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	line = 1;
 	if (node->args[line] && (flag_is_true(node->args[line]) == true))
 		flag = parse_echo(node->args, &line);
-		// (*(short *)node->args[line] == *(short *)"-n"))
 	while ((node->args[line] != NULL))
 	{
 		string_print(node->args[line], false);

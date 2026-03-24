@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:53:45 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/23 12:45:15 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 20:17:00 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ char *get_absolute_path(char *prefix, char *comand, char **envp, char *buffer)
 
 	if (!prefix || !comand || !envp)
 		return (NULL);
+	
 	if (is_redirection(comand) || ((comand[0] == '.') && !comand[1]))
 		return (NULL);
 	if (!(*comand) || ((comand[0] == '.') && (comand[1] == '.') && !comand[2]))
