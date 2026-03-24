@@ -42,18 +42,14 @@ static char *next_var(char *line)
     return ft_strchr(line, '\0');
 }
 
-/*
-    TEST WITH > SOME $ $VAR
-    INVALID + VALID VARNAME
-*/
 static int expand_each(t_all *all, int fd, char **line)
 {
     char *head;
     size_t len;
     char *var;
+    char *temp;
 
     head = ft_strchr(*line, '$');
-    len = 0;
     len = varname_len(head);
     if (!head || !len)
     {
@@ -67,8 +63,10 @@ static int expand_each(t_all *all, int fd, char **line)
         return 1;
     write(fd, *line, head - *line);
     ft_strlcpy(var, head, len + 1);
-    ft_putstr_fd(expand_var(var, all), fd);
+    temp = expand_var(var, all);
     free(var);
+    ft_putstr_fd(temp, fd);
+    free(temp);
     *line = head + len;
     return 0;
 }

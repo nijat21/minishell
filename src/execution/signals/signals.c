@@ -3,31 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 06:58:17 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/18 23:07:46 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 20:48:57 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signals.h>
 
-extern int	process_signal;
+extern int process_signal;
 
-t_proc	*get_process_info(t_all *all)
+t_proc *get_process_info(t_all *all)
 {
 	static t_proc *process_info;
-	
+
 	if (all != NULL)
 		process_info = all->process_info;
 	return (process_info);
 }
 
-void	handler(int sig)
+void handler(int sig)
 {
-	int		pid;
-	static t_proc	*process_info;
-	
+	int pid;
+	static t_proc *process_info;
+
 	if (process_info == NULL)
 		process_info = get_process_info(NULL);
 	if (sig == SIGINT)
@@ -37,23 +37,23 @@ void	handler(int sig)
 		if (process_info->is_heredoc == true)
 		{
 			pid = waitpid(-1, NULL, 0);
-			if ((pid == -1))
+			if (pid == -1)
 			{
 				write(STDOUT_FILENO, "\n", 1);
 				close(STDIN_FILENO);
 			}
-		}			
-		if ((process_info->is_heredoc == false))
+		}
+		if (process_info->is_heredoc == false)
 		{
 			write(STDOUT_FILENO, "\n", 1);
 			rl_replace_line("", 1);
 			rl_on_new_line();
-			rl_redisplay(); 
+			rl_redisplay();
 		}
 	}
 }
 
-void	signals(int have_child, int pid)
+void signals(int have_child, int pid)
 {
 	if (have_child == true)
 	{

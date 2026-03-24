@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 19:25:21 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/24 16:22:54 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/24 22:36:10 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ static char **nonquote_var(char **args, char **var_args)
     if (!var_args)
     {
         ft_putstr_fd("nonqute_var: !var_args\n", STDERR_FILENO);
+        ft_free_arr(args);
         return NULL;
     }
     if (!ft_arrlen(var_args))
-        return var_args;
+        return ft_arrconcat_free(args, var_args);
     args = add_str_to_last_arg(args, var_args[0]);
     if (!args)
     {
@@ -60,38 +61,31 @@ static char **seg_expand_split(t_seg *seg, t_all *all, char **args)
     return var_args;
 }
 
-static char **seg_val_expand(char ***args, t_seg *seg, t_all *all)
-{
-    char **new_args;
-
-    if (seg->expand)
-        new_args = seg_expand_split(seg, all, *args);
-    else
-        new_args = add_str_to_last_arg(*args, seg->val);
-    if (!new_args)
-        return NULL;
-    *args = new_args;
-    return new_args;
-}
-
 static char **seg_to_args(t_seg *seg, t_all *all)
 {
     char **args;
+    char **new_args;
 
     args = NULL;
     while (seg)
     {
+        printf("seg-> %s\n", seg->val);
         if (!(seg->val))
         {
             ft_putstr_fd("seg_to_args: !seg->value\n", 2);
             ft_free_arr(args);
             return NULL;
         }
-        if (!seg_val_expand(&args, seg, all))
+        if (seg->expand)
+            new_args = seg_expand_split(seg, all, args);
+        else
+            new_args = add_str_to_last_arg(args, seg->val);
+        if (!new_args)
         {
             ft_putstr_fd("seg_to_args: !args\n", 2);
             return NULL;
         }
+        args = new_args;
         seg = seg->next;
     }
     return args;
