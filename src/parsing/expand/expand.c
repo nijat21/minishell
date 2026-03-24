@@ -17,8 +17,8 @@ char *expand_var(const char *str, t_all *all)
         return (NULL);
     }
     res = env_value_dup(var, all->my_env->envp);
-    if (!res || (res && !*res))
-        return "";
+    if (!res)
+        return ft_strdup("");
     return res;
 }
 

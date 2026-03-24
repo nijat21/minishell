@@ -17,7 +17,7 @@ char **add_str_to_last_arg(char **args, char *seg_val)
     int i;
     char *temp;
 
-    if (!args)
+    if (!args || !ft_arrlen(args))
         return segval_to_args(seg_val);
     i = -1;
     while (args[++i])

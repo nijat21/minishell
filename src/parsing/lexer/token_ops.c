@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 19:08:55 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/20 15:19:49 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/24 15:05:31 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ t_seg **add_segment(t_lex_ctx *ctx, const char *val, size_t len, bool expand)
 
 	new = seg_init(&ctx->seg, len);
 	if (!new)
+	{
+		free_token_list(&ctx->tk);
 		return (NULL);
+	}
 	if (!ft_memcpy(new->val, val, len))
 	{
 		free_seg_list(&ctx->seg);
@@ -68,7 +71,10 @@ t_token **add_token(t_token **tk, t_ttype type, t_seg *seg_list)
 
 	new = safe_malloc(sizeof(t_token), "add_token");
 	if (!new)
+	{
+		free_token_list(tk);
 		return (NULL);
+	}
 	new->seg_list = seg_list;
 	new->type = type;
 	new->next = NULL;
