@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:59:03 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 19:52:18 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 21:43:34 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int export_case(t_env *env, char *string)
 	old_value = NULL;
 	while (string[index] && (string[index] != '=') && (string[index] != '+'))
 		index++;
+	if (!string[index])
+		return (1);
 	key = env_key_dup(string, index);
 	if (!key)
 		return (0);
