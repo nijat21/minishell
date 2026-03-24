@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:15:59 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/23 12:47:23 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 19:35:48 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,29 @@ int	create_children_pids_buffer(int **children_pids, int size)
 	return (1);
 }
 
+void	check_status(int status)
+{
+	int sig;
+
+	sig = WTERMSIG(status);
+	if (WIFSIGNALED(status))
+	{
+		if (sig == SIGSEGV)
+			put_error("Segmentation fault");
+		else if (sig == SIGABRT)
+			put_error("Aborted");
+		else if (sig == SIGFPE)
+			put_error("Floating point exception");
+		else if (sig == SIGBUS)
+			put_error("Bus error");
+		else if (sig == SIGILL)
+			put_error("Killed");
+		if (WCOREDUMP(status))	
+			put_error(" (core dumped)");
+		put_error("\n");
+	}
+}
+
 int update_exit_status(int *exit_status, int status, int out_backup, int is_child)
 {
 	if (!exit_status)
@@ -40,6 +63,7 @@ int update_exit_status(int *exit_status, int status, int out_backup, int is_chil
 			*exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 		{
+			check_status(status);
 			*exit_status = 128 + WTERMSIG(status);
 			if (*exit_status == 130)
 				write(out_backup, "\n", 1);
@@ -54,23 +78,26 @@ int	wait_all_children(int *children_pids, int size, int *exit_status, int out_ba
 	int	index;
 	int	status;
 
-	if (!children_pids)
+	if (!children_pids || (size == 0))
 		return (0);
-	index = 0;
-	status = -1;
+	index = -1;
 	is_child = true;
-	while (index < size)
+	status = 0;
+	while (++index < size)
 	{
 		if (children_pids[index] > 1)
-			(void)((waitpid(children_pids[index], &status, 0) == -1) && (perror("waitpid"), 0));
+		{
+			if (waitpid(children_pids[index], &status, 0) == -1)
+				 perror("waitpid");			
+		}
 		else if (children_pids[index] <= 0)
 		{
 			status = -(children_pids[index]);
 			if (index == (size - 1))
 				is_child = false;
 		}
-		index++;
 	}
+	dprintf(2, "last comand status: %d\n", status);
 	signals(false, 0);
 	update_exit_status(exit_status, status, out_backup, is_child);
 	return (1);

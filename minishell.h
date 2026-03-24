@@ -6,12 +6,14 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 23:13:23 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/22 22:41:15 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 17:12:05 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
+
+# define _GNU_SOURCE
 
 #include <unistd.h>
 #include <stdio.h>

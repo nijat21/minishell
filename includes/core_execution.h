@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:54:14 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/22 22:20:37 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 17:51:43 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	parse_path(char *path);
 //-core_execution.c ------------------------------------------------------------
 int	exec_all_comands(t_all *all, t_cmd *node, char **envp);
 int exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env);
-int get_cmd_origin(char **arg, t_env *envp, t_origin *origin, char *buffer);
+int get_cmd_origin(char **arg, t_origin *origin, t_all *all, int *redir_status);
 int	exec_command(t_cmd *node, t_origin *origin, t_all *all);
 int	exec_external_cmd(char *abs_path, char **args, t_all *all);
 
@@ -43,12 +43,16 @@ int is_accessible(char *path);
 int exec_pipe(int *fds);
 int get_pipe(t_fds *fds, t_cmd *node);
 
-//-pid_n_exit_status.c ---------------------------------------------------------
-int	exec_fork(t_cmd *node, int node_nbr, t_origin *origin);
-int wait_all_children(int *children_pids, int size, int *exit_status, int out_backup);
-int create_children_pids_buffer(int **children_pids, int size);
-int update_exit_status(int *exit_status, int status, int out_backup, int is_child);
-void handle_exit_status(void);
+//-process.c ---------------------------------------------------------
+
+int		exec_fork(t_cmd *node, int node_nbr, t_origin *origin);
+int 	wait_all_children(int *children_pids, int size, int *exit_status, int out_backup);
+int 	create_children_pids_buffer(int **children_pids, int size);
+int 	update_exit_status(int *exit_status, int status, int out_backup, int is_child);
+void	check_status(int status);
+
+// void 	handle_exit_status(void);
+
 
 
 //-fd.c ------------------------------------------------------------------------
