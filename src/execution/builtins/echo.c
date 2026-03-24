@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 01:54:57 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 17:03:57 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:36:52 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <built-ins.h>
+
+static int	flag_is_true(char *string)
+{
+	int index;
+
+	if (!string)
+		return (0);
+	index = 0;
+	if (string[index] && (string[index] == '-') && (string[index] == 'n'))
+		return (true);
+	return (false);
+}
 
 int parse_echo(char **args, int *line)
 {
@@ -20,7 +32,7 @@ int parse_echo(char **args, int *line)
 		return (FAIL);
 	while (args[(*line)] != NULL)
 	{
-		if (!(*(short *)args[*line] == *(short *)"-n"))
+		if (flag_is_true(args[*line]) == false)
 			break;
 		else
 		{
@@ -47,11 +59,11 @@ int built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	(void)env;
 	(void)buffer;
 	(void)all;
-	line = 1;
 	flag = 0;
-
-	if (node->args[line] && (*(short *)node->args[line] == *(short *)"-n"))
+	line = 1;
+	if (node->args[line] && (flag_is_true(node->args[line]) == true))
 		flag = parse_echo(node->args, &line);
+		// (*(short *)node->args[line] == *(short *)"-n"))
 	while ((node->args[line] != NULL))
 	{
 		string_print(node->args[line], false);

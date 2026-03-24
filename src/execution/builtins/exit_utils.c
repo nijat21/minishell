@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 08:44:03 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/21 13:09:52 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/23 19:42:05 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,30 +70,30 @@ int is_overflow_long(char *string)
 	return (1);
 }
 
-int	is_normal_number(char *number)
-{
-	int	index;
-	int	count;
+// int	is_normal_number(char *number)
+// {
+// 	int	index;
+// 	int	count;
 
-	if (!number)
-		return (0);
-	index = 0;
-	count = 0;
-	while (number[index])
-	{
-		if (number[index] == '-')
-		{
-			while (number[index] && number[index] == '-')
-			{
-				count++;
-				if (count > 1)
-					return (0);
-			}
-		}
-		index++;
-	}
-	return (1);
-}
+// 	if (!number)
+// 		return (0);
+// 	index = 0;
+// 	count = 0;
+// 	while (number[index])
+// 	{
+// 		if (number[index] == '-')
+// 		{
+// 			while (number[index] && number[index] == '-')
+// 			{
+// 				count++;
+// 				if (count > 1)
+// 					return (0);
+// 			}
+// 		}
+// 		index++;
+// 	}
+// 	return (1);
+// }
 
 int have_space_between(char *string)
 {

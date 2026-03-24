@@ -18,10 +18,6 @@ void command_lstadd_back(t_cmd **lst, t_cmd *new)
 {
     t_cmd *temp;
 
-    if (new && new->args)
-        new->comand = new->args[0];
-    else
-        new->comand = NULL;
     temp = *lst;
     if (!new)
     {
@@ -49,13 +45,11 @@ void command_lstclear(t_cmd **lst)
     t_cmd *nexttemp;
 
     temp = *lst;
-    // dprintf(2, "lst clear\n");
     while (temp != NULL)
     {
         nexttemp = temp->next;
         ft_free_arr(temp->args);
         redir_lstclear(&temp->redir);
-        // dprintf(2, "after redir_lstclear\n");
         free(temp);
         temp = nexttemp;
     }
