@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/21 08:44:03 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 21:53:00 by otlacerd         ###   ########.fr       */
+/*   Created: 2026/03/21 08:44:03 by username          #+#    #+#             */
+/*   Updated: 2026/03/25 03:17:51 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ static int	check_remove(char xar, char *set_remove)
 	index = -1;
 	while (set_remove[++index])
 		if (set_remove[index] == xar)
-			return (1);
+		return (1);
 	return (0);
 }
 
 int	string_trim(char **string, char *ref, char *set_remove)
 {
-	char *result;
-	int	x1;
+	char	*result;
+	int		x1;
 
 	if (!string || !(*string) || !ref || !set_remove)
 		return (0);
@@ -48,11 +48,11 @@ int	string_trim(char **string, char *ref, char *set_remove)
 	return (result[x1] = '\0', free(*string), *string = result, 1);
 }
 
-int is_overflow_long(char *string)
+int	is_overflow_long(char *string)
 {
-	char *reference;
-	int	long_len;
-	int	string_len;
+	char	*reference;
+	int		long_len;
+	int		string_len;
 
 	if (!string)
 		return (0);
@@ -70,7 +70,7 @@ int is_overflow_long(char *string)
 	return (1);
 }
 
-int have_space_between(char *string)
+int	have_space_between(char *string)
 {
 	int	index;
 
@@ -84,10 +84,9 @@ int have_space_between(char *string)
 			while (string[index] == ' ')
 			{
 				if ((string[index] != ' ') && (string[index] != '\0'))
-					return (true);				
+					return (true);
 				index++;
 			}
-			
 		}
 		index++;
 	}

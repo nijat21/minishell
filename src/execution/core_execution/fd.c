@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:04:23 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 12:46:42 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 05:25:50 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	restore_fds(t_fds *fds, t_cmd *node)
 	return (1);
 }
 
-int safe_close_fd(int *fd)
+int	safe_close_fd(int *fd)
 {
 	if (!fd || (*fd < 0))
 		return (-1);

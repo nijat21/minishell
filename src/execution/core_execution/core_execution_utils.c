@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:53:08 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/23 02:43:09 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 05:12:51 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	is_accessible(char *path)
 	return (1);
 }
 
-int is_builtin(t_origin *origin)
+int	is_builtin(t_origin *origin)
 {
 	if (!origin)
 		return (FAIL);

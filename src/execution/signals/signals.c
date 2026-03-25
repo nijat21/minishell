@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 06:58:17 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/24 20:48:57 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 04:39:14 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,7 @@ void handler(int sig)
 		{
 			pid = waitpid(-1, NULL, 0);
 			if (pid == -1)
-			{
-				write(STDOUT_FILENO, "\n", 1);
-				close(STDIN_FILENO);
-			}
+				((1) && (write(STDOUT_FILENO, "\n", 1), close(STDIN_FILENO)));
 		}
 		if (process_info->is_heredoc == false)
 		{

@@ -6,18 +6,18 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 21:47:32 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 01:24:23 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 04:57:11 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "core_execution.h"
 #include "parser.h"
 
-int exec_all_heredocs(t_all *all)
+int	exec_all_heredocs(t_all *all)
 {
-	t_cmd *node;
-	t_redir *redirection;
-	int index;
+	t_cmd	*node;
+	t_redir	*redirection;
+	int		index;
 
 	if (!all)
 		return (0);
@@ -33,8 +33,7 @@ int exec_all_heredocs(t_all *all)
 			if (redirection->type == REDIR_HEREDOC)
 			{
 				all->process_info->signal = 0;
-				exec_heredoc(all, redirection, all->heredoc.temps, index);
-				index++;
+				exec_heredoc(all, redirection, all->heredoc.temps, index++);
 			}
 			redirection = redirection->next;
 		}
@@ -43,10 +42,10 @@ int exec_all_heredocs(t_all *all)
 	return (0);
 }
 
-int exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
+int	exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
 {
-	static int fd;
-	int readbytes;
+	static int	fd;
+	int			readbytes;
 
 	if (!all || !redir)
 		return (FAIL);
@@ -55,24 +54,22 @@ int exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
 		return (0);
 	exec_heredoc_content(all, &(all->process_info->signal), redir, fd);
 	close(fd);
-
-	// Decide if we gonna keep this "history" ----------------------------------------------------------
 	fd = open(temps[index], O_RDONLY);
 	readbytes = read(fd, all->buffer, BUFFER_SZ);
 	close(fd);
 	if (readbytes != 0)
 	{
 		realloc_appender(&all->main_line, "\n");
-		add_heredoc_history(all->buffer, all->main_line, string_length(all->main_line), temps[index]);
+		add_heredoc_history(all->buffer, all->main_line,
+			string_length(all->main_line), temps[index]);
 	}
-	// -----------------------------------------------------------------------------------------------
 	return (true);
 }
 
-int exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
+int	exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
 {
-	int pid;
-	int stdin_backup;
+	int	pid;
+	int	stdin_backup;
 
 	if (!redir->redir_arg || fd == -1 || !all || !signal)
 		return (-1);
@@ -98,29 +95,30 @@ int exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
 	return (1);
 }
 
-static void handle_sigint_eof(t_all *all, t_redir *redir, int stdin_backup, char *line)
+static void	handle_sig_eof(t_all *all, t_redir *redir, int stdin_bk, char *line)
 {
 	if (all->process_info->signal == SIGINT)
-		dup2(stdin_backup, STDIN_FILENO);
+		dup2(stdin_bk, STDIN_FILENO);
 	else if (!line)
 		print_heredoc_eof_warning(redir->redir_arg, all->main_line_count);
 	if (line)
 		free(line);
 }
 
-int read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
+int	read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
 {
-	char *line;
+	char	*line;
 
 	if (!redir->redir_arg)
 		return (0);
 	while (1)
 	{
 		line = readline("> ");
-		if ((line && (string_compare(line, redir->redir_arg) == 0)) || (!line || (all->process_info->signal == SIGINT)))
+		if ((line && (string_compare(line, redir->redir_arg) == 0))
+			|| (!line || (all->process_info->signal == SIGINT)))
 		{
-			handle_sigint_eof(all, redir, stdin_backup, line);
-			break;
+			handle_sig_eof(all, redir, stdin_backup, line);
+			break ;
 		}
 		else if (line && !*line)
 			write(fd, "\n", 1);
@@ -133,6 +131,5 @@ int read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
 				free(line);
 		}
 	}
-	rl_clear_history();
-	return (1);
+	return (rl_clear_history(), 1);
 }
