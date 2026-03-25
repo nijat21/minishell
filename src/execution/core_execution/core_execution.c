@@ -25,7 +25,6 @@ int	validate_absolute_path(char *comand)
 	}
 	if (stat(comand, &st) != 0)
 		return (-127);
-
 	if (S_ISDIR(st.st_mode))
 	{
 		put_comand_error(comand, "Is a directory");
@@ -39,14 +38,15 @@ int	validate_absolute_path(char *comand)
 	return (0);
 }
 
-int get_cmd_origin(char **args, t_origin *origin, t_all *all, int *redir_status)
+int	get_cmd_origin(char **args, t_origin *origin, t_all *all, int *redir_status)
 {
 	int	validation;
 
 	if (!origin || !args || !all || !all->my_env || !redir_status)
 		return (FAIL);
 	if (!args[0])
-		return (all->children_pids[all->node_nbr] = 0, *redir_status = false, 0);
+		return (all->children_pids[all->node_nbr] = 0, *redir_status = false,
+			0);
 	origin->abs_path = NULL;
 	origin->builtin = NULL;
 	origin->builtin = get_built_in(args[0]);
@@ -59,16 +59,18 @@ int get_cmd_origin(char **args, t_origin *origin, t_all *all, int *redir_status)
 			{
 				all->children_pids[all->node_nbr] = validation;
 				*redir_status = false;
-				return (0);			
+				return (0);
 			}
 		}
-		origin->abs_path = get_absolute_path("PATH", args[0], all->my_env->envp, all->buffer);
+		origin->abs_path = get_absolute_path("PATH", args[0], all->my_env->envp,
+				all->buffer);
 	}
-	update_underline_on_env(origin->abs_path, all->my_env, args); // decide if goes to final version
+	update_underline_on_env(origin->abs_path, all->my_env, args);
+		// decide if goes to final version
 	return (1);
 }
 
-int exec_external_cmd(char *abs_path, char **args, t_all *all)
+int	exec_external_cmd(char *abs_path, char **args, t_all *all)
 {
 	if (!args || !all || !all->my_env || !all->my_env->envp || !all->fds)
 		return (0);
@@ -84,10 +86,10 @@ int exec_external_cmd(char *abs_path, char **args, t_all *all)
 	return (1);
 }
 
-int exec_command(t_cmd *node, t_origin *origin, t_all *all)
+int	exec_command(t_cmd *node, t_origin *origin, t_all *all)
 {
-	int pid;
-	int node_nbr;
+	int	pid;
+	int	node_nbr;
 
 	if (!node || !origin || !all || !all->fds || !node->args)
 		return (FAIL);
@@ -100,7 +102,8 @@ int exec_command(t_cmd *node, t_origin *origin, t_all *all)
 	{
 		all->children_pids[node_nbr] = exec_builtin(origin, node, all);
 		if (pid == CHILD)
-			return (end_structures(all, true, true, -(all->children_pids[node_nbr])), 1);
+			return (end_structures(all, true, true,
+					-(all->children_pids[node_nbr])), 1);
 	}
 	else if ((origin->abs_path == NULL) || ((origin->abs_path)[0] == '\0'))
 	{
@@ -112,10 +115,10 @@ int exec_command(t_cmd *node, t_origin *origin, t_all *all)
 	return (1);
 }
 
-int exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env)
+int	exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env)
 {
-	t_origin origin;
-	int redir_status;
+	t_origin	origin;
+	int			redir_status;
 
 	if (!all || !node || !fds || !env)
 		return (0);
@@ -135,9 +138,10 @@ int exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env)
 	return (1);
 }
 
-int exec_all_comands(t_all *all, t_cmd *node, char **envp)
+int	exec_all_comands(t_all *all, t_cmd *node, char **envp)
 {
-	int size;
+	int	size;
+
 	if (!all || !node || !envp || (all->process_info->signal == SIGINT))
 		return (FAIL);
 	size = comand_lstsize(all->head);
@@ -145,6 +149,7 @@ int exec_all_comands(t_all *all, t_cmd *node, char **envp)
 		return (0);
 	create_children_pids_buffer(&all->children_pids, size);
 	exec_linked_lst(all, node, all->fds, all->my_env);
-	wait_all_children(all->children_pids, size, &(all->process_info->exit_status), all->fds->std_backup[1]);
+	wait_all_children(all->children_pids, size,
+		&(all->process_info->exit_status), all->fds->std_backup[1]);
 	return (1);
 }

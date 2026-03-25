@@ -34,7 +34,7 @@ void	put_comand_error(char *comand, char *problem)
 
 void	put_multiple_error(char **elements, char *problem)
 {
-	int	line;
+	int line;
 
 	if (!elements && !problem)
 		return ;

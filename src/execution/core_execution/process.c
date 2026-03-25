@@ -30,7 +30,7 @@ int	create_children_pids_buffer(int **children_pids, int size)
 
 void	check_status(int status)
 {
-	int sig;
+	int	sig;
 
 	sig = WTERMSIG(status);
 	if (WIFSIGNALED(status))
@@ -47,16 +47,17 @@ void	check_status(int status)
 			put_error("Killed");
 		else if (sig == SIGQUIT)
 			put_error("Quit");
-		if (WCOREDUMP(status))	
+		if (WCOREDUMP(status))
 			put_error(" (core dumped)");
 		put_error("\n");
 	}
 }
 
-int update_exit_status(int *exit_status, int status, int out_backup, int is_child)
+int	update_exit_status(int *exit_status, int status, int out_backup,
+		int is_child)
 {
 	if (!exit_status)
-    	return (0);
+		return (0);
 	if (is_child == false)
 	{
 		*exit_status = status;
@@ -70,15 +71,16 @@ int update_exit_status(int *exit_status, int status, int out_backup, int is_chil
 		{
 			check_status(status);
 			*exit_status = 128 + WTERMSIG(status);
-			(void) out_backup;
+			(void)out_backup;
 			// if (*exit_status == 130)
 			// 	write(out_backup, "\n", 1);
 		}
 	}
-    return (1);
+	return (1);
 }
 
-int	wait_all_children(int *children_pids, int size, int *exit_status, int out_backup)
+int	wait_all_children(int *children_pids, int size, int *exit_status,
+		int out_backup)
 {
 	int	is_child;
 	int	index;
@@ -95,7 +97,7 @@ int	wait_all_children(int *children_pids, int size, int *exit_status, int out_ba
 		if (children_pids[index] > 1)
 		{
 			if (waitpid(children_pids[index], &status, 0) == -1)
-				 perror("waitpid");			
+				perror("waitpid");
 		}
 		else if (children_pids[index] <= 0)
 		{
@@ -112,13 +114,14 @@ int	wait_all_children(int *children_pids, int size, int *exit_status, int out_ba
 
 int	exec_fork(t_cmd *node, int node_nbr, t_origin *origin)
 {
-	int	 pid;
+	int	pid;
 
 	if (!node || (node_nbr < 0) || !origin)
 		return (FAIL);
 	pid = -1;
 	if (!((origin->abs_path == NULL) && (origin->builtin == NULL))
-		 && (has_next_comand(node, origin) || (node_nbr > 0) || is_external_comand(origin)))
+		&& (has_next_comand(node, origin) || (node_nbr > 0)
+			|| is_external_comand(origin)))
 	{
 		pid = fork();
 		if (pid == -1)

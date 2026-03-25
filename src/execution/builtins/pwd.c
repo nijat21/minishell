@@ -15,7 +15,7 @@
 int	built_pwd(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
 	char *pwd_pointer;
-	
+
 	if (!buffer)
 		return (-1);
 	(void)node;

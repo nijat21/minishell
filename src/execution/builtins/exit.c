@@ -12,10 +12,10 @@
 
 #include <built-ins.h>
 
-int parse_exit(char **args)
+int	parse_exit(char **args)
 {
-	int index;
-	int line;
+	int	index;
+	int	line;
 
 	if (!args || !(*args))
 		return (-1);
@@ -25,8 +25,9 @@ int parse_exit(char **args)
 	while (args[line] != NULL)
 		if (++line > 2)
 			return (put_comand_error(args[0], "too many arguments"), -1);
-	string_trim(&args[1], args[1], (char []){' ', '	', '\0'});
-	if (args[1] && (!(args[1][0]) || (args[1][0] == ' ') || (args[1][0] == '	')))
+	string_trim(&args[1], args[1], (char[]){' ', '	', '\0'});
+	if (args[1] && (!(args[1][0]) || (args[1][0] == ' ')
+				|| (args[1][0] == '	')))
 		return (-3);
 	if (have_space_between(args[1]) == true)
 		return (-3);
@@ -43,7 +44,7 @@ int parse_exit(char **args)
 
 static int	get_exit_code(int exit_code, int is_child, int error)
 {
-	int result;
+	int	result;
 
 	if ((is_child == false) && (error < 0))
 		exit_code = -exit_code;
@@ -54,10 +55,10 @@ static int	get_exit_code(int exit_code, int is_child, int error)
 	return (result);
 }
 
-int built_exit(t_all *all, t_cmd *node, t_env *env, char *buffer)
+int	built_exit(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
-	int		is_child;
-	int		result;
+	int			is_child;
+	int			result;
 	static long	exit_number;
 
 	exit_number = 0;
@@ -74,7 +75,7 @@ int built_exit(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	else if (result == -3)
 	{
 		put_multiple_error((char *[]){node->args[0], node->args[1], NULL},
-						   "numeric argument required");
+			"numeric argument required");
 		exit_number = 2;
 	}
 	else if ((result == -1) && (node->args[1] == NULL))

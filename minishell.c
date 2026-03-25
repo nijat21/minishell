@@ -11,18 +11,18 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <built-ins.h>
 #include <core_execution.h>
 #include <data.h>
-#include <utils.h>
-#include <built-ins.h>
 #include <parser.h>
+#include <utils.h>
 
-int g_signal = 0;
+int	g_signal = 0;
 
-int main(int argc, char *argv[], char **envp)
+int	main(int argc, char *argv[], char **envp)
 {
-	t_all *all;
-	t_parse_stat res;
+	t_all			*all;
+	t_parse_stat	res;
 
 	all = init_structures();
 	if (!all)
@@ -34,10 +34,10 @@ int main(int argc, char *argv[], char **envp)
 		fill_structs_on_loop(all);
 		// dprintf(2, "exit code1: %d\n", all->process_info->exit_status);
 		if (get_line(&(all->main_line), all) == false)
-			break;
+			break ;
 		res = parse(all);
 		if (res == PARSE_FAIL)
-			break;
+			break ;
 		// dprintf(2, "exit code2: %d\n", all->process_info->exit_status);
 		exec_all_heredocs(all);
 		// dprintf(2, "exit code3: %d\n", all->process_info->exit_status);

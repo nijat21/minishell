@@ -12,9 +12,9 @@
 
 #include <lexer.h>
 
-void free_seg_list(t_seg **seg)
+void	free_seg_list(t_seg **seg)
 {
-	t_seg *temp;
+	t_seg	*temp;
 
 	while (*seg)
 	{
@@ -26,9 +26,9 @@ void free_seg_list(t_seg **seg)
 	*seg = NULL;
 }
 
-void free_token_list(t_token **tk)
+void	free_token_list(t_token **tk)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	while (*tk)
 	{
@@ -40,9 +40,9 @@ void free_token_list(t_token **tk)
 	*tk = NULL;
 }
 
-void *safe_malloc(size_t bytes, char *func_name)
+void	*safe_malloc(size_t bytes, char *func_name)
 {
-	void *mem;
+	void	*mem;
 
 	mem = malloc(bytes);
 	if (!mem)
@@ -55,15 +55,16 @@ void *safe_malloc(size_t bytes, char *func_name)
 	return (mem);
 }
 
-bool is_space(char c)
+bool	is_space(char c)
 {
-	if (c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == '\v' || c == '\f')
+	if (c == ' ' || c == '\n' || c == '\t' || c == '\r' || c == '\v'
+		|| c == '\f')
 		return (true);
 	else
 		return (false);
 }
 
-bool is_operator(const char c)
+bool	is_operator(const char c)
 {
 	return (c == '|' || c == '<' || c == '>');
 }

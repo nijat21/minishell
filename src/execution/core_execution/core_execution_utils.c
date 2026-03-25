@@ -60,7 +60,7 @@ int	is_accessible(char *path)
 	return (1);
 }
 
-int is_builtin(t_origin *origin)
+int	is_builtin(t_origin *origin)
 {
 	if (!origin)
 		return (FAIL);

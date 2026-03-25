@@ -11,18 +11,18 @@
 /* ************************************************************************** */
 
 #ifndef DATA_H
-#define DATA_H
+# define DATA_H
 
-#include "minishell.h"
-#include "core_execution.h"
-#include "signals.h"
-#include "utils.h"
+# include "core_execution.h"
+# include "minishell.h"
+# include "signals.h"
+# include "utils.h"
 
 //-data.c-----------------------------------------------------------------------
-t_all 	*init_structures(void);
-int 	fill_structures(t_all *all, int argc, char **argv, char **envp);
-int 	fill_structs_on_loop(t_all *all);
-int 	get_line(char **line, t_all *all);
+t_all	*init_structures(void);
+int		fill_structures(t_all *all, int argc, char **argv, char **envp);
+int		fill_structs_on_loop(t_all *all);
+int		get_line(char **line, t_all *all);
 void	end_structures(t_all *all, int is_the_end, int is_child, int status);
 
 //-data_utils.c ----------------------------------------------------------------

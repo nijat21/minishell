@@ -12,9 +12,9 @@
 
 #include <lexer.h>
 
-t_seg *seg_init(t_seg **seg, size_t len)
+t_seg	*seg_init(t_seg **seg, size_t len)
 {
-	t_seg *new;
+	t_seg	*new;
 
 	new = safe_malloc(sizeof(t_seg), "seg_init: new");
 	if (!new)
@@ -32,10 +32,10 @@ t_seg *seg_init(t_seg **seg, size_t len)
 	return (new);
 }
 
-t_seg **add_segment(t_lex_ctx *ctx, const char *val, size_t len, bool expand)
+t_seg	**add_segment(t_lex_ctx *ctx, const char *val, size_t len, bool expand)
 {
-	t_seg *new;
-	t_seg *temp;
+	t_seg	*new;
+	t_seg	*temp;
 
 	new = seg_init(&ctx->seg, len);
 	if (!new)
@@ -64,10 +64,10 @@ t_seg **add_segment(t_lex_ctx *ctx, const char *val, size_t len, bool expand)
 	return (&ctx->seg);
 }
 
-t_token **add_token(t_token **tk, t_ttype type, t_seg *seg_list)
+t_token	**add_token(t_token **tk, t_ttype type, t_seg *seg_list)
 {
-	t_token *new;
-	t_token *temp;
+	t_token	*new;
+	t_token	*temp;
 
 	new = safe_malloc(sizeof(t_token), "add_token");
 	if (!new)
