@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 03:15:12 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 03:15:13 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:04:12 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-#include <built-ins.h>
+#include <built_ins.h>
 
 int	check_dot_edgecase(char **arg, t_env *env)
 {
+	int		size;
+	char	*string;
 	int		size;
 	char	*string;
 
@@ -86,6 +88,7 @@ int	change_paths(char *new_path, t_env *env, char *buffer, int cd_minus)
 char	*get_new_path(t_cmd *node, char **envp, int *cd_minus)
 {
 	char	*new_path;
+	char	*new_path;
 
 	if (!node || !envp)
 		return (NULL);
@@ -109,6 +112,9 @@ char	*get_new_path(t_cmd *node, char **envp, int *cd_minus)
 
 int	built_cd(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
+	int		line;
+	char	*new_path;
+	int		cd_minus;
 	int		line;
 	char	*new_path;
 	int		cd_minus;

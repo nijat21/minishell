@@ -6,13 +6,13 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 01:54:57 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 03:15:16 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:04:21 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <built-ins.h>
+#include <built_ins.h>
 
-static int	flag_is_true(char *string)
+static int flag_is_true(char *string)
 {
 	if (!string)
 		return (0);

@@ -6,11 +6,11 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:59:03 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 04:22:46 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:07:32 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "built-ins.h"
+#include "built_ins.h"
 
 char **duplicate_envp(t_env *env_st)
 {
@@ -93,7 +93,7 @@ int export_with_arguments(t_cmd *node, int *line, t_env *env)
 	int to_return;
 
 	if (!node || !line || !env)
-		return (0);
+		return (-1);
 	to_return = 0;
 	while (node->args[(*line)])
 	{

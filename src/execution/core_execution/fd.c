@@ -65,7 +65,7 @@ int	safe_close_fd(int *fd)
 		if (isatty(*fd) == true)
 			return (0);
 	}
-	close (*fd);
+	close(*fd);
 	*fd = -1;
 	return (1);
 }

@@ -6,11 +6,11 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:36:08 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 03:35:21 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:07:05 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <built-ins.h>
+#include <built_ins.h>
 
 char	*env_get_value(char *prefix, char **env)
 {
@@ -62,6 +62,7 @@ char	*env_value_dup_beginning(char *string, int beginning)
 
 	if (!string || beginning < 0 || !string[beginning])
 		return (NULL);
+		return (NULL);
 	index = beginning;
 	size = 0;
 	while (string[index])
@@ -103,9 +104,9 @@ char	*env_key_dup(char *string, int delimiter)
 	return (result);
 }
 
-int	parse_export_string(char *string)
+int parse_export_string(char *string)
 {
-	int	index;
+	int index;
 
 	if (!string)
 		return (0);

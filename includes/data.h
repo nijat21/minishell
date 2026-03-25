@@ -5,16 +5,16 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/11 02:41:35 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 03:14:03 by otlacerd         ###   ########.fr       */
+/*   Created: 2025/11/11 02:41:35 by otlacerd          #+#    #+#             */
+/*   Updated: 2026/03/25 06:02:39 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DATA_H
 # define DATA_H
 
-# include "minishell.h"
 # include "core_execution.h"
+# include "minishell.h"
 # include "signals.h"
 # include "utils.h"
 

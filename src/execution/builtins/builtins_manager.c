@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/04 07:17:23 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 04:20:31 by otlacerd         ###   ########.fr       */
+/*   Created: 2026/03/04 07:17:23 by olacerda          #+#    #+#             */
+/*   Updated: 2026/03/25 06:02:53 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <built-ins.h>
+#include <built_ins.h>
 
 func_ptr * get_built_in(char *comand)
 {
@@ -33,9 +33,9 @@ func_ptr * get_built_in(char *comand)
 	return (NULL);
 }
 
-int	update_underline_on_env(char *absolute_path, t_env *env, char **args)
+int update_underline_on_env(char *absolute_path, t_env *env, char **args)
 {
-	int	line;
+	int line;
 
 	if (!env || !args)
 		return (FAIL);
@@ -53,7 +53,7 @@ int	update_underline_on_env(char *absolute_path, t_env *env, char **args)
 	return (1);
 }
 
-int	exec_builtin(t_origin *origin, t_cmd *node, t_all *all)
+int exec_builtin(t_origin *origin, t_cmd *node, t_all *all)
 {
 	if (!origin || !node || !all || !all->my_env)
 		return (0);

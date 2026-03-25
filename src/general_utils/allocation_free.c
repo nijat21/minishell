@@ -6,11 +6,11 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 12:26:28 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/25 04:39:31 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:09:16 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "built-ins.h"
+#include "built_ins.h"
 
 int	free_array_string(char **array, int size)
 {
@@ -34,3 +34,4 @@ void	del(void *content)
 		return ;
 	free(content);
 }
+

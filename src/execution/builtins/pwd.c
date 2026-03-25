@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 13:10:09 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 13:08:46 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:30:35 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <built-ins.h>
+#include <built_ins.h>
 
-int	built_pwd(t_all *all, t_cmd *node, t_env *env, char *buffer)
+int built_pwd(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
 	char *pwd_pointer;
-	
+
 	if (!buffer)
 		return (-1);
 	(void)node;

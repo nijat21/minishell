@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/24 00:56:52 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 03:36:49 by otlacerd         ###   ########.fr       */
+/*   Created: 2026/02/24 00:56:52 by otlacerd          #+#    #+#             */
+/*   Updated: 2026/03/25 06:06:40 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <built-ins.h>
+#include <built_ins.h>
 
 int	parse_exit(char **args)
 {
@@ -40,7 +40,7 @@ int	parse_exit(char **args)
 	return (1);
 }
 
-static int	get_exit_code(int exit_code, int is_child, int error)
+static int get_exit_code(int exit_code, int is_child, int error)
 {
 	int	result;
 
