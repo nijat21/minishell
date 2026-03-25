@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 22:13:30 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 03:30:35 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:39:20 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 char **create_env(char **envp, int *capacity)
 {
-	char **result;
-	int line_count;
-	int line;
+	char	**result;
+	int		line_count;
+	int		line;
 
 	if (!capacity)
 		return (NULL);
@@ -41,8 +41,8 @@ char **create_env(char **envp, int *capacity)
 
 int assign_minimal_env(t_env *env, char *buffer)
 {
-	int shell_lvl;
-	char *pointer;
+	int		shell_lvl;
+	char	*pointer;
 
 	if (!env)
 		return (0);
@@ -70,7 +70,7 @@ int assign_minimal_env(t_env *env, char *buffer)
 
 int assign_env_struct(t_env *env, char **envp, char *buffer)
 {
-	int capacity;
+	int	capacity;
 
 	if (!env || !buffer)
 		return (write(2, "Error\nWrong pointer in function assign_env_struct\n",
@@ -121,14 +121,14 @@ int built_env(t_all *all, t_cmd *node, t_env *env, char *buffer)
 
 	if (!env || !env->envp || !node || !node->args || !all)
 		return (-1);
-	(void)buffer;
+	(void) buffer;
 	size = 0;
 	while (node->args[size] != NULL)
 		size++;
 	if (size > 1)
 	{
 		put_comand_error("-- 42Lisboa subject",
-						 "\n    ◦ env with no options or arguments");
+			"\n    ◦ env with no options or arguments");
 		return (-2);
 	}
 	else if (size == 1)

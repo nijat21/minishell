@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocation_free.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 12:26:28 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/25 04:52:36 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:34:20 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

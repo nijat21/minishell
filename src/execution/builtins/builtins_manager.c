@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_manager.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/04 07:17:23 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/25 03:30:35 by nismayil         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2026/03/25 06:53:48 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include <built_ins.h>
 
-func_ptr *get_built_in(char *comand)
+func_ptr * get_built_in(char *comand)
 {
 	if (!comand)
 		return (NULL);
@@ -33,15 +34,15 @@ func_ptr *get_built_in(char *comand)
 	return (NULL);
 }
 
-int update_underline_on_env(char *absolute_path, t_env *env, char **args)
+int update_underline_on_env(char *abs_path, t_env *env, char **args)
 {
 	int line;
 
 	if (!env || !args)
 		return (FAIL);
 	line = 0;
-	if (absolute_path != NULL)
-		env_update(env, "_", "=", absolute_path);
+	if (abs_path != NULL)
+		env_update(env, "_", "=", abs_path);
 	else
 	{
 		line = 0;
@@ -58,4 +59,32 @@ int exec_builtin(t_origin *origin, t_cmd *node, t_all *all)
 	if (!origin || !node || !all || !all->my_env)
 		return (0);
 	return (origin->builtin(all, node, all->my_env, all->buffer));
+}
+int	check_export_size(char *string, int *index)
+{
+	if (!string)
+		return (0);	
+	while (string[(*index)] && (string[(*index)] != '=')
+		&& (string[(*index)] != '+'))
+	{
+		(*index)++;
+	}
+	if (!string[(*index)])
+		return (0);
+	return (1);
+}
+
+char	*get_export_new_value(char *string, int *index, char *old_value)
+{
+	if (!string)
+		return (NULL);
+	if (string[(*index)] && ((string[(*index)] == '=')
+		|| ((string[(*index)] && (string[(*index)++] == '+'))
+			&& (string[(*index)] == '='))))
+	{
+		if (old_value && ((*index) > 0) && (string[(*index) - 1] == '+'))
+			(*index)++;
+		return (env_value_dup_beginning(string, (*index)));
+	}
+	return (NULL);
 }

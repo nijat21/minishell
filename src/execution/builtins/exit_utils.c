@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/21 08:44:03 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 21:53:00 by otlacerd         ###   ########.fr       */
+/*   Created: 2026/03/21 08:44:03 by username          #+#    #+#             */
+/*   Updated: 2026/03/25 03:17:51 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	check_remove(char xar, char *set_remove)
 	index = -1;
 	while (set_remove[++index])
 		if (set_remove[index] == xar)
-			return (1);
+		return (1);
 	return (0);
 }
 

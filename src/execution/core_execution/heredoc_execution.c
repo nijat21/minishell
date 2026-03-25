@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 21:47:32 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 01:24:23 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:41:39 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ int	exec_all_heredocs(t_all *all)
 			if (redirection->type == REDIR_HEREDOC)
 			{
 				all->process_info->signal = 0;
-				exec_heredoc(all, redirection, all->heredoc.temps, index);
-				index++;
+				exec_heredoc(all, redirection, all->heredoc.temps, index++);
 			}
 			redirection = redirection->next;
 		}
@@ -55,7 +54,6 @@ int	exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
 		return (0);
 	exec_heredoc_content(all, &(all->process_info->signal), redir, fd);
 	close(fd);
-	// Decide if we gonna keep this "history" ----------------------------------------------------------
 	fd = open(temps[index], O_RDONLY);
 	readbytes = read(fd, all->buffer, BUFFER_SZ);
 	close(fd);
@@ -65,7 +63,6 @@ int	exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
 		add_heredoc_history(all->buffer, all->main_line,
 			string_length(all->main_line), temps[index]);
 	}
-	// -----------------------------------------------------------------------------------------------
 	return (true);
 }
 
@@ -98,11 +95,10 @@ int	exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
 	return (1);
 }
 
-static void	handle_sigint_eof(t_all *all, t_redir *redir, int stdin_backup,
-		char *line)
+static void handle_sigint_eof(t_all *all, t_redir *redir, int stdin_bk, char *line)
 {
 	if (all->process_info->signal == SIGINT)
-		dup2(stdin_backup, STDIN_FILENO);
+		dup2(stdin_bk, STDIN_FILENO);
 	else if (!line)
 		print_heredoc_eof_warning(redir->redir_arg, all->main_line_count);
 	if (line)
@@ -118,11 +114,10 @@ int	read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
 	while (1)
 	{
 		line = readline("> ");
-		if ((line && (string_compare(line, redir->redir_arg) == 0)) || (!line
-				|| (all->process_info->signal == SIGINT)))
+		if ((line && (string_compare(line, redir->redir_arg) == 0)) || (!line || (all->process_info->signal == SIGINT)))
 		{
 			handle_sigint_eof(all, redir, stdin_backup, line);
-			break ;
+			break;
 		}
 		else if (line && !*line)
 			write(fd, "\n", 1);
@@ -135,6 +130,5 @@ int	read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
 				free(line);
 		}
 	}
-	rl_clear_history();
-	return (1);
+	return (rl_clear_history(), 1);
 }

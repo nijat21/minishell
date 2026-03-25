@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 02:20:46 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 03:43:47 by nismayil         ###   ########.fr       */
+/*   Created: 2026/02/16 02:20:46 by username          #+#    #+#             */
+/*   Updated: 2026/03/25 06:44:49 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@
 #include <parser.h>
 #include <utils.h>
 
+int	g_signal = 0;
+
 int	main(int argc, char *argv[], char **envp)
 {
-	t_all		*all;
+	t_all			*all;
 	t_parse_stat	res;
 
 	all = init_structures();

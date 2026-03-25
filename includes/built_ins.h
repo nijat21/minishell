@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 22:17:42 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 03:30:55 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:53:53 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 //-built-ins_manager.c ---------------------------------------------------------
 func_ptr	*get_built_in(char *comand);
 int			exec_builtin(t_origin *origin, t_cmd *node, t_all *all);
-int			update_underline_on_env(char *absolute_path, t_env *env,
-				char **args);
+int			update_underline_on_env(char *abs_path, t_env *env, char **args);
+char		*get_export_new_value(char *string, int *index, char *old_value);
 
 //-env.c -----------------------------------------------------------------------
 int			built_env(t_all *all, t_cmd *node, t_env *env, char *buffer);
@@ -41,7 +41,6 @@ char		*env_find_pointer(char *prefix, char **envp);
 int			built_cd(t_all *all, t_cmd *node, t_env *env, char *buffer);
 char		*get_new_path(t_cmd *node, char **envp, int *cd_status);
 int			change_paths(char *new_path, t_env *env, char *buf, int cd_status);
-// char		*cd_minus(int oldpwd_status, char **envp);
 
 //-echo.c-----------------------------------------------------------------------
 int			built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer);

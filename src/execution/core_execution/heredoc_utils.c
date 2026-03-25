@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 10:40:34 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/25 00:56:32 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:52:48 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,7 @@ char	**create_heredoc_temps_buffer(int size)
 	heredoc_identifier = 0;
 	while (line < size)
 	{
-		result[line] = create_heredoc_temp_name(heredoc_identifier,
-				STD_TEMP_LOCATION);
+		result[line] = create_heredoc_temp_name(heredoc_identifier, STD_TEMP);
 		if (!result[line])
 			return (free_array_string(result, line), NULL);
 		heredoc_identifier++;
@@ -110,8 +109,7 @@ int	add_heredoc_history(char *buffer, char *user_line, int size, char *path)
 	t_gal	x;
 
 	x = (t_gal){0, 0, 1, size, user_line, NULL, open(path, O_RDONLY)};
-	if ((x.fd < 0) || !buffer || !user_line)
-		return (0);
+	(void)(((x.fd < 0) || !buffer || !user_line) && (x.readbytes = -1));
 	while (x.readbytes > 0)
 	{
 		x.readbytes = read(x.fd, buffer, BUFFER_SZ);
@@ -131,6 +129,6 @@ int	add_heredoc_history(char *buffer, char *user_line, int size, char *path)
 		x.new_line[x.index1] = '\0';
 		x.line = x.new_line;
 	}
-	return (add_history(x.line), free((char *)((long)x.line * (x.index2 > 0))),
-		close(x.fd), 1);
+	return (add_history(x.line),
+		free((char *)((long)x.line * (x.index2 > 0))), close(x.fd), 1);
 }

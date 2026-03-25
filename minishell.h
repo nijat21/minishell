@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 23:13:23 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 03:36:32 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:45:20 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,16 @@
 # define CHILD 0
 # define ENV_INCREMENT 10
 # define FAIL -1
+# define STD_TEMP "/tmp/minishell_std_storage"
 # define STD_TEMP_LOCATION "/tmp/minishell_std_storage"
 # define MAX_LONG_STR "9223372036854775807"
 # define MIN_LONG_STR "-9223372036854775808"
-# define PATH_BACKUP "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# define PATH_BACKUP "/usr/local/sbin:" \
+                    "/usr/local/bin:" \
+                    "/usr/sbin:" \
+                    "/usr/bin:" \
+                    "/sbin:" \
+                    "/bin"
 # define NO_FORK -2
 
 extern int				g_signal;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:43:11 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 03:30:35 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:32:13 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include <data.h>
 #include <parser.h>
 
-t_all *init_structures(void)
+t_all	*init_structures(void)
 {
-	t_all *all;
+	t_all	*all;
 
 	all = malloc(sizeof(t_all));
 	if (!all)
@@ -84,12 +84,9 @@ void end_structures(t_all *all, int is_the_end, int is_child, int status)
 		unlink_all_heredoc_temps(all->heredoc.temps);
 	if (all->heredoc.temps)
 		free_array_string(all->heredoc.temps, 0);
-	// dprintf(2, "here\n");
 	destroy_fds(all->fds, false);
-	// dprintf(2, "here2\n");
 	if (all->head != NULL)
 		command_lstclear(&all->head);
-	// dprintf(2, "here3\n");
 	if (all->children_pids)
 		free(all->children_pids);
 	if (is_the_end == true)
@@ -110,7 +107,7 @@ void end_structures(t_all *all, int is_the_end, int is_child, int status)
 
 int get_line(char **line, t_all *all)
 {
-	static int interactive_mode = -1;
+	static int	interactive_mode = -1;
 
 	if (!line || !all)
 		return (0);
