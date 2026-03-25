@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:30:23 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/24 17:15:00 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 04:51:02 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int	string_compare(char *str1, char *str2)
 	if (!str1 || !str2)
 		return (0);
 	i = 0;
-	while ((str1[i] && str2[i]) && (str1[i] == str2[i]) && (str1[i
-			+ 1] != '\n'))
+	while ((str1[i] && str2[i]) && (str1[i] == str2[i])
+		&& (str1[i + 1] != '\n'))
 		i++;
 	return (str1[i] - str2[i]);
 }

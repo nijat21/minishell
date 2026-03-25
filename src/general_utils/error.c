@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:35:01 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 07:59:12 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 04:49:34 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	put_comand_error(char *comand, char *problem)
 
 void	put_multiple_error(char **elements, char *problem)
 {
-	int line;
+	int	line;
 
 	if (!elements && !problem)
 		return ;

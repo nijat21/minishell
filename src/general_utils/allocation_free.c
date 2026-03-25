@@ -6,15 +6,15 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 12:26:28 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/25 03:30:35 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 04:52:36 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_ins.h"
 
-int free_array_string(char **array, int size)
+int	free_array_string(char **array, int size)
 {
-	int line;
+	int	line;
 
 	if (!array)
 		return (0);
@@ -28,9 +28,9 @@ int free_array_string(char **array, int size)
 	return (1);
 }
 
-void del(void *content)
+void	del(void *content)
 {
 	if (!content)
-		return;
+		return ;
 	free(content);
 }
