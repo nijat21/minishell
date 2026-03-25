@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 22:13:30 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 06:27:34 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:39:20 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int assign_minimal_env(t_env *env, char *buffer)
 		return (0);
 	env_update(env, "PWD", "=", getcwd(buffer, PATH_MAX));
 	if (env_find_pointer("OLDPWD", env->envp) == false)
-	if (env_find_pointer("OLDPWD", env->envp) == false)
 		env_update(env, "OLDPWD", NULL, NULL);
 	if (env_find_pointer("PATH", env->envp) == false)
 		env_update(env, "PATH", "=", PATH_BACKUP);
@@ -66,7 +65,6 @@ int assign_minimal_env(t_env *env, char *buffer)
 	}
 	else if ((pointer == NULL) || (shell_lvl < 0))
 		env_update(env, "SHLVL", "=", "0");
-	return (1);
 	return (1);
 }
 

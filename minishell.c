@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 02:20:46 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 06:32:39 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:44:49 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ int	main(int argc, char *argv[], char **envp)
 		fill_structs_on_loop(all);
 		if (get_line(&(all->main_line), all) == false)
 			break ;
-			break ;
 		res = parse(all);
 		if (res == PARSE_FAIL)
-			break ;
 			break ;
 		exec_all_heredocs(all);
 		exec_all_comands(all, all->head, all->my_env->envp);

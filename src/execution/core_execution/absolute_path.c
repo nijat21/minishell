@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:53:45 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 06:29:39 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:46:36 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	parse_path(char *path)
 int	get_next_path(char *path, char *env_var, int env_idx, int path_buffer_size)
 {
 	int	index;
-	int	index;
 
 	index = 0;
 	if (!path || !env_var || !env_idx)
@@ -56,9 +55,7 @@ int	get_next_path(char *path, char *env_var, int env_idx, int path_buffer_size)
 }
 
 int	append_comand(char *path, char *comand, int path_idx, int path_buffer_size)
-int	append_comand(char *path, char *comand, int path_idx, int path_buffer_size)
 {
-	int	index;
 	int	index;
 
 	if (!path || !comand || !path_buffer_size || !path_idx)
@@ -81,9 +78,6 @@ int	append_comand(char *path, char *comand, int path_idx, int path_buffer_size)
 
 char	*find_abs_path(char *env_path, char *comand, int pfx_size, char *buff)
 {
-	int	env_path_size;
-	int	path_idx;
-	int	path_size;
 	int	env_path_size;
 	int	path_idx;
 	int	path_size;
@@ -112,9 +106,6 @@ char	*find_abs_path(char *env_path, char *comand, int pfx_size, char *buff)
 
 char	*get_absolute_path(char *prefix, char *cmd, char **envp, char *buffer)
 {
-	char	*env_path;
-	char	*absolute_path;
-	int		prefix_size;
 	char	*env_path;
 	char	*absolute_path;
 	int		prefix_size;

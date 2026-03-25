@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:54:14 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 06:35:43 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:48:47 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int		is_accessible(char *path);
 //-pipe.c ---------------------------------------------------------------------
 int		exec_pipe(int *fds);
 int		get_pipe(t_fds *fds, t_cmd *node);
+int		validate_absolute_path(char *comand);
+
 
 //-process.c ---------------------------------------------------------
 int		exec_fork(t_cmd *node, int node_nbr, t_origin *origin);

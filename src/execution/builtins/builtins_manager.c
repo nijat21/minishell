@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2026/03/25 06:22:45 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:53:48 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,17 @@ func_ptr * get_built_in(char *comand)
 	else if (string_compare(comand, "pwd") == 0)
 		return (built_pwd);
 	return (NULL);
-	return (NULL);
 }
 
-int update_underline_on_env(char *absolute_path, t_env *env, char **args)
+int update_underline_on_env(char *abs_path, t_env *env, char **args)
 {
 	int line;
 
 	if (!env || !args)
 		return (FAIL);
 	line = 0;
-	if (absolute_path != NULL)
-		env_update(env, "_", "=", absolute_path);
+	if (abs_path != NULL)
+		env_update(env, "_", "=", abs_path);
 	else
 	{
 		line = 0;

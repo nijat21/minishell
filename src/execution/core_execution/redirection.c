@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:22:13 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 06:30:49 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:43:21 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@ int	redir_append(t_redir *redir, int fds[2])
 
 int	redir_heredoc(t_redir *redir, int fds[2], t_hdoc *heredoc)
 {
-	int		fd;
-	char	**temps;
-
 	int		fd;
 	char	**temps;
 

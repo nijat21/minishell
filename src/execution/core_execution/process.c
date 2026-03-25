@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:15:59 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 06:30:34 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:52:34 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	create_children_pids_buffer(int **children_pids, int size)
 void	check_status(int status)
 {
 	int	sig;
-	int	sig;
 
 	sig = WTERMSIG(status);
 	if (WIFSIGNALED(status))
@@ -49,7 +48,6 @@ void	check_status(int status)
 		else if (sig == SIGQUIT)
 			put_error("Quit");
 		if (WCOREDUMP(status))
-		if (WCOREDUMP(status))
 			put_error(" (core dumped)");
 		put_error("\n");
 	}
@@ -58,7 +56,6 @@ void	check_status(int status)
 int	update_exit_status(int *exit_status, int status, int out_bkup, int is_child)
 {
 	if (!exit_status)
-		return (0);
 		return (0);
 	if (is_child == false)
 		*exit_status = status;
@@ -73,7 +70,6 @@ int	update_exit_status(int *exit_status, int status, int out_bkup, int is_child)
 			(void) out_bkup;
 		}
 	}
-	return (1);
 	return (1);
 }
 
@@ -108,7 +104,6 @@ int	wait_all_children(int *buffer, int size, int *exit_stat, int out_bkup)
 
 int	exec_fork(t_cmd *node, int node_nbr, t_origin *origin)
 {
-	int	pid;
 	int	pid;
 
 	if (!node || (node_nbr < 0) || !origin)

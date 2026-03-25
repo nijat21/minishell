@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 10:40:34 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/25 06:30:23 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:52:48 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@
 
 int	count_heredocs(t_cmd *head)
 {
-	t_cmd	*node;
-	t_redir	*redir;
-	int		count;
 	t_cmd	*node;
 	t_redir	*redir;
 	int		count;
@@ -39,17 +36,13 @@ int	count_heredocs(t_cmd *head)
 		node = node->next;
 	}
 	return (count);
-	return (count);
 }
 
 void	unlink_all_heredoc_temps(char **heredoc_temps)
-void	unlink_all_heredoc_temps(char **heredoc_temps)
 {
-	int	line;
 	int	line;
 
 	if (!heredoc_temps || !(*heredoc_temps))
-		return ;
 		return ;
 	line = 0;
 	while (heredoc_temps[line] != NULL)
@@ -60,11 +53,7 @@ void	unlink_all_heredoc_temps(char **heredoc_temps)
 }
 
 char	*create_heredoc_temp_name(int index, char *std_name)
-char	*create_heredoc_temp_name(int index, char *std_name)
 {
-	char	*name;
-	char	*index_str;
-	int		size;
 	char	*name;
 	char	*index_str;
 	int		size;
@@ -89,7 +78,6 @@ char	*create_heredoc_temp_name(int index, char *std_name)
 char	**create_heredoc_temps_buffer(int size)
 {
 	char	**result;
-	char	**result;
 	int		line;
 	int		heredoc_identifier;
 
@@ -110,7 +98,6 @@ char	**create_heredoc_temps_buffer(int size)
 		{
 			free(result[line]);
 			continue ;
-			continue ;
 		}
 		line++;
 	}
@@ -118,9 +105,7 @@ char	**create_heredoc_temps_buffer(int size)
 }
 
 int	add_heredoc_history(char *buffer, char *user_line, int size, char *path)
-int	add_heredoc_history(char *buffer, char *user_line, int size, char *path)
 {
-	t_gal	x;
 	t_gal	x;
 
 	x = (t_gal){0, 0, 1, size, user_line, NULL, open(path, O_RDONLY)};
@@ -129,7 +114,6 @@ int	add_heredoc_history(char *buffer, char *user_line, int size, char *path)
 	{
 		x.readbytes = read(x.fd, buffer, BUFFER_SZ);
 		if (x.readbytes == 0)
-			break ;
 			break ;
 		x.all_read += x.readbytes;
 		(void)((x.readbytes > 0) && (x.new_line = malloc((x.all_read + 1))));

@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 03:15:12 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 06:25:35 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:54:41 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int	check_dot_edgecase(char **arg, t_env *env)
 {
-	int		size;
-	char	*string;
 	int		size;
 	char	*string;
 

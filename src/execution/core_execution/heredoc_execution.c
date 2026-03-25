@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 21:47:32 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 06:30:14 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:41:39 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 #include "parser.h"
 
 int	exec_all_heredocs(t_all *all)
-int	exec_all_heredocs(t_all *all)
 {
-	t_cmd	*node;
-	t_redir	*redirection;
-	int		index;
 	t_cmd	*node;
 	t_redir	*redirection;
 	int		index;
@@ -47,10 +43,7 @@ int	exec_all_heredocs(t_all *all)
 }
 
 int	exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
-int	exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
 {
-	static int	fd;
-	int			readbytes;
 	static int	fd;
 	int			readbytes;
 
@@ -69,17 +62,12 @@ int	exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
 		realloc_appender(&all->main_line, "\n");
 		add_heredoc_history(all->buffer, all->main_line,
 			string_length(all->main_line), temps[index]);
-		add_heredoc_history(all->buffer, all->main_line,
-			string_length(all->main_line), temps[index]);
 	}
 	return (true);
 }
 
 int	exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
-int	exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
 {
-	int	pid;
-	int	stdin_backup;
 	int	pid;
 	int	stdin_backup;
 
@@ -107,7 +95,7 @@ int	exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
 	return (1);
 }
 
-static void	handle_sig_eof(t_all *all, t_redir *redir, int stdin_bk, char *line)
+static void handle_sigint_eof(t_all *all, t_redir *redir, int stdin_bk, char *line)
 {
 	if (all->process_info->signal == SIGINT)
 		dup2(stdin_bk, STDIN_FILENO);
@@ -118,9 +106,7 @@ static void	handle_sig_eof(t_all *all, t_redir *redir, int stdin_bk, char *line)
 }
 
 int	read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
-int	read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
 {
-	char	*line;
 	char	*line;
 
 	if (!redir->redir_arg)
@@ -128,11 +114,10 @@ int	read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
 	while (1)
 	{
 		line = readline("> ");
-		if ((line && (string_compare(line, redir->redir_arg) == 0))
-			|| (!line || (all->process_info->signal == SIGINT)))
+		if ((line && (string_compare(line, redir->redir_arg) == 0)) || (!line || (all->process_info->signal == SIGINT)))
 		{
-			handle_sig_eof(all, redir, stdin_backup, line);
-			break ;
+			handle_sigint_eof(all, redir, stdin_backup, line);
+			break;
 		}
 		else if (line && !*line)
 			write(fd, "\n", 1);
