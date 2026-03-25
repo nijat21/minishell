@@ -11,12 +11,12 @@
 /* ************************************************************************** */
 
 #ifndef SIGNALS_H
-#define SIGNALS_H
+# define SIGNALS_H
 
-#include "minishell.h"
+# include "minishell.h"
 
-void handler(int sig);
-t_proc *get_process_info(t_all *all);
-void signals(int have_child, int pid);
+void	handler(int sig);
+t_proc	*get_process_info(t_all *all);
+void	signals(int have_child, int pid);
 
 #endif
