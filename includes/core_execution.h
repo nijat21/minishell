@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:54:14 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 00:40:32 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 01:31:09 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,14 @@ int restore_fds(t_fds *fds, t_cmd *node);
 int safe_close_fd(int *fd);
 
 //-redir_execution.c -----------------------------------------------------------
-int	exec_redirections(t_all *all, t_cmd *node, t_fds *fds, int *redir_status);
+int	exec_redirections(t_all *all, t_cmd *node, int *redir_stat);
 int sync_redir_n_pipe(t_cmd *node, t_redir *redir, int *red_fd, int *pp_fd);
 
 //-redirections.c --------------------------------------------------------------
 int redir_in(t_redir *redir, int fds[2]);
 int redir_out(t_redir *redir, int fds[2]);
 int redir_append(t_redir *redir, int fds[2]);
-int redir_heredoc(t_redir *redir, int fds[2], char **temps, int count);
+int redir_heredoc(t_redir *redir, int fds[2], t_hdoc *heredoc);
 int is_redirection(char *string);
 
 //-heredoc_execution.c

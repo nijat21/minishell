@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 04:34:05 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/25 00:23:15 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 01:32:49 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int exec_linked_lst(t_all *all, t_cmd *node, t_fds *fds, t_env *env)
 	while (node != NULL)
 	{
 		get_pipe(fds, node);
-		exec_redirections(all, node, fds, &redir_status);
+		exec_redirections(all, node, &redir_status);
 		exec_pipe(fds->pipe);
 		get_cmd_origin(node->args, &origin, all, &redir_status);
 		if (redir_status == true)

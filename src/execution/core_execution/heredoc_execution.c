@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 21:47:32 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 00:56:54 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 01:24:23 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int exec_all_heredocs(t_all *all)
 	if (!all)
 		return (0);
 	node = all->head;
-	all->heredoc_count = count_heredocs(all->head);
-	all->heredoc_temps = create_heredoc_temps_buffer(all->heredoc_count);
+	all->heredoc.count = count_heredocs(all->head);
+	all->heredoc.temps = create_heredoc_temps_buffer(all->heredoc.count);
 	index = 0;
 	while (node != NULL)
 	{
@@ -33,7 +33,7 @@ int exec_all_heredocs(t_all *all)
 			if (redirection->type == REDIR_HEREDOC)
 			{
 				all->process_info->signal = 0;
-				exec_heredoc(all, redirection, all->heredoc_temps, index);
+				exec_heredoc(all, redirection, all->heredoc.temps, index);
 				index++;
 			}
 			redirection = redirection->next;

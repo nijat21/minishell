@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:43:11 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/23 15:12:13 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 01:31:41 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,14 @@ int	fill_structs_on_loop(t_all *all)
 		return (end_structures(all, 1, 0, 1), 0);
 	string_zero(all->buffer, PATH_MAX);
 	all->fds->previous_0 = -1;
-	all->heredoc_temps = NULL;
+	all->heredoc.temps = NULL;
 	all->main_line = NULL;
 	all->head = NULL;
 	all->children_pids = NULL;
 	all->lst_size = 0;
 	all->process_info->signal = 0;
-	all->heredoc_count = 0;
+	all->heredoc.count = 0;
+	all->heredoc.index = 0;
 	all->node_nbr = 0;
 	errno = 0;
 	return (1);
@@ -79,9 +80,9 @@ void	end_structures(t_all *all, int is_the_end, int is_child, int status)
 	if (!all)
 		return ;
 	if (is_child == false)
-		unlink_all_heredoc_temps(all->heredoc_temps);
-	if (all->heredoc_temps)
-		free_array_string(all->heredoc_temps, 0);
+		unlink_all_heredoc_temps(all->heredoc.temps);
+	if (all->heredoc.temps)
+		free_array_string(all->heredoc.temps, 0);
 	// dprintf(2, "here\n");
 	destroy_fds(all->fds, false);
 	// dprintf(2, "here2\n");

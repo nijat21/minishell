@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 23:13:23 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 00:35:07 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 01:26:33 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,13 @@ typedef struct s_proc
 
 typedef struct termios t_term;
 
+typedef struct s_hdoc
+{
+	char **temps;
+	int	index;
+	int	count;
+}			t_hdoc;
+
 typedef struct s_all
 {
     int		argc;
@@ -124,9 +131,8 @@ typedef struct s_all
     t_fds	*fds;
     t_proc	*process_info;
     t_term	saved_termios;
+	t_hdoc	heredoc;
     t_cmd	*head;
-    char	**heredoc_temps;
-    int		heredoc_count;
     int 	lst_size;
     int 	*children_pids;
 	int		node_nbr;
