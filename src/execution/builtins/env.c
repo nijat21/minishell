@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 22:13:30 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 21:46:13 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/24 23:35:37 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,11 @@ void	env_show(char **envp, int is_export)
 	line = -1;
 	while (envp[++line])
 	{
-		if (is_export == true && (envp[line][0] == '_') && !envp[line][1])
-			continue;
-		(void)((is_export == true) && (write(1, "export ", 7)));
+		if (is_export == true && (envp[line][0] == '_' && envp[line][1] == '='))
+			continue ;
 		if ((is_export == false) && string_have_equal(envp[line]) == false)
 			continue ;
+		(void)((is_export == true) && (write(1, "export ", 7)));
 		size = 0;
 		while (envp[line][size] && (envp[line][size] != '='))
 			size++;

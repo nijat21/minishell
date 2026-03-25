@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:15:59 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 20:37:16 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 00:25:57 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	check_status(int status)
 			put_error("Bus error");
 		else if (sig == SIGILL)
 			put_error("Killed");
+		else if (sig == SIGQUIT)
+			put_error("Quit");
 		if (WCOREDUMP(status))	
 			put_error(" (core dumped)");
 		put_error("\n");

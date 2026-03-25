@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_ops.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 19:25:21 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/24 22:36:10 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/24 23:08:11 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static char **seg_to_args(t_seg *seg, t_all *all)
     args = NULL;
     while (seg)
     {
-        printf("seg-> %s\n", seg->val);
+        // printf("seg-> %s\n", seg->val);
         if (!(seg->val))
         {
             ft_putstr_fd("seg_to_args: !seg->value\n", 2);

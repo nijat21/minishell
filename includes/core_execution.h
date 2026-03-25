@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:54:14 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 17:51:43 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 00:40:32 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd);
 //-heredoc_utils.c
 char 	**create_heredoc_temps_buffer(int size);
 int 	add_heredoc_history(char *buffer, char *user_line, int size, char *path);
-char 	*create_heredoc_temp_name(int index, char *std_name);
+char    *create_heredoc_temp_name(int index, char *std_name);
 int		count_heredocs(t_cmd *head);
 void 	unlink_all_heredoc_temps(char **heredoc_temps);
 

@@ -106,10 +106,8 @@ int	built_cd(t_all *all, t_cmd *node, t_env *env, char *buffer)
 			return (put_comand_error(node->args[0], "too many arguments"), -1);
 	cd_minus = 0;
 	new_path = get_new_path(node, env->envp, &cd_minus);
-	dprintf(2, "new_path: %s\n", new_path);
 	if (new_path && access(new_path, F_OK | X_OK) != 0)
 	{
-		// dprintf(2, "oi\n");
 		put_multiple_error((char *[]){"cd", new_path, NULL}, strerror(errno));
 		return (-1);
 	}

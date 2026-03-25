@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 10:40:34 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 12:47:07 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 00:56:32 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,11 @@ char *create_heredoc_temp_name(int index, char *std_name)
 	return (name);
 }
 
-char **create_heredoc_temps_buffer(int size)
+char	**create_heredoc_temps_buffer(int size)
 {
 	char **result;
-	int line;
+	int		line;
+	int		heredoc_identifier;
 
 	if (size <= 0)
 		return (NULL);
@@ -86,15 +87,21 @@ char **create_heredoc_temps_buffer(int size)
 	if (!result)
 		return (NULL);
 	line = 0;
+	heredoc_identifier = 0;
 	while (line < size)
 	{
-		result[line] = create_heredoc_temp_name(line, STD_TEMP_LOCATION);
+		result[line] = create_heredoc_temp_name(heredoc_identifier, STD_TEMP_LOCATION);
 		if (!result[line])
 			return (free_array_string(result, line), NULL);
+		heredoc_identifier++;
+		if (access(result[line], F_OK) == 0)
+		{
+			free(result[line]);
+			continue;
+		}
 		line++;
 	}
-	result[line] = NULL;
-	return (result);
+	return (result[line] = NULL, result);
 }
 
 int add_heredoc_history(char *buffer, char *user_line, int size, char *path)

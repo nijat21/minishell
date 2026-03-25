@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:56:52 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 22:48:27 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/24 23:57:03 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int parse_exit(char **args)
 		return (-1);
 	line = 1;
 	if (!(args[line]))
-		return (-1);
+		return (1);
 	while (args[line] != NULL)
 		if (++line > 2)
 			return (put_comand_error(args[0], "too many arguments"), -1);

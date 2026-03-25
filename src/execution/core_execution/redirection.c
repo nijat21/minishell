@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:22:13 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/19 03:16:19 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 00:57:52 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,13 @@ int	redir_append(t_redir *redir, int fds[2])
 
 int	redir_heredoc(t_redir *redir, int fds[2], char **temps, int count)
 {
-	static int	fd;
+	int	fd;
 	static int	index;
  
 	if (!fds || !redir)
 		return (FAIL);
-	if (index >= count)
+	(void)count;
+	if (!temps[index] || (index > count))
 		index = 0;
 	fd = open(temps[index], O_RDONLY);
 	if (fd < 0)
