@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 03:27:38 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/25 03:28:55 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 11:40:02 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ t_cmd			**build_pipeline(t_cmd **cmd, t_token *tk, t_all *all);
 void			*free_arr_cmdlst(t_cmd **cmd, char **args);
 void			*free_arg_cmdlst(t_cmd **cmd, char *arg);
 char			**word_tokens_to_args(t_token **tk, t_all *all);
+void			exp_false(t_seg *seg);
 
 // ===== pipeline_utils.c =============================================
 t_redir_type	ttype_to_redir_type(t_ttype type);

@@ -46,7 +46,7 @@ int		is_accessible(char *path);
 int		exec_pipe(int *fds);
 int		get_pipe(t_fds *fds, t_cmd *node);
 int		validate_absolute_path(char *comand);
-int		check_is_directory();
+int		check_is_directory(void);
 
 //-process.c ---------------------------------------------------------
 int		exec_fork(t_cmd *node, int node_nbr, t_origin *origin);

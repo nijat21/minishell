@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 03:15:12 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 10:42:07 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 12:02:08 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	check_dot_edgecase(char **arg, t_env *env)
 
 int	handle_cd_error(char *new_path)
 {
-	struct stat st;
+	struct stat	st;
 
 	if (!new_path)
 		return (0);

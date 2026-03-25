@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_ops.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 19:25:21 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/25 03:02:04 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 11:45:23 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,4 +115,13 @@ char	**word_tokens_to_args(t_token **tk, t_all *all)
 		(*tk) = (*tk)->next;
 	}
 	return (args);
+}
+
+void	exp_false(t_seg *seg)
+{
+	while (seg)
+	{
+		seg->expand = false;
+		seg = seg->next;
+	}
 }
