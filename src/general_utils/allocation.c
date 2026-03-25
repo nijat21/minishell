@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:27:33 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/19 06:48:14 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 04:40:55 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	realloc_appender(char **string, char *content)
 	string_size = string_length(*string);
 	new_size += string_size;
 	new_size += string_length(content);
-	*string = re_allocker(*string, (string_size + 1), (new_size + 1), sizeof(char));
+	*string = re_allocker(*string, (string_size + 1),
+		(new_size + 1), sizeof(char));
 	if (!(*string))
 		return (0);
 	string_cat(*string, (new_size + 1), content);
@@ -74,62 +75,4 @@ char *string_duplicate(char *string)
 	}
 	result[index] = '\0';
 	return (result);
-}
-
-static char	**assign_split_line(char *string, int count, int index2, char **result)
-{
-	int index1;
-	int line;
-
-	index1 = 0;
-	line = 0;
-	while (string[index1] != '\0')
-	{
-		count = 0;
-		while ((string[index1] != '\0') && (string[index1] == ' '))
-			index1++;
-		if ((string[index1] != '\0') && (string[index1] != ' '))
-		{
-			index2 = index1;
-			while ((string[index1] != '\0') && (string[index1++] != ' '))
-				count++;
-			result[line] = malloc((count + 1) * (sizeof(char)));
-			if (!result[line])
-				return (free_array_string(result, line), NULL);
-			count = 0;
-			while ((string[index2] != '\0') && (string[index2] != ' '))
-				result[line][count++] = string[index2++];
-			result[line++][count] = '\0';
-		}
-	}
-	return (result[line] = NULL, result);
-}
-
-char **split_line(char *string)
-{
-	char **result;
-	int	index1;
-	int	count;
-
-	if (!string)
-		return (NULL);
-	index1 = 0;
-	count = 0;
-	while (string[index1] != '\0')
-	{
-		while ((string[index1] != '\0') && (string[index1] == ' '))
-			index1++;
-		if ((string[index1] != '\0') && (string[index1] != ' '))
-		{
-			count++;
-			while ((string[index1] != '\0') && (string[index1] != ' '))
-				index1++;
-		}
-	}
-	if (count <= 0)
-		return (NULL);
-	result = malloc((count + 1) * (sizeof(char *)));
-	if (!result)
-		return (NULL);
-	return (assign_split_line(string, count, 0, result));
 }

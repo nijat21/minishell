@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built-ins_manager.c                                :+:      :+:    :+:   */
+/*   builtins_manager.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/04 07:17:23 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/21 00:19:33 by otlacerd         ###   ########.fr       */
+/*   Created: 2026/03/04 07:17:23 by username          #+#    #+#             */
+/*   Updated: 2026/03/25 04:20:31 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <built-ins.h>
 
-func_ptr *get_built_in(char *comand)
+func_ptr * get_built_in(char *comand)
 {
 	if (!comand)
 		return (NULL);
@@ -30,7 +30,7 @@ func_ptr *get_built_in(char *comand)
 		return (built_cd);
 	else if (string_compare(comand, "pwd") == 0)
 		return (built_pwd);
-	return (NULL);	
+	return (NULL);
 }
 
 int	update_underline_on_env(char *absolute_path, t_env *env, char **args)
@@ -58,4 +58,32 @@ int	exec_builtin(t_origin *origin, t_cmd *node, t_all *all)
 	if (!origin || !node || !all || !all->my_env)
 		return (0);
 	return (origin->builtin(all, node, all->my_env, all->buffer));
+}
+int	check_export_size(char *string, int *index)
+{
+	if (!string)
+		return (0);	
+	while (string[(*index)] && (string[(*index)] != '=')
+		&& (string[(*index)] != '+'))
+	{
+		(*index)++;
+	}
+	if (!string[(*index)])
+		return (0);
+	return (1);
+}
+
+char	*get_export_new_value(char *string, int *index, char *old_value)
+{
+	if (!string)
+		return (NULL);
+	if (string[(*index)] && ((string[(*index)] == '=')
+		|| ((string[(*index)] && (string[(*index)++] == '+'))
+			&& (string[(*index)] == '='))))
+	{
+		if (old_value && ((*index) > 0) && (string[(*index) - 1] == '+'))
+			(*index)++;
+		return (env_value_dup_beginning(string, (*index)));
+	}
+	return (NULL);
 }

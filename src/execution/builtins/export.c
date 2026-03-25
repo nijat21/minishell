@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:59:03 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 21:43:34 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 04:22:46 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,19 +75,15 @@ int export_case(t_env *env, char *string)
 	old_value = NULL;
 	while (string[index] && (string[index] != '=') && (string[index] != '+'))
 		index++;
-	if (!string[index])
-		return (1);
 	key = env_key_dup(string, index);
 	if (!key)
 		return (0);
-	if ((string[index] != '=') && string[index])
-		old_value = env_value_dup_beginning(env_find_pointer(key, env->envp), index);
-	if ((string[index] == '=') || ((string[index] && (string[index++] == '+')) && (string[index] == '=')))
+	if (string[index] != '=')
 	{
-		if (old_value && (index > 0) && (string[index - 1] == '+'))
-			index++;
-		new_value = env_value_dup_beginning(string, index);
+		old_value = env_value_dup_beginning(env_find_pointer(key, env->envp),
+			index);		
 	}
+	new_value = get_export_new_value(string, &index, old_value);
 	env_update(env, key, old_value, new_value);
 	return (free(key), free(old_value), free(new_value), 1);
 }

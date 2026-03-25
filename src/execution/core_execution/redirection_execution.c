@@ -6,19 +6,21 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:54:47 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/25 01:31:11 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 05:20:02 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <core_execution.h>
 
-int sync_redir_n_pipe(t_cmd *node, t_redir *redir, int *red_fd, int *pp_fd)
+int	sync_redir_n_pipe(t_cmd *node, t_redir *redir, int *red_fd, int *pp_fd)
 {
 	if (!node || !red_fd || !pp_fd || !redir)
 		return (0);
-	if ((node->next != NULL) && (redir->type == REDIR_OUTPUT || redir->type == REDIR_APPEND))
+	if ((node->next != NULL) && (redir->type == REDIR_OUTPUT
+			|| redir->type == REDIR_APPEND))
 		red_fd[1] = pp_fd[1];
-	if ((pp_fd[0] != -1) && (redir->type == REDIR_HEREDOC || redir->type == REDIR_INPUT))
+	if ((pp_fd[0] != -1) && (redir->type == REDIR_HEREDOC
+			|| redir->type == REDIR_INPUT))
 		red_fd[0] = pp_fd[0];
 	return (1);
 }
@@ -26,8 +28,8 @@ int sync_redir_n_pipe(t_cmd *node, t_redir *redir, int *red_fd, int *pp_fd)
 int	exec_redirections(t_all *all, t_cmd *node, int *redir_stat)
 {
 	t_redir	*redir;
-	int	result;
-	
+	int		result;
+
 	*redir_stat = true;
 	if (!node || !node->redir || !all->fds)
 		return (FAIL);
@@ -37,7 +39,7 @@ int	exec_redirections(t_all *all, t_cmd *node, int *redir_stat)
 	{
 		sync_redir_n_pipe(node, redir, all->fds->io, all->fds->pipe);
 		if (redir->type == REDIR_OUTPUT)
-			result = redir_out(redir, all->fds->io);	
+			result = redir_out(redir, all->fds->io);
 		else if (redir->type == REDIR_INPUT)
 			result = redir_in(redir, all->fds->io);
 		else if (redir->type == REDIR_APPEND)

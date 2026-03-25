@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/04 15:38:20 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 02:42:39 by otlacerd         ###   ########.fr       */
+/*   Created: 2026/03/04 15:38:20 by username          #+#    #+#             */
+/*   Updated: 2026/03/25 04:26:00 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	env_update(t_env *env_st, char *key, char *value1, char *value2)
 {
-	char *result;
-	int	line;
-	int	total_size;
+	char	*result;
+	int		line;
+	int		total_size;
 
 	if (!key || !env_st->envp)
 		return (0);
@@ -83,7 +83,8 @@ int	env_add(t_env *env_st, int line, char *key, char *string)
 		return (0);
 	if (line >= env_st->capacity)
 	{
-		env_st->envp = re_allocker(env_st->envp, env_st->size + 1, env_st->size + ENV_INCREMENT + 1, sizeof(char *));
+		env_st->envp = re_allocker(env_st->envp, env_st->size + 1,
+			env_st->size + ENV_INCREMENT + 1, sizeof(char *));
 		if (!env_st->envp)
 			return (0);
 		env_st->capacity = env_st->size + ENV_INCREMENT;
@@ -100,7 +101,7 @@ int	env_add(t_env *env_st, int line, char *key, char *string)
 		env_st->envp[++line] = NULL;
 		env_st->size = line;
 	}
-	return (1);	
+	return (1);
 }
 
 int	env_remove(t_env *env_st, char *key)
@@ -109,25 +110,23 @@ int	env_remove(t_env *env_st, char *key)
 
 	if (!env_st || !key)
 		return (0);
-	line = 0;
-	while (env_st->envp[line] != NULL)
+	line = -1;
+	while (env_st->envp[++line] != NULL)
 	{
 		if (compare_prefix(key, env_st->envp[line]) == true)
 		{
 			free(env_st->envp[line]);
-			while (line < env_st->size)
-			{
+			line--;
+			while (++line < env_st->size)
 				env_st->envp[line] = env_st->envp[line + 1];
-				line++;
-			}
 			env_st->size--;
 			break ;
 		}
-		line++;
 	}
 	if ((env_st->capacity - env_st->size) >= (2 * ENV_INCREMENT))
 	{
-		env_st->envp = re_allocker(env_st->envp, env_st->size + 1, (env_st->capacity - ENV_INCREMENT) + 1, sizeof(char *));
+		env_st->envp = re_allocker(env_st->envp, env_st->size + 1,
+			(env_st->capacity - ENV_INCREMENT) + 1, sizeof(char *));
 		env_st->capacity = env_st->capacity - ENV_INCREMENT;
 	}
 	return (0);

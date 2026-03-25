@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 03:35:41 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 12:47:13 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 05:25:29 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	exec_pipe(int *fds)
 int	get_pipe(t_fds *fds, t_cmd *node)
 {
 	int	temp_fd_0;
-	
+
 	if (!fds || !node)
 		return (0);
 	temp_fd_0 = -1;
@@ -45,4 +45,30 @@ int	get_pipe(t_fds *fds, t_cmd *node)
 	fds->pipe[0] = fds->previous_0;
 	fds->previous_0 = temp_fd_0;
 	return (1);
+}
+
+int	validate_absolute_path(char *comand)
+{
+	struct stat	st;
+
+	if (!comand)
+		return (0);
+	if (access(comand, F_OK) != 0)
+	{
+		put_comand_error(comand, "No such file or directory");
+		return (-127);
+	}
+	if (stat(comand, &st) != 0)
+		return (-127);
+	if (S_ISDIR(st.st_mode))
+	{
+		put_comand_error(comand, "Is a directory");
+		return (-126);
+	}
+	if (access(comand, X_OK) != 0)
+	{
+		put_comand_error(comand, "Permission denied");
+		return (-126);
+	}
+	return (0);
 }
