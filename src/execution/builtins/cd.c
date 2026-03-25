@@ -21,7 +21,7 @@
 //
 	/* ************************************************************************** */
 
-#include <built-ins.h>
+#include <built_ins.h>
 
 int	check_dot_edgecase(char **arg, t_env *env)
 {

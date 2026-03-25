@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:59:03 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 21:43:34 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:54:15 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "built-ins.h"
+#include "built_ins.h"
 
-char	**duplicate_envp(t_env *env_st)
+char **duplicate_envp(t_env *env_st)
 {
-	char	**result;
-	int		line;
+	char **result;
+	int line;
 
 	if (!env_st)
 		return (NULL);
@@ -32,11 +32,11 @@ char	**duplicate_envp(t_env *env_st)
 	return (result);
 }
 
-int	sort_env(char **env)
+int sort_env(char **env)
 {
-	int	line;
-	int	smallest;
-	int	finder;
+	int line;
+	int smallest;
+	int finder;
 
 	if (!env)
 		return (0);
@@ -60,12 +60,12 @@ int	sort_env(char **env)
 	return (1);
 }
 
-int	export_case(t_env *env, char *string)
+int export_case(t_env *env, char *string)
 {
-	char	*key;
-	char	*new_value;
-	char	*old_value;
-	int		index;
+	char *key;
+	char *new_value;
+	char *old_value;
+	int index;
 
 	if (!string || !env || !env->envp)
 		return (-1);
@@ -82,9 +82,8 @@ int	export_case(t_env *env, char *string)
 		return (0);
 	if ((string[index] != '=') && string[index])
 		old_value = env_value_dup_beginning(env_find_pointer(key, env->envp),
-				index);
-	if ((string[index] == '=') || ((string[index] && (string[index++] == '+'))
-			&& (string[index] == '=')))
+											index);
+	if ((string[index] == '=') || ((string[index] && (string[index++] == '+')) && (string[index] == '=')))
 	{
 		if (old_value && (index > 0) && (string[index - 1] == '+'))
 			index++;
@@ -94,12 +93,13 @@ int	export_case(t_env *env, char *string)
 	return (free(key), free(old_value), free(new_value), 1);
 }
 
-int	export_with_arguments(t_cmd *node, int *line, t_env *env)
+int export_with_arguments(t_cmd *node, int *line, t_env *env)
 {
-	int to_return ;
+	int to_return;
+
 	if (!node || !line || !env)
-		return (0);
-	to_return (= 0);
+		return (-1);
+	to_return = 0;
 	while (node->args[(*line)])
 	{
 		if (parse_export_string(node->args[(*line)]) == true)
@@ -109,17 +109,17 @@ int	export_with_arguments(t_cmd *node, int *line, t_env *env)
 			put_error("export: `");
 			put_error(node->args[(*line)]);
 			put_error("': not a valid identifier\n");
-			to_return (= -1);
+			to_return = -1;
 		}
 		(*line)++;
 	}
 	return (to_return);
 }
 
-int	built_export(t_all *all, t_cmd *node, t_env *env, char *buffer)
+int built_export(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
-	char	**temp;
-	int		line;
+	char **temp;
+	int line;
 
 	if (!env || !node || !node->args)
 		return (-1);

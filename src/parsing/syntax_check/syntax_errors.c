@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syntax_errors.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/25 02:56:36 by nismayil          #+#    #+#             */
+/*   Updated: 2026/03/25 03:00:56 by nismayil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <parser.h>
 #include <utils.h>
 
@@ -18,7 +30,7 @@ void	print_syntax_error(const char *str)
 
 void	print_heredoc_eof_warning(const char *str, int line)
 {
-	char *line_number;
+	char	*line_number;
 
 	line_number = NULL;
 	ft_putstr_fd("minishell: warning: here-document", STDERR_FILENO);

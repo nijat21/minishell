@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   core_execution.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:54:14 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 01:31:09 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:30:35 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CORE_EXECUTION_H
 # define CORE_EXECUTION_H
 
-# include "built-ins.h"
+# include "built_ins.h"
 # include "data.h"
 # include "minishell.h"
 # include "utils.h"

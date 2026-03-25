@@ -6,27 +6,27 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 19:08:55 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/24 15:05:31 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:51:45 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <lexer.h>
 
-t_seg	*seg_init(t_seg **seg, size_t len)
+t_seg	*seg_init(t_lex_ctx *ctx, size_t len)
 {
 	t_seg	*new;
 
 	new = safe_malloc(sizeof(t_seg), "seg_init: new");
 	if (!new)
 	{
-		free_seg_list(seg);
+		free_token_list(&ctx->tk);
 		return (NULL);
 	}
 	new->val = safe_malloc(sizeof(char) * (len + 1), "seg_init: new->val");
 	if (!new->val)
 	{
 		free(new);
-		free_seg_list(seg);
+		free_token_list(&ctx->tk);
 		return (NULL);
 	}
 	return (new);
@@ -37,12 +37,9 @@ t_seg	**add_segment(t_lex_ctx *ctx, const char *val, size_t len, bool expand)
 	t_seg	*new;
 	t_seg	*temp;
 
-	new = seg_init(&ctx->seg, len);
+	new = seg_init(ctx, len);
 	if (!new)
-	{
-		free_token_list(&ctx->tk);
 		return (NULL);
-	}
 	if (!ft_memcpy(new->val, val, len))
 	{
 		free_seg_list(&ctx->seg);

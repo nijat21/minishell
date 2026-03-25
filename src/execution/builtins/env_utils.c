@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:38:20 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 02:42:39 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:30:35 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <built-ins.h>
+#include <built_ins.h>
 
-int	env_update(t_env *env_st, char *key, char *value1, char *value2)
+int env_update(t_env *env_st, char *key, char *value1, char *value2)
 {
-	char	*result;
-	int		line;
-	int		total_size;
+	char *result;
+	int line;
+	int total_size;
 
 	if (!key || !env_st->envp)
 		return (0);
@@ -41,10 +41,10 @@ int	env_update(t_env *env_st, char *key, char *value1, char *value2)
 	return (1);
 }
 
-char	*env_find_pointer(char *prefix, char **envp)
+char *env_find_pointer(char *prefix, char **envp)
 {
-	int	result;
-	int	line;
+	int result;
+	int line;
 
 	line = 0;
 	if (!prefix || !envp)
@@ -59,9 +59,9 @@ char	*env_find_pointer(char *prefix, char **envp)
 	return (NULL);
 }
 
-int	env_find_line(char *key, char **envp)
+int env_find_line(char *key, char **envp)
 {
-	int	line;
+	int line;
 
 	if (!key || !envp)
 		return (-1);
@@ -75,16 +75,15 @@ int	env_find_line(char *key, char **envp)
 	return (-1);
 }
 
-int	env_add(t_env *env_st, int line, char *key, char *string)
+int env_add(t_env *env_st, int line, char *key, char *string)
 {
-	int	size;
+	int size;
 
 	if (!env_st || !env_st->envp || (line < 0))
 		return (0);
 	if (line >= env_st->capacity)
 	{
-		env_st->envp = re_allocker(env_st->envp, env_st->size + 1, env_st->size
-				+ ENV_INCREMENT + 1, sizeof(char *));
+		env_st->envp = re_allocker(env_st->envp, env_st->size + 1, env_st->size + ENV_INCREMENT + 1, sizeof(char *));
 		if (!env_st->envp)
 			return (0);
 		env_st->capacity = env_st->size + ENV_INCREMENT;
@@ -104,9 +103,9 @@ int	env_add(t_env *env_st, int line, char *key, char *string)
 	return (1);
 }
 
-int	env_remove(t_env *env_st, char *key)
+int env_remove(t_env *env_st, char *key)
 {
-	int	line;
+	int line;
 
 	if (!env_st || !key)
 		return (0);
@@ -122,14 +121,14 @@ int	env_remove(t_env *env_st, char *key)
 				line++;
 			}
 			env_st->size--;
-			break ;
+			break;
 		}
 		line++;
 	}
 	if ((env_st->capacity - env_st->size) >= (2 * ENV_INCREMENT))
 	{
 		env_st->envp = re_allocker(env_st->envp, env_st->size + 1,
-				(env_st->capacity - ENV_INCREMENT) + 1, sizeof(char *));
+								   (env_st->capacity - ENV_INCREMENT) + 1, sizeof(char *));
 		env_st->capacity = env_st->capacity - ENV_INCREMENT;
 	}
 	return (0);

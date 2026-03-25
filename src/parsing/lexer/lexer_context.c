@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 19:09:11 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/22 22:58:36 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:25:07 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ size_t	varname_len(const char *str)
 
 int	add_var(t_lex_ctx *ctx, const char *start, int *i)
 {
-	size_t var_len;
+	size_t	var_len;
 
 	var_len = varname_len(start);
 	if (!var_len)

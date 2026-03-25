@@ -1,7 +1,18 @@
-#include <built-ins.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/25 02:57:10 by nismayil          #+#    #+#             */
+/*   Updated: 2026/03/25 03:59:04 by nismayil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <built_ins.h>
 #include <parser.h>
 
-// segments of token 1. user, exp=false, 2. $VAR, exp=true -> only expand seg 2
 char	*expand_var(const char *str, t_all *all)
 {
 	char	*var;

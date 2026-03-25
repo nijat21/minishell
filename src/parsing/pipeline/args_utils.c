@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   args_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/25 02:57:36 by nismayil          #+#    #+#             */
+/*   Updated: 2026/03/25 03:03:01 by nismayil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <parser.h>
 
 char	**segval_to_args(char *seg_val)
@@ -89,7 +101,7 @@ char	**ft_arrconcat_free(char **args, char **new_args)
 
 void	print_arr(char **arr)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	ft_putstr_fd("[ ", STDOUT_FILENO);

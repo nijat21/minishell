@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 22:13:30 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/24 23:35:37 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:30:35 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "built-ins.h"
+#include "built_ins.h"
 
-char	**create_env(char **envp, int *capacity)
+char **create_env(char **envp, int *capacity)
 {
-	char	**result;
-	int		line_count;
-	int		line;
+	char **result;
+	int line_count;
+	int line;
 
 	if (!capacity)
 		return (NULL);
@@ -39,10 +39,10 @@ char	**create_env(char **envp, int *capacity)
 	return (result);
 }
 
-int	assign_minimal_env(t_env *env, char *buffer)
+int assign_minimal_env(t_env *env, char *buffer)
 {
-	int		shell_lvl;
-	char	*pointer;
+	int shell_lvl;
+	char *pointer;
 
 	if (!env)
 		return (0);
@@ -68,13 +68,14 @@ int	assign_minimal_env(t_env *env, char *buffer)
 	return (1);
 }
 
-int	assign_env_struct(t_env *env, char **envp, char *buffer)
+int assign_env_struct(t_env *env, char **envp, char *buffer)
 {
-	int	capacity;
+	int capacity;
 
 	if (!env || !buffer)
 		return (write(2, "Error\nWrong pointer in function assign_env_struct\n",
-				50), 0);
+					  50),
+				0);
 	capacity = 0;
 	env->envp = create_env(envp, &capacity);
 	if (!env->envp)
@@ -85,18 +86,18 @@ int	assign_env_struct(t_env *env, char **envp, char *buffer)
 	return (1);
 }
 
-void	env_show(char **envp, int is_export)
+void env_show(char **envp, int is_export)
 {
-	int	line;
-	int	size;
+	int line;
+	int size;
 
 	line = -1;
 	while (envp[++line])
 	{
 		if (is_export == true && (envp[line][0] == '_' && envp[line][1] == '='))
-			continue ;
+			continue;
 		if ((is_export == false) && string_have_equal(envp[line]) == false)
-			continue ;
+			continue;
 		(void)((is_export == true) && (write(1, "export ", 7)));
 		size = 0;
 		while (envp[line][size] && (envp[line][size] != '='))
@@ -114,9 +115,9 @@ void	env_show(char **envp, int is_export)
 	}
 }
 
-int	built_env(t_all *all, t_cmd *node, t_env *env, char *buffer)
+int built_env(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
-	int	size;
+	int size;
 
 	if (!env || !env->envp || !node || !node->args || !all)
 		return (-1);
@@ -127,7 +128,7 @@ int	built_env(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	if (size > 1)
 	{
 		put_comand_error("-- 42Lisboa subject",
-			"\n    ◦ env with no options or arguments");
+						 "\n    ◦ env with no options or arguments");
 		return (-2);
 	}
 	else if (size == 1)

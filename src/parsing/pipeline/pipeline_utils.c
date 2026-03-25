@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipeline_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/25 02:58:26 by nismayil          #+#    #+#             */
+/*   Updated: 2026/03/25 03:05:31 by nismayil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <parser.h>
 
 t_redir_type	ttype_to_redir_type(t_ttype type)
@@ -33,6 +45,17 @@ size_t	count_word_tokens(t_token *tk)
 		temp = temp->next;
 	}
 	return (count);
+}
+
+bool	token_has_quote(t_seg *seg)
+{
+	while (seg)
+	{
+		if (seg->has_quote)
+			return (true);
+		seg = seg->next;
+	}
+	return (false);
 }
 
 void	*free_arr_cmdlst(t_cmd **cmd, char **args)

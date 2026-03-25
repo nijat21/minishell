@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 15:23:38 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/24 16:10:12 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:06:19 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,6 @@ static t_cmd	*word_tokens_to_cmd(t_cmd **cmd, t_token **tk, t_all *all)
 	return (*cmd);
 }
 
-static bool	token_has_quote(t_seg *seg)
-{
-	while (seg)
-	{
-		if (seg->has_quote)
-			return (true);
-		seg = seg->next;
-	}
-	return (false);
-}
-
 static t_redir	*token_to_redir(t_cmd **cmd, t_token **tk, t_all *all)
 {
 	t_redir			*new_red;
@@ -153,5 +142,5 @@ t_cmd	**build_pipeline(t_cmd **cmd, t_token *tk, t_all *all)
 		tk = tk->next;
 	}
 	command_lstadd_back(cmd, curr);
-	return cmd;
+	return (cmd);
 }

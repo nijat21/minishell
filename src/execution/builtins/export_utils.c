@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 15:36:08 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/23 16:03:58 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:30:35 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <built-ins.h>
+#include <built_ins.h>
 
-char	*env_get_value(char *prefix, char **env)
+char *env_get_value(char *prefix, char **env)
 {
-	char	*result;
-	int		size;
+	char *result;
+	int size;
 
 	if (!prefix || !env)
 		return (NULL);
@@ -31,12 +31,12 @@ char	*env_get_value(char *prefix, char **env)
 	return (result);
 }
 
-char	*env_value_dup(char *prefix, char **env)
+char *env_value_dup(char *prefix, char **env)
 {
-	char	*string;
-	char	*result;
-	int		size;
-	int		index;
+	char *string;
+	char *result;
+	int size;
+	int index;
 
 	string = env_get_value(prefix, env);
 	if (!string || (string[-1] != '='))
@@ -54,11 +54,11 @@ char	*env_value_dup(char *prefix, char **env)
 	return (result);
 }
 
-char	*env_value_dup_beginning(char *string, int beginning)
+char *env_value_dup_beginning(char *string, int beginning)
 {
-	char	*result;
-	int		size;
-	int		index;
+	char *result;
+	int size;
+	int index;
 
 	if (!string || beginning < 0 || !string[beginning])
 		return (NULL);
@@ -83,10 +83,10 @@ char	*env_value_dup_beginning(char *string, int beginning)
 	return (result);
 }
 
-char	*env_key_dup(char *string, int delimiter)
+char *env_key_dup(char *string, int delimiter)
 {
-	char	*result;
-	int		index;
+	char *result;
+	int index;
 
 	if (!string || (delimiter < 0) || string[0] == ' ')
 		return (NULL);
@@ -103,9 +103,9 @@ char	*env_key_dup(char *string, int delimiter)
 	return (result);
 }
 
-int	parse_export_string(char *string)
+int parse_export_string(char *string)
 {
-	int	index;
+	int index;
 
 	if (!string)
 		return (0);
@@ -115,8 +115,7 @@ int	parse_export_string(char *string)
 	index++;
 	while (string[index] && (string[index] != '='))
 	{
-		if ((is_alphanumerical_or_underline(string[index]) == false)
-			&& (string[index] != '+'))
+		if ((is_alphanumerical_or_underline(string[index]) == false) && (string[index] != '+'))
 			return (0);
 		if ((string[index] == '+') && (string[index + 1] != '='))
 			return (0);

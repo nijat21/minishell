@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   conversion.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:32:14 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/19 03:06:00 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:30:35 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <built-ins.h>
+#include <built_ins.h>
 #include <utils.h>
 
-char	*int_to_ascii(int nbr)
+char *int_to_ascii(int nbr)
 {
-	char	*result;
-	int		size;
-	long	temp;
-	int		minus;
+	char *result;
+	int size;
+	long temp;
+	int minus;
 
 	size = 0;
 	temp = 0;
@@ -40,20 +40,19 @@ char	*int_to_ascii(int nbr)
 		temp /= 10;
 	}
 	return (result[nbr] = '\0', (void)((minus == -1) && (result[0] = '-')),
-		result);
+			result);
 }
 
-int	ascii_to_int(char *string)
+int ascii_to_int(char *string)
 {
-	long	result;
-	int		minus;
-	int		index;
+	long result;
+	int minus;
+	int index;
 
 	if (!string)
 		return (-1);
 	index = 0;
-	while ((string[index]) && ((string[index] >= 9 && (string[index] <= 13))
-			|| (string[index] == 32)))
+	while ((string[index]) && ((string[index] >= 9 && (string[index] <= 13)) || (string[index] == 32)))
 		index++;
 	minus = 0;
 	if ((string[index] == '+') || (string[index] == '-'))
@@ -63,8 +62,7 @@ int	ascii_to_int(char *string)
 		index++;
 	}
 	result = 0;
-	while ((string[index]) && ((string[index] >= '0')
-			&& (string[index] <= '9')))
+	while ((string[index]) && ((string[index] >= '0') && (string[index] <= '9')))
 		result = ((result * 10) + (string[index++] - 48));
 	if (minus == true)
 		result = -result;
@@ -73,17 +71,16 @@ int	ascii_to_int(char *string)
 	return (result);
 }
 
-int	ascii_to_long(char *string)
+int ascii_to_long(char *string)
 {
-	long	result;
-	int		minus;
-	int		index;
+	long result;
+	int minus;
+	int index;
 
 	if (!string || (is_overflow_long(string) == true))
 		return (-1);
 	index = 0;
-	while ((string[index]) && ((string[index] >= 9 && (string[index] <= 13))
-			|| (string[index] == 32)))
+	while ((string[index]) && ((string[index] >= 9 && (string[index] <= 13)) || (string[index] == 32)))
 		index++;
 	minus = 0;
 	if ((string[index] == '+') || (string[index] == '-'))
@@ -93,8 +90,7 @@ int	ascii_to_long(char *string)
 		index++;
 	}
 	result = 0;
-	while ((string[index]) && ((string[index] >= '0')
-			&& (string[index] <= '9')))
+	while ((string[index]) && ((string[index] >= '0') && (string[index] <= '9')))
 		result = ((result * 10) + (string[index++] - 48));
 	if (minus == true)
 		result = -result;

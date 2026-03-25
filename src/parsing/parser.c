@@ -1,18 +1,16 @@
-#include <parser.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/25 02:55:39 by nismayil          #+#    #+#             */
+/*   Updated: 2026/03/25 02:55:40 by nismayil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/* Parser layers ->
-	1. Lexer tokenize all commands
-		- handle quotes, vars
-		- epand and has quote attributes saved
-	2. Check for syntax errors for all tokens
-		- yes -> return error msg
-	3. Contstruct command pipeline
-		- Expand exp=true segments
-	4. Handle heredoc
-		- should run in child and kill it in Ctrl+C
-		- exp=true if del has_quote=false && if $VAR in heredoc input
-		- save into commands pipeline
-*/
+#include <parser.h>
 
 static int	lex(t_all *all, t_token **tk)
 {
