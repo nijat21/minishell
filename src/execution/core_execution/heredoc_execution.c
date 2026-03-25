@@ -13,11 +13,11 @@
 #include "core_execution.h"
 #include "parser.h"
 
-int exec_all_heredocs(t_all *all)
+int	exec_all_heredocs(t_all *all)
 {
-	t_cmd *node;
-	t_redir *redirection;
-	int index;
+	t_cmd	*node;
+	t_redir	*redirection;
+	int		index;
 
 	if (!all)
 		return (0);
@@ -43,10 +43,10 @@ int exec_all_heredocs(t_all *all)
 	return (0);
 }
 
-int exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
+int	exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
 {
-	static int fd;
-	int readbytes;
+	static int	fd;
+	int			readbytes;
 
 	if (!all || !redir)
 		return (FAIL);
@@ -55,7 +55,6 @@ int exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
 		return (0);
 	exec_heredoc_content(all, &(all->process_info->signal), redir, fd);
 	close(fd);
-
 	// Decide if we gonna keep this "history" ----------------------------------------------------------
 	fd = open(temps[index], O_RDONLY);
 	readbytes = read(fd, all->buffer, BUFFER_SZ);
@@ -63,16 +62,17 @@ int exec_heredoc(t_all *all, t_redir *redir, char **temps, int index)
 	if (readbytes != 0)
 	{
 		realloc_appender(&all->main_line, "\n");
-		add_heredoc_history(all->buffer, all->main_line, string_length(all->main_line), temps[index]);
+		add_heredoc_history(all->buffer, all->main_line,
+			string_length(all->main_line), temps[index]);
 	}
 	// -----------------------------------------------------------------------------------------------
 	return (true);
 }
 
-int exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
+int	exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
 {
-	int pid;
-	int stdin_backup;
+	int	pid;
+	int	stdin_backup;
 
 	if (!redir->redir_arg || fd == -1 || !all || !signal)
 		return (-1);
@@ -98,7 +98,8 @@ int exec_heredoc_content(t_all *all, int *signal, t_redir *redir, int fd)
 	return (1);
 }
 
-static void handle_sigint_eof(t_all *all, t_redir *redir, int stdin_backup, char *line)
+static void	handle_sigint_eof(t_all *all, t_redir *redir, int stdin_backup,
+		char *line)
 {
 	if (all->process_info->signal == SIGINT)
 		dup2(stdin_backup, STDIN_FILENO);
@@ -108,19 +109,20 @@ static void handle_sigint_eof(t_all *all, t_redir *redir, int stdin_backup, char
 		free(line);
 }
 
-int read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
+int	read_write_content(t_all *all, t_redir *redir, int stdin_backup, int fd)
 {
-	char *line;
+	char	*line;
 
 	if (!redir->redir_arg)
 		return (0);
 	while (1)
 	{
 		line = readline("> ");
-		if ((line && (string_compare(line, redir->redir_arg) == 0)) || (!line || (all->process_info->signal == SIGINT)))
+		if ((line && (string_compare(line, redir->redir_arg) == 0)) || (!line
+				|| (all->process_info->signal == SIGINT)))
 		{
 			handle_sigint_eof(all, redir, stdin_backup, line);
-			break;
+			break ;
 		}
 		else if (line && !*line)
 			write(fd, "\n", 1);

@@ -56,7 +56,7 @@ int	restore_fds(t_fds *fds, t_cmd *node)
 	return (1);
 }
 
-int safe_close_fd(int *fd)
+int	safe_close_fd(int *fd)
 {
 	if (!fd || (*fd < 0))
 		return (-1);
@@ -65,7 +65,7 @@ int safe_close_fd(int *fd)
 		if (isatty(*fd) == true)
 			return (0);
 	}
-	close (*fd);
+	close(*fd);
 	*fd = -1;
 	return (1);
 }

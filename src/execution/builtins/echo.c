@@ -14,7 +14,6 @@
 
 static int	flag_is_true(char *string)
 {
-
 	if (!string)
 		return (0);
 	if (string[0] == '-' && (string[1] == 'n'))
@@ -22,22 +21,23 @@ static int	flag_is_true(char *string)
 	return (false);
 }
 
-int parse_echo(char **args, int *line)
+int	parse_echo(char **args, int *line)
 {
-	int index;
+	int	index;
 
 	if (!args || !(*args))
 		return (FAIL);
 	while (args[(*line)] != NULL)
 	{
 		if (flag_is_true(args[*line]) == false)
-			break;
+			break ;
 		else
 		{
 			index = 2;
 			while (args[(*line)][index])
 			{
-				if (!((args[(*line)][index] != '\0') && (args[(*line)][index] == 'n')))
+				if (!((args[(*line)][index] != '\0')
+						&& (args[(*line)][index] == 'n')))
 					return (false);
 				index++;
 			}
@@ -47,10 +47,10 @@ int parse_echo(char **args, int *line)
 	return (true);
 }
 
-int built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer)
+int	built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
-	int line;
-	int flag;
+	int	line;
+	int	flag;
 
 	if (!node || !node->args)
 		return (-1);

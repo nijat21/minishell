@@ -32,7 +32,7 @@ int	exec_pipe(int *fds)
 int	get_pipe(t_fds *fds, t_cmd *node)
 {
 	int	temp_fd_0;
-	
+
 	if (!fds || !node)
 		return (0);
 	temp_fd_0 = -1;

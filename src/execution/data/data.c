@@ -10,14 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <data.h>
-#include <parser.h>
 #include <built-ins.h>
 #include <core_execution.h>
+#include <data.h>
+#include <parser.h>
 
-t_all *init_structures(void)
+t_all	*init_structures(void)
 {
-	t_all *all;
+	t_all	*all;
+
 	all = malloc(sizeof(t_all));
 	if (!all)
 		return (end_structures(all, 1, 0, 1), NULL);
@@ -103,13 +104,13 @@ void	end_structures(t_all *all, int is_the_end, int is_child, int status)
 			free(all->process_info);
 		free(all);
 		rl_clear_history();
-		exit (status);
+		exit(status);
 	}
 }
 
 int	get_line(char **line, t_all *all)
 {
-	static int interactive_mode = -1;
+	static int	interactive_mode = -1;
 
 	if (!line || !all)
 		return (0);
@@ -135,5 +136,3 @@ int	get_line(char **line, t_all *all)
 	}
 	return (1);
 }
-
-

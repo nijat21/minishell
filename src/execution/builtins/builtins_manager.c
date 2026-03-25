@@ -12,7 +12,7 @@
 
 #include <built-ins.h>
 
-func_ptr *get_built_in(char *comand)
+func_ptr	*get_built_in(char *comand)
 {
 	if (!comand)
 		return (NULL);
@@ -30,7 +30,7 @@ func_ptr *get_built_in(char *comand)
 		return (built_cd);
 	else if (string_compare(comand, "pwd") == 0)
 		return (built_pwd);
-	return (NULL);	
+	return (NULL);
 }
 
 int	update_underline_on_env(char *absolute_path, t_env *env, char **args)

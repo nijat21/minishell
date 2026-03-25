@@ -1,32 +1,43 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   cd.c                                               :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2026/02/26 02:44:14 by olacerda          #+#    #+#             */
-// /*   Updated: 2026/02/26 03:20:44 by olacerda         ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+//
+	/* ************************************************************************** */
+//
+	/*                                                                            */
+//
+	/*                                                        :::      ::::::::   */
+//
+	/*   cd.c                                               :+:      :+:    :+:   */
+// /*                                                    +:+ +:+        
+	+:+     */
+// /*   By: olacerda <olacerda@student.42.fr>          +#+  +:+      
+	+#+        */
+// /*                                                +#+#+#+#+#+  
+	+#+           */
+//
+	/*   Created: 2026/02/26 02:44:14 by olacerda          #+#    #+#             */
+//
+	/*   Updated: 2026/02/26 03:20:44 by olacerda         ###   ########.fr       */
+//
+	/*                                                                            */
+//
+	/* ************************************************************************** */
 
 #include <built-ins.h>
 
 int	check_dot_edgecase(char **arg, t_env *env)
 {
-	int	size;
-	char *string;
+	int		size;
+	char	*string;
 
 	if (!arg || !*arg)
 		return (0);
 	string = NULL;
-	if ((*arg) && (((*arg)[0] == '.' && !(*arg)[1])
-		|| ((*arg)[0] == '.' && (*arg)[1] == '.' && !(*arg)[2])))
+	if ((*arg) && (((*arg)[0] == '.' && !(*arg)[1]) || ((*arg)[0] == '.'
+				&& (*arg)[1] == '.' && !(*arg)[2])))
 	{
 		put_multiple_error((char *[]){"cd",
 			"error retrieving current directory", "getcwd",
-				"cannot acess parent directories", NULL},
-					"No such file or directory");
+			"cannot acess parent directories", NULL},
+			"No such file or directory");
 		string = string_duplicate(*arg);
 		size = string_length(*arg);
 		string_zero(*arg, size);
@@ -70,7 +81,7 @@ int	change_paths(char *new_path, t_env *env, char *buffer, int cd_minus)
 
 char	*get_new_path(t_cmd *node, char **envp, int *cd_minus)
 {
-	char *new_path;
+	char	*new_path;
 
 	if (!node || !envp)
 		return (NULL);
@@ -94,9 +105,9 @@ char	*get_new_path(t_cmd *node, char **envp, int *cd_minus)
 
 int	built_cd(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
-	int			line;
-	char 		*new_path;
-	int			cd_minus;
+	int		line;
+	char	*new_path;
+	int		cd_minus;
 
 	if (!all || !env || !env->envp || !node || !node->args)
 		return (-1);

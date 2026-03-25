@@ -36,14 +36,16 @@ int	parse_path(char *path)
 	return (true);
 }
 
-int get_next_path(char *path, char *environment_variable, int env_idx, int path_buffer_size)
+int	get_next_path(char *path, char *environment_variable, int env_idx,
+		int path_buffer_size)
 {
-	int index;
+	int	index;
 
 	index = 0;
 	if (!path || !environment_variable || !env_idx)
 		return (0);
-	while ((environment_variable[env_idx]) && (index < (path_buffer_size - 1)) && (environment_variable[env_idx] != ':'))
+	while ((environment_variable[env_idx]) && (index < (path_buffer_size - 1))
+		&& (environment_variable[env_idx] != ':'))
 	{
 		path[index] = environment_variable[env_idx];
 		index++;
@@ -53,9 +55,9 @@ int get_next_path(char *path, char *environment_variable, int env_idx, int path_
 	return (index);
 }
 
-int append_comand(char *path, char *comand, int path_idx, int path_buffer_size)
+int	append_comand(char *path, char *comand, int path_idx, int path_buffer_size)
 {
-	int index;
+	int	index;
 
 	if (!path || !comand || !path_buffer_size || !path_idx)
 		return (0);
@@ -75,15 +77,16 @@ int append_comand(char *path, char *comand, int path_idx, int path_buffer_size)
 	return (1);
 }
 
-char *find_abs_path(char *env_path, char *comand, int prefix_size, char *buffer)
+char	*find_abs_path(char *env_path, char *comand, int prefix_size,
+		char *buffer)
 {
-	int env_path_size;
-	int path_idx;
-	int path_size;
+	int	env_path_size;
+	int	path_idx;
+	int	path_size;
 
 	if (!env_path || !comand || !prefix_size)
 		return (NULL);
-	string_zero(buffer, PATH_MAX); 
+	string_zero(buffer, PATH_MAX);
 	env_path_size = string_length(env_path);
 	path_idx = prefix_size;
 	path_size = 0;
@@ -103,15 +106,15 @@ char *find_abs_path(char *env_path, char *comand, int prefix_size, char *buffer)
 	return (NULL);
 }
 
-char *get_absolute_path(char *prefix, char *comand, char **envp, char *buffer)
+char	*get_absolute_path(char *prefix, char *comand, char **envp,
+		char *buffer)
 {
-	char *env_path;
-	char *absolute_path;
-	int prefix_size;
+	char	*env_path;
+	char	*absolute_path;
+	int		prefix_size;
 
 	if (!prefix || !comand || !envp)
 		return (NULL);
-	
 	if (is_redirection(comand) || ((comand[0] == '.') && !comand[1]))
 		return (NULL);
 	if (!(*comand) || ((comand[0] == '.') && (comand[1] == '.') && !comand[2]))
