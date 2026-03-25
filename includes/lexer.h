@@ -6,15 +6,15 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:59:44 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/20 15:22:55 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:46:20 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 #define LEXER_H
 
-#include "parser.h"
 #include "parse_structures.h"
+#include "parser.h"
 
 // ===== lexer.c =========================================================
 void ctx_init(t_lex_ctx *ctx);
@@ -37,8 +37,9 @@ size_t varname_len(const char *str);
 int add_var(t_lex_ctx *ctx, const char *start, int *i);
 
 // ===== token_ops.c =================================================
-t_seg *seg_init(t_seg **seg, size_t len);
-t_seg **add_segment(t_lex_ctx *ctx, const char *val, size_t len, bool expand);
+t_seg *seg_init(t_lex_ctx *ctx, size_t len);
+t_seg **add_segment(t_lex_ctx *ctx, const char *val, size_t len,
+					bool expand);
 t_token **add_token(t_token **tk, t_ttype type, t_seg *seg_list);
 
 // ===== lexer_list_ops.c =================================================

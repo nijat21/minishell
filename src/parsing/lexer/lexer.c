@@ -12,19 +12,19 @@
 
 #include <lexer.h>
 
-static int handle_space_operator(t_lex_ctx *ctx, const char *str, int *i)
+static int	handle_space_operator(t_lex_ctx *ctx, const char *str, int *i)
 {
 	if (is_space(str[*i]))
 	{
 		if (!add_leftovers(ctx))
-			return -1;
+			return (-1);
 		if (ctx->len == 0)
 			return (1);
 	}
 	else if (is_operator(str[*i]))
 	{
 		if (!add_leftovers(ctx))
-			return -1;
+			return (-1);
 		ctx->start = &str[*i];
 		ctx->len++;
 		if (ctx->tt == HEREDOC || ctx->tt == APPEND)
@@ -33,14 +33,14 @@ static int handle_space_operator(t_lex_ctx *ctx, const char *str, int *i)
 			(*i)++;
 		}
 		if (!if_len_add_token_seg(ctx, ctx->tt, false))
-			return -1;
+			return (-1);
 	}
-	return 0;
+	return (0);
 }
 
-static bool handle_non_quote(t_lex_ctx *ctx, const char *str, int *i)
+static bool	handle_non_quote(t_lex_ctx *ctx, const char *str, int *i)
 {
-	int res;
+	int	res;
 
 	if (ctx->len == 0)
 		ctx->start = &str[*i];
@@ -50,7 +50,7 @@ static bool handle_non_quote(t_lex_ctx *ctx, const char *str, int *i)
 		if (res)
 			return (true);
 		else if (res == -1)
-			return false;
+			return (false);
 		else
 			ctx->len++;
 	}
@@ -58,37 +58,37 @@ static bool handle_non_quote(t_lex_ctx *ctx, const char *str, int *i)
 	{
 		res = handle_space_operator(ctx, str, i);
 		if (res)
-			return true;
+			return (true);
 		else if (res == -1)
-			return false;
+			return (false);
 	}
 	else
 		ctx->len++;
 	return (true);
 }
 
-static int input_to_tokens(t_lex_ctx *ctx, const char *str, int *i)
+static int	input_to_tokens(t_lex_ctx *ctx, const char *str, int *i)
 {
-	int res;
+	int	res;
 
 	if (str[*i] == '"' || str[*i] == '\'')
 	{
 		res = handle_quotes(ctx, str, i);
 		if (res)
-			return 1;
+			return (1);
 		else if (res == -1)
-			return -1;
+			return (-1);
 	}
 	else
 	{
 		ctx->has_quote = false;
 		if (!handle_non_quote(ctx, str, i))
-			return -1;
+			return (-1);
 	}
-	return 0;
+	return (0);
 }
 
-void ctx_init(t_lex_ctx *ctx)
+void	ctx_init(t_lex_ctx *ctx)
 {
 	ctx->tk = NULL;
 	ctx->qc = Q_NONE;
@@ -97,11 +97,11 @@ void ctx_init(t_lex_ctx *ctx)
 	ctx->has_quote = false;
 }
 
-t_token *lexer(const char *str)
+t_token	*lexer(const char *str)
 {
-	t_lex_ctx ctx;
-	int i;
-	int res;
+	t_lex_ctx	ctx;
+	int			i;
+	int			res;
 
 	ctx_init(&ctx);
 	i = -1;
@@ -111,11 +111,11 @@ t_token *lexer(const char *str)
 		choose_ttype(&str[i], &ctx.tt);
 		res = input_to_tokens(&ctx, str, &i);
 		if (res)
-			break;
+			break ;
 		else if (res == -1)
-			return NULL;
+			return (NULL);
 	}
 	if (!handle_last_buf(&ctx))
-		return NULL;
+		return (NULL);
 	return (ctx.tk);
 }

@@ -6,14 +6,14 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:43:11 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 04:46:23 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:32:13 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <built_ins.h>
+#include <core_execution.h>
 #include <data.h>
 #include <parser.h>
-#include <built-ins.h>
-#include <core_execution.h>
 
 t_all	*init_structures(void)
 {
@@ -38,7 +38,7 @@ t_all	*init_structures(void)
 	return (all);
 }
 
-int	fill_structs_on_loop(t_all *all)
+int fill_structs_on_loop(t_all *all)
 {
 	if (!all)
 		return (0);
@@ -59,7 +59,7 @@ int	fill_structs_on_loop(t_all *all)
 	return (1);
 }
 
-int	fill_structures(t_all *all, int argc, char **argv, char **envp)
+int fill_structures(t_all *all, int argc, char **argv, char **envp)
 {
 	if (!all || !argc || !argv)
 		return (0);
@@ -76,10 +76,10 @@ int	fill_structures(t_all *all, int argc, char **argv, char **envp)
 	return (1);
 }
 
-void	end_structures(t_all *all, int is_the_end, int is_child, int status)
+void end_structures(t_all *all, int is_the_end, int is_child, int status)
 {
 	if (!all)
-		return ;
+		return;
 	if (is_child == false)
 		unlink_all_heredoc_temps(all->heredoc.temps);
 	if (all->heredoc.temps)
@@ -101,11 +101,11 @@ void	end_structures(t_all *all, int is_the_end, int is_child, int status)
 			free(all->process_info);
 		free(all);
 		rl_clear_history();
-		exit (status);
+		exit(status);
 	}
 }
 
-int	get_line(char **line, t_all *all)
+int get_line(char **line, t_all *all)
 {
 	static int	interactive_mode = -1;
 

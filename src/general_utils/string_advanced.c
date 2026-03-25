@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:30:23 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/24 17:15:00 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 04:51:02 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	string_cat(char *string1, int size, char *string2)
 {
 	int	x1;
-	int x2;
-	
+	int	x2;
+
 	if (!string1 || !string2)
 		return (0);
 	x1 = 0;
@@ -26,7 +26,7 @@ int	string_cat(char *string1, int size, char *string2)
 	while ((string2[x2] != '\0'))
 	{
 		if (x1 >= size)
-			break;
+			break ;
 		string1[x1] = string2[x2];
 		x1++;
 		x2++;
@@ -37,7 +37,7 @@ int	string_cat(char *string1, int size, char *string2)
 
 int	string_swap(char **str1, char **str2)
 {
-	char *temp;
+	char	*temp;
 
 	if (!str1 || !str2)
 		return (0);
@@ -55,7 +55,7 @@ int	string_compare(char *str1, char *str2)
 		return (0);
 	i = 0;
 	while ((str1[i] && str2[i]) && (str1[i] == str2[i])
-				&& (str1[i + 1] != '\n'))
+		&& (str1[i + 1] != '\n'))
 		i++;
 	return (str1[i] - str2[i]);
 }
@@ -72,7 +72,7 @@ int	array_string_lenght(char **args)
 
 void	print_nbr(int number)
 {
-	long nbr;
+	long	nbr;
 
 	nbr = number;
 	if (nbr < 0)

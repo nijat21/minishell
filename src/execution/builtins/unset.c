@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 05:29:14 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/19 05:51:01 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 03:30:35 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <built-ins.h>
+#include <built_ins.h>
 
-int	built_unset(t_all *all, t_cmd *node, t_env *env, char *buffer)
+int built_unset(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
-	int	line;
+	int line;
 
 	if (!node || !node->args || !env)
 		return (-1);

@@ -6,42 +6,31 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 03:15:12 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 03:15:13 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 06:25:35 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   cd.c                                               :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: olacerda <olacerda@student.42.fr>          +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2026/02/26 02:44:14 by olacerda          #+#    #+#             */
-// /*   Updated: 2026/02/26 03:20:44 by olacerda         ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
-
-#include <built-ins.h>
+#include <built_ins.h>
 
 int	check_dot_edgecase(char **arg, t_env *env)
 {
+	int		size;
+	char	*string;
 	int		size;
 	char	*string;
 
 	if (!arg || !*arg)
 		return (0);
 	string = NULL;
-	if ((*arg) && (((*arg)[0] == '.' && !(*arg)[1])
-				|| ((*arg)[0] == '.' && (*arg)[1] == '.' && !(*arg)[2])))
+	if ((*arg) && (((*arg)[0] == '.' && !(*arg)[1]) || ((*arg)[0] == '.'
+				&& (*arg)[1] == '.' && !(*arg)[2])))
 	{
 		put_multiple_error((char * [])
 			{
 			"cd",
 			"error retrieving current directory", "getcwd",
-			"cannot acess parent directories", NULL
-		},
-		"No such file or directory");
+			"cannot acess parent directories", NULL},
+			"No such file or directory");
 		string = string_duplicate(*arg);
 		size = string_length(*arg);
 		string_zero(*arg, size);

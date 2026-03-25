@@ -1,70 +1,68 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/25 02:55:39 by nismayil          #+#    #+#             */
+/*   Updated: 2026/03/25 02:55:40 by nismayil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <parser.h>
 
-/* Parser layers ->
-	1. Lexer tokenize all commands
-		- handle quotes, vars
-		- epand and has quote attributes saved
-	2. Check for syntax errors for all tokens
-		- yes -> return error msg
-	3. Contstruct command pipeline
-		- Expand exp=true segments
-	4. Handle heredoc
-		- should run in child and kill it in Ctrl+C
-		- exp=true if del has_quote=false && if $VAR in heredoc input
-		- save into commands pipeline
-*/
-
-static int lex(t_all *all, t_token **tk)
+static int	lex(t_all *all, t_token **tk)
 {
-	char *line;
-	size_t i;
+	char	*line;
+	size_t	i;
 
 	line = all->main_line;
 	i = 0;
 	if (line && !line[i])
-		return 2;
+		return (2);
 	while (line[i] && is_space(line[i]))
 		i++;
 	if (!line[i])
-		return 2;
+		return (2);
 	(*tk) = lexer(line);
 	if (!(*tk))
 	{
 		all->process_info->exit_status = EXIT_FAILURE;
 		free_token_list(tk);
-		return 1;
+		return (1);
 	}
-	return 0;
+	return (0);
 }
 
-static bool valid_syntax(t_all *all, t_token *tk)
+static bool	valid_syntax(t_all *all, t_token *tk)
 {
-	int res;
+	int	res;
 
 	res = syntax_check(tk);
 	if (res)
 	{
 		all->process_info->exit_status = res;
-		return false;
+		return (false);
 	}
-	return true;
+	return (true);
 }
 
-t_parse_stat parse(t_all *all)
+t_parse_stat	parse(t_all *all)
 {
-	t_cmd *cmd;
-	t_token *tk;
-	int res;
+	t_cmd	*cmd;
+	t_token	*tk;
+	int		res;
 
 	res = lex(all, &tk);
 	if (res == 1)
-		return PARSE_FAIL;
+		return (PARSE_FAIL);
 	else if (res == 2)
-		return BAD_INPUT;
+		return (BAD_INPUT);
 	if (!valid_syntax(all, tk))
 	{
 		free_token_list(&tk);
-		return BAD_INPUT;
+		return (BAD_INPUT);
 	}
 	cmd = NULL;
 	if (!build_pipeline(&cmd, tk, all))
@@ -72,9 +70,9 @@ t_parse_stat parse(t_all *all)
 		command_lstclear(&cmd);
 		free_token_list(&tk);
 		all->process_info->exit_status = EXIT_FAILURE;
-		return PARSE_FAIL;
+		return (PARSE_FAIL);
 	}
 	free_token_list(&tk);
 	all->head = cmd;
-	return PARSE_SUCCESS;
+	return (PARSE_SUCCESS);
 }

@@ -10,15 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
 #include "../../minishell.h"
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-static char *liner(t_gnl *gnl, int *total_end, char **line)
+static char	*liner(t_gnl *gnl, int *total_end, char **line)
 {
-	char 	*newline;
+	char	*newline;
 	int		index;
 
 	newline = NULL;
@@ -45,11 +45,11 @@ static char *liner(t_gnl *gnl, int *total_end, char **line)
 	return (newline[index] = '\0', free(*line), newline);
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-	static	t_gnl gnl[FD_SETSIZE];
-	char *line;
-	int	total_end;
+	static t_gnl	gnl[FD_SETSIZE];
+	char			*line;
+	int				total_end;
 
 	if ((BUFFER_SZ <= 0) || (fd < 0))
 		return (NULL);

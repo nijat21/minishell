@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/11 02:46:06 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 03:14:51 by otlacerd         ###   ########.fr       */
+/*   Created: 2025/11/11 02:46:06 by otlacerd          #+#    #+#             */
+/*   Updated: 2026/03/25 06:36:14 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ char	**split_line(char *string);
 int		realloc_appender(char **string, char *to_append);
 
 //-allocation_free.c -----------------------------------------------------------
-int		free_array_string(char **array, int size); // Size '0' (zero) for default.
+// Size '0' (zero) for default.
+int		free_array_string(char **array, int size);
 void	del(void *content);
 
 //-char.c ----------------------------------------------------------------------
-int	is_alphanumerical_or_underline(char xar);
-int	is_numerical(char xar);
+int		is_alphanumerical_or_underline(char xar);
+int		is_numerical(char xar);
 
 //-conversion.c ----------------------------------------------------------------
 int		ascii_to_int(char *string);
@@ -50,10 +51,10 @@ int		array_string_lenght(char **args);
 void	print_nbr(int number);
 
 //-string_basic.c --------------------------------------------------------------
-int	string_zero(char *string, int size);
-int	string_print(char *string, int have_break_line);
-int	string_length(char *string);
-int	string_copy(char *str1, char *str2);
-int	string_have_equal(char *string);
+int		string_zero(char *string, int size);
+int		string_print(char *string, int have_break_line);
+int		string_length(char *string);
+int		string_copy(char *str1, char *str2);
+int		string_have_equal(char *string);
 
 #endif

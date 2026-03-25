@@ -12,21 +12,21 @@
 
 #include <signals.h>
 
-extern int process_signal;
+extern int	process_signal;
 
-t_proc *get_process_info(t_all *all)
+t_proc	*get_process_info(t_all *all)
 {
-	static t_proc *process_info;
+	static t_proc	*process_info;
 
 	if (all != NULL)
 		process_info = all->process_info;
 	return (process_info);
 }
 
-void handler(int sig)
+void	handler(int sig)
 {
-	int pid;
-	static t_proc *process_info;
+	int				pid;
+	static t_proc	*process_info;
 
 	if (process_info == NULL)
 		process_info = get_process_info(NULL);
@@ -50,7 +50,7 @@ void handler(int sig)
 	}
 }
 
-void signals(int have_child, int pid)
+void	signals(int have_child, int pid)
 {
 	if (have_child == true)
 	{
