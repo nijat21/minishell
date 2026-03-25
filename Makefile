@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/22 23:11:08 by otlacerd          #+#    #+#              #
-#    Updated: 2026/03/23 16:48:08 by nismayil         ###   ########.fr        #
+#    Updated: 2026/03/25 08:33:45 by otlacerd         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = cc
 GCC = gcc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 GFLAGS = -Wall -Wextra -Werror -g3 -O0
 RM = rm -rf
 OBJ_DIR = build

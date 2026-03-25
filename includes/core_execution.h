@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:54:14 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 07:16:38 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/25 09:01:11 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int		is_accessible(char *path);
 int		exec_pipe(int *fds);
 int		get_pipe(t_fds *fds, t_cmd *node);
 int		validate_absolute_path(char *comand);
+int		check_is_directory();
 
 //-process.c ---------------------------------------------------------
 int		exec_fork(t_cmd *node, int node_nbr, t_origin *origin);
@@ -55,8 +56,6 @@ int		create_children_pids_buffer(int **children_pids, int size);
 int		update_exit_status(int *exit_status, int status, int out_backup,
 			int is_child);
 void	check_status(int status);
-
-// void 	handle_exit_status(void);
 
 //-fd.c ------------------------------------------------------------------------
 int		save_original_fds(int *std_backup);

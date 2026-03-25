@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 03:15:12 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 06:54:41 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 10:42:07 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,30 @@ int	check_dot_edgecase(char **arg, t_env *env)
 		return (0);
 	}
 	return (1);
+}
+
+int	handle_cd_error(char *new_path)
+{
+	struct stat st;
+
+	if (!new_path)
+		return (0);
+	put_multiple_error((char *[]){"cd", new_path, NULL}, NULL);
+	if (stat(new_path, &st) != 0)
+	{
+		if (errno == ENOENT)
+			put_error("No such file or directory\n");
+		else if (errno == ENOTDIR)
+			put_error("Not a directory\n");
+		return (1);
+	}
+	if (!S_ISDIR(st.st_mode))
+	{
+		put_error("Not a directory\n");
+		return (1);
+	}
+	put_multiple_error(NULL, strerror(errno));
+	return (0);
 }
 
 int	change_paths(char *new_path, t_env *env, char *buffer, int cd_minus)
@@ -108,7 +132,7 @@ int	built_cd(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	new_path = get_new_path(node, env->envp, &cd_minus);
 	if (new_path && access(new_path, F_OK | X_OK) != 0)
 	{
-		put_multiple_error((char *[]){"cd", new_path, NULL}, strerror(errno));
+		handle_cd_error(new_path);
 		return (-1);
 	}
 	return (change_paths(new_path, env, buffer, cd_minus));

@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 07:35:01 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/25 06:35:02 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 09:13:32 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ void	put_multiple_error(char **elements, char *problem)
 		line++;
 	}
 	put_error(problem);
-	write(STDERR_FILENO, "\n", 1);
+	if (problem)
+		write(STDERR_FILENO, "\n", 1);
 }

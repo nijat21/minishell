@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 22:17:42 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 06:53:53 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 10:45:12 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ char		*env_find_pointer(char *prefix, char **envp);
 int			built_cd(t_all *all, t_cmd *node, t_env *env, char *buffer);
 char		*get_new_path(t_cmd *node, char **envp, int *cd_status);
 int			change_paths(char *new_path, t_env *env, char *buf, int cd_status);
+int			handle_cd_error(char *new_path);
+int			check_dot_edgecase(char **arg, t_env *env);
 
 //-echo.c-----------------------------------------------------------------------
 int			built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer);
@@ -55,13 +57,9 @@ int			sort_env(char **env);
 
 //-export_utils.c --------------------------------------------------------------
 char		*env_key_dup(char *string, int delimiter);
-// Careful,have Malloc
 char		*env_get_value(char *prefix, char **env);
-// Original,not malloc
 char		*env_value_dup(char *prefix, char **env);
-// Careful,have MALLOC
 char		*env_value_dup_beginning(char *string, int beginning);
-// have MALLOC
 int			parse_export_string(char *string);
 
 //-unset.c ---------------------------------------------------------------------
@@ -75,8 +73,8 @@ int			parse_exit(char **args);
 int			is_overflow_long(char *string);
 int			have_space_between(char *string);
 int			string_trim(char **string, char *ref, char *set_remove);
-int			is_normal_number(char *number);
 int			have_space_between(char *string);
+int			check_remove(char xar, char *set_remove);
 
 //-pwc.c -----------------------------------------------------------------------
 int			built_pwd(t_all *all, t_cmd *node, t_env *env, char *buffer);

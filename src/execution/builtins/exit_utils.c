@@ -6,13 +6,13 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 08:44:03 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 03:17:51 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 10:44:57 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-static int	check_remove(char xar, char *set_remove)
+int	check_remove(char xar, char *set_remove)
 {
 	int	index;
 
