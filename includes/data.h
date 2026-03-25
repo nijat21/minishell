@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 02:41:35 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 06:35:55 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 07:16:14 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ int		get_line(char **line, t_all *all);
 void	end_structures(t_all *all, int is_the_end, int is_child, int status);
 
 //-data_utils.c ----------------------------------------------------------------
-int	comand_lstsize(t_cmd *lst);
+int		comand_lstsize(t_cmd *lst);
 
 #endif

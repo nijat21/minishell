@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 02:20:46 by username          #+#    #+#             */
-/*   Updated: 2026/03/25 06:44:49 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 07:17:32 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <data.h>
 #include <parser.h>
 #include <utils.h>
-
-int	g_signal = 0;
 
 int	main(int argc, char *argv[], char **envp)
 {

@@ -23,9 +23,7 @@ int	check_dot_edgecase(char **arg, t_env *env)
 	if ((*arg) && (((*arg)[0] == '.' && !(*arg)[1]) || ((*arg)[0] == '.'
 				&& (*arg)[1] == '.' && !(*arg)[2])))
 	{
-		put_multiple_error((char * [])
-			{
-			"cd",
+		put_multiple_error((char *[]){"cd",
 			"error retrieving current directory", "getcwd",
 			"cannot acess parent directories", NULL},
 			"No such file or directory");
@@ -105,15 +103,12 @@ int	built_cd(t_all *all, t_cmd *node, t_env *env, char *buffer)
 	line = -1;
 	while (node->args[++line] != NULL)
 		if (line > 1)
-		return (put_comand_error(node->args[0], "too many arguments"), -1);
+			return (put_comand_error(node->args[0], "too many arguments"), -1);
 	cd_minus = 0;
 	new_path = get_new_path(node, env->envp, &cd_minus);
 	if (new_path && access(new_path, F_OK | X_OK) != 0)
 	{
-		put_multiple_error((char * [])
-			{
-			"cd", new_path, NULL
-		}, strerror(errno));
+		put_multiple_error((char *[]){"cd", new_path, NULL}, strerror(errno));
 		return (-1);
 	}
 	return (change_paths(new_path, env, buffer, cd_minus));

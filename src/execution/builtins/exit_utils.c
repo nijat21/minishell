@@ -21,7 +21,7 @@ static int	check_remove(char xar, char *set_remove)
 	index = -1;
 	while (set_remove[++index])
 		if (set_remove[index] == xar)
-		return (1);
+			return (1);
 	return (0);
 }
 

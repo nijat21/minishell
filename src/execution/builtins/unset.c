@@ -12,9 +12,9 @@
 
 #include <built_ins.h>
 
-int built_unset(t_all *all, t_cmd *node, t_env *env, char *buffer)
+int	built_unset(t_all *all, t_cmd *node, t_env *env, char *buffer)
 {
-	int line;
+	int	line;
 
 	if (!node || !node->args || !env)
 		return (-1);

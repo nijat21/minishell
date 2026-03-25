@@ -6,13 +6,13 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 01:54:57 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/25 06:25:52 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 07:02:07 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <built_ins.h>
 
-static int flag_is_true(char *string)
+static int	flag_is_true(char *string)
 {
 	if (!string)
 		return (0);
@@ -36,7 +36,8 @@ int	parse_echo(char **args, int *line)
 			index = 2;
 			while (args[(*line)][index])
 			{
-				if (!((args[(*line)][index] != '\0') && (args[(*line)][index] == 'n')))
+				if (!((args[(*line)][index] != '\0')
+					&& (args[(*line)][index] == 'n')))
 					return (false);
 				index++;
 			}
@@ -53,9 +54,9 @@ int	built_echo(t_all *all, t_cmd *node, t_env *env, char *buffer)
 
 	if (!node || !node->args)
 		return (-1);
-	(void) env;
-	(void) buffer;
-	(void) all;
+	(void)env;
+	(void)buffer;
+	(void)all;
 	flag = 0;
 	line = 1;
 	if (node->args[line] && (flag_is_true(node->args[line]) == true))

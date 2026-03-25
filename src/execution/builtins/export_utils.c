@@ -103,22 +103,22 @@ char	*env_key_dup(char *string, int delimiter)
 	return (result);
 }
 
-int parse_export_string(char *string)
+int	parse_export_string(char *string)
 {
-	int index;
+	int	index;
 
 	if (!string)
 		return (0);
 	index = 0;
 	if (is_numerical(string[index]) || string[index] == '='
-			|| string[index] == '+')
+		|| string[index] == '+')
 		return (0);
 	index++;
 	while (string[index] && (string[index] != '='))
 	{
 		if ((is_alphanumerical_or_underline(string[index]) == false)
-				&& (string[index] != '+'))
-		return (0);
+			&& (string[index] != '+'))
+			return (0);
 		if ((string[index] == '+') && (string[index + 1] != '='))
 			return (0);
 		index++;

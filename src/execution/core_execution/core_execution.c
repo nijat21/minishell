@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 04:34:05 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/25 06:55:59 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 07:11:44 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	exec_command(t_cmd *node, t_origin *origin, t_all *all)
 		if (pid == CHILD)
 		{
 			return (end_structures(all, true, true,
-				-(all->children_pids[all->node_nbr])), 1);
+					-(all->children_pids[all->node_nbr])), 1);
 		}
 	}
 	else if ((origin->abs_path == NULL) || ((origin->abs_path)[0] == '\0'))

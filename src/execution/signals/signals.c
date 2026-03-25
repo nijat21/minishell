@@ -6,13 +6,11 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 06:58:17 by olacerda          #+#    #+#             */
-/*   Updated: 2026/03/25 04:39:14 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 07:13:35 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signals.h>
-
-extern int	process_signal;
 
 t_proc	*get_process_info(t_all *all)
 {

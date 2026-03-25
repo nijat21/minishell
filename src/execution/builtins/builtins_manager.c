@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_manager.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2026/03/25 06:53:48 by otlacerd         ###   ########.fr       */
+/*   Created: 2026/03/25 07:03:52 by nismayil          #+#    #+#             */
+/*   Updated: 2026/03/25 07:04:40 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include <built_ins.h>
 
-func_ptr * get_built_in(char *comand)
+func_ptr	*get_built_in(char *comand)
 {
 	if (!comand)
 		return (NULL);
@@ -34,9 +33,9 @@ func_ptr * get_built_in(char *comand)
 	return (NULL);
 }
 
-int update_underline_on_env(char *abs_path, t_env *env, char **args)
+int	update_underline_on_env(char *abs_path, t_env *env, char **args)
 {
-	int line;
+	int	line;
 
 	if (!env || !args)
 		return (FAIL);
@@ -54,16 +53,17 @@ int update_underline_on_env(char *abs_path, t_env *env, char **args)
 	return (1);
 }
 
-int exec_builtin(t_origin *origin, t_cmd *node, t_all *all)
+int	exec_builtin(t_origin *origin, t_cmd *node, t_all *all)
 {
 	if (!origin || !node || !all || !all->my_env)
 		return (0);
 	return (origin->builtin(all, node, all->my_env, all->buffer));
 }
+
 int	check_export_size(char *string, int *index)
 {
 	if (!string)
-		return (0);	
+		return (0);
 	while (string[(*index)] && (string[(*index)] != '=')
 		&& (string[(*index)] != '+'))
 	{
@@ -78,9 +78,9 @@ char	*get_export_new_value(char *string, int *index, char *old_value)
 {
 	if (!string)
 		return (NULL);
-	if (string[(*index)] && ((string[(*index)] == '=')
-		|| ((string[(*index)] && (string[(*index)++] == '+'))
-			&& (string[(*index)] == '='))))
+	if (string[(*index)] && ((string[(*index)] == '=') || ((string[(*index)]
+					&& (string[(*index)++] == '+'))
+				&& (string[(*index)] == '='))))
 	{
 		if (old_value && ((*index) > 0) && (string[(*index) - 1] == '+'))
 			(*index)++;
