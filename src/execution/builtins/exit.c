@@ -6,7 +6,7 @@
 /*   By: otlacerd <otlacerd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 00:56:52 by otlacerd          #+#    #+#             */
-/*   Updated: 2026/03/25 07:45:48 by otlacerd         ###   ########.fr       */
+/*   Updated: 2026/03/25 08:15:11 by otlacerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ int	parse_exit(char **args)
 
 	line = 1;
 	if (!(args[1]))
-		return (0);
-	while (args[line] != NULL)
-		if (line++ >= 2)
-			return (put_comand_error(args[0], "too many arguments"), -1);
+		return (-1);
 	string_trim(&args[1], args[1], (char []){' ', '	', '\0'});
 	if (args[1] && (!(args[1][0]) || (args[1][0] == ' ')
 				|| (args[1][0] == '	')))
@@ -37,7 +34,10 @@ int	parse_exit(char **args)
 			return (-3);
 	if ((args[1]) && is_overflow_long(args[1]) == true)
 		return (-3);
-	return (0);
+	while (args[line] != NULL)
+		if (line++ >= 2)
+			return (put_comand_error(args[0], "too many arguments"), -2);
+	return (1);
 }
 
 static int	get_exit_code(int exit_code, int is_child, int error)
@@ -67,7 +67,7 @@ int	built_exit(t_all *all, t_cmd *node, t_env *env, char *buffer)
 		return (get_exit_code(all->process_info->exit_status, is_child, -2));
 	(void)((is_child == false) && write(STDERR_FILENO, "exit\n", 5));
 	result = parse_exit(node->args);
-	if (result == -1)
+	if (result == -2)
 		return (get_exit_code(all->process_info->exit_status, is_child, -1));
 	else if (result == -3)
 	{
