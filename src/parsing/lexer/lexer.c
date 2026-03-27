@@ -6,7 +6,7 @@
 /*   By: nismayil <nismayil@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:59:33 by nismayil          #+#    #+#             */
-/*   Updated: 2026/03/20 15:22:22 by nismayil         ###   ########.fr       */
+/*   Updated: 2026/03/27 13:11:02 by nismayil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ static int	input_to_tokens(t_lex_ctx *ctx, const char *str, int *i)
 
 void	ctx_init(t_lex_ctx *ctx)
 {
+	ft_memset(ctx, 0, sizeof(t_lex_ctx));
 	ctx->tk = NULL;
 	ctx->qc = Q_NONE;
 	ctx->seg = NULL;
